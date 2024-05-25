@@ -11,9 +11,9 @@ export default {
         primary: "#FFFFFF",
         secondary: "",
         background: "#111111",
-        foreground: "",
+        foreground: "#EDEFEF",
         front: "#EDEDEF",
-        back: "",
+        back: "#101011",
       },
       borderRadius: {
         inherit: "inherit",
@@ -23,6 +23,7 @@ export default {
       },
       fontFamily: {
         poppins: '"Poppins", sans-serif',
+        inter: '"Inter", sans-serif',
         raleway: '"Raleway", sans-serif',
       },
       zIndex: {

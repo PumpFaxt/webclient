@@ -28,7 +28,7 @@
   }
 }
 
-@keyframes bounce {
+@keyframes bounce-scale {
   0% {
     scale: 1;
   }
@@ -42,6 +42,18 @@
     scale: 1;
   }
 }
-.bounce {
-  animation: bounce 500ms;
+
+@keyframes bounce-scale-sm {
+  0% {
+    scale: 1;
+  }
+  40% {
+    scale: 1.1;
+  }
+  65% {
+    scale: 0.9;
+  }
+  100% {
+    scale: 1;
+  }
 }

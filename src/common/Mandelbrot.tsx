@@ -8,7 +8,6 @@ interface MandelbrotProps {
 
 export default function Mandelbrot(props: MandelbrotProps) {
   const canvasRef = useRef() as React.MutableRefObject<HTMLCanvasElement>;
-  console.log(canvasRef);
 
   const flag = useRef(false);
 
