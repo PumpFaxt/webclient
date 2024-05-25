@@ -1,0 +1,47 @@
+@property --property-name {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: #c0ffee;
+}
+
+@keyframes connect-wallet-rainbow {
+  from {
+    filter: hue-rotate(0deg);
+  }
+  to {
+    filter: hue-rotate(360deg);
+  }
+}
+.connect-wallet-rainbow {
+  animation: connect-wallet-rainbow 800ms infinite;
+}
+
+@keyframes scale-pulse {
+  0% {
+    font-size: 1rem;
+  }
+  50% {
+    font-size: 1.2rem;
+  }
+  100% {
+    font-size: 1rem;
+  }
+}
+
+@keyframes bounce {
+  0% {
+    scale: 1;
+  }
+  40% {
+    scale: 1.15;
+  }
+  70% {
+    scale: 0.9;
+  }
+  100% {
+    scale: 1;
+  }
+}
+.bounce {
+  animation: bounce 500ms;
+}
