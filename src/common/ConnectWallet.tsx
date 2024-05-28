@@ -4,6 +4,7 @@ import useModal from "../hooks/useModal";
 import FlexSeparator from "./FlexSeparator";
 import Icon from "./Icon";
 import { twMerge } from "tailwind-merge";
+import { Link } from "react-router-dom";
 
 export default function ConnectWallet() {
   const { connect, connectors, error, isLoading, pendingConnector } =
@@ -67,7 +68,10 @@ export default function ConnectWallet() {
       )}
 
       {address && (
-        <button className="group hover:hue-rotate-[499999deg] duration-[999999ms]">
+        <Link
+          to="/dashboard"
+          className="group hover:hue-rotate-[499999deg] duration-[999999ms]"
+        >
           {address.split("").map((c, key) => (
             <span
               key={key}
@@ -83,7 +87,7 @@ export default function ConnectWallet() {
               {c}
             </span>
           ))}
-        </button>
+        </Link>
       )}
     </>
   );

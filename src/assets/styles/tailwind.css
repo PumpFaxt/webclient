@@ -21,3 +21,10 @@
     @apply absolute top-0 left-0 w-full h-full;
   }
 }
+
+@layer components {
+  .btn-retro {
+    @apply border-2 border-t-white border-l-white border-b-gray-900 border-r-gray-600 text-black relative before:absolute-cover before:bg-black before:opacity-0
+    active:border-b-white active:border-r-white active:border-t-gray-900 active:border-l-gray-600 active:before:opacity-[3%];
+  }
+}

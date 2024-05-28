@@ -2,9 +2,17 @@ import { useState } from "react";
 import Mandelbrot from "../../../common/Mandelbrot";
 import bongandoff from "../../../config/bongandoff";
 import { twMerge } from "tailwind-merge";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAccount } from "wagmi";
+import useToast from "../../../hooks/useToast";
 
 export default function Hero() {
+  const { address } = useAccount();
+
+  const toast = useToast();
+
+  const navigate = useNavigate();
+
   return (
     <section className="p-page relative flex h-screen items-center">
       <div className="absolute-cover pointer-events-none -z-20">
@@ -27,7 +35,13 @@ export default function Hero() {
           Network
         </p>
 
-        <button className="px-6 py-2 bg-foreground text-back mt-5 w-max">
+        <button
+          className="px-6 py-2 bg-foreground text-back mt-5 w-max"
+          onClick={() => {
+            if (!address) return toast.error({ title: "Connect Wallet first" });
+            navigate("/showcase");
+          }}
+        >
           START PUMPING
         </button>
       </div>

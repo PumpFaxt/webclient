@@ -57,3 +57,39 @@
     scale: 1;
   }
 }
+
+@keyframes keyframes--w-full-to-none {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0%;
+  }
+}
+
+@keyframes shake-x {
+  from {
+    transform: translateX(0);
+  }
+  15% {
+    transform: translateX(-1%);
+  }
+  30% {
+    transform: translateX(1%);
+  }
+  45% {
+    transform: translateX(-1%);
+  }
+  60% {
+    transform: translateX(1%);
+  }
+  75% {
+    transform: translateX(-1%);
+  }
+  90% {
+    transform: translateX(1%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
