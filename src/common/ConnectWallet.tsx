@@ -75,7 +75,7 @@ export default function ConnectWallet() {
           {address.split("").map((c, key) => (
             <span
               key={key}
-              className="group-hover:text-[var(--c-clr)]"
+              className="group-hover:text-[var(--c-clr)] font-comicNeue font-bold text-xl"
               style={
                 {
                   "--c-clr": `rgb(${100 + Math.random() * 155}, ${
@@ -115,7 +115,7 @@ function ConnectWalletModal() {
         </button>
       </div>
 
-      <div className="flex-1 relative select-none">
+      <div className="flex-1 relative select-none ">
         <img
           src="/images/button_meme.png"
           alt="button meme"

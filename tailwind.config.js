@@ -25,6 +25,7 @@ export default {
         poppins: '"Poppins", sans-serif',
         inter: '"Inter", sans-serif',
         raleway: '"Raleway", sans-serif',
+        comicNeue: '"Comic Neue", sans-serif',
       },
       zIndex: {
         1: 1,

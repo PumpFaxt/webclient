@@ -140,3 +140,25 @@ export function getRandomFromArray<T>(array: Array<T>): T {
 }
 
 export const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+export async function getImageDominantRgb(
+  src: string
+): Promise<Uint8ClampedArray> {
+  return new Promise((resolve) => {
+    let context = document.createElement("canvas").getContext("2d");
+    context!.imageSmoothingEnabled = true;
+
+    let img = new Image();
+    img.src = src;
+    img.crossOrigin = "";
+
+    img.onload = () => {
+      context!.drawImage(img, 0, 0, 1, 1);
+      resolve(context!.getImageData(0, 0, 1, 1).data.slice(0, 3));
+    };
+  });
+}
+
+export function getLuminicanceFromRgb(rgb: number[]) {
+  return 0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2];
+}
