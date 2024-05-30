@@ -25,18 +25,45 @@ export default function Showcase() {
 
   return (
     <section className="flex flex-col items-center p-page">
-      <h1 className="mt-7 mb-16 font-bold text-5xl font-comicNeue">
-        Showcase of Memes
-      </h1>
-      <div className="flex justify-between">
-        {coinsSplit &&
-          coinsSplit.map((items, key) => (
-            <div key={key} className="flex flex-col gap-y-8 w-[32%]">
-              {items &&
-                items.map((coin, key) => <CoinCard coin={coin} key={key} />)}
-            </div>
-          ))}
+      <div className="mt-7 mb-16 font-bold text-5xl font-comicNeue relative text-center flex self-stretch">
+        <h1 className="text-center flex-1">Showcase of Memes</h1>
+        <button
+          className="flex flex-col items-center font-light gap-y-1"
+          onClick={coins.refetch}
+          disabled={coins.loading}
+        >
+          <img
+            src="/icons/burn-refresh.png"
+            alt="refresh-deepfried-burnt"
+            className={twMerge(
+              "w-[0.5em] aspect-square object-contain",
+              coins.loading && "animate-spin cursor-progress"
+            )}
+          />
+          <span className="text-xs">..refresh..</span>
+        </button>
       </div>
+
+      <div
+        className={twMerge(
+          "w-1/2",
+          !coins.loading && "h-0 opacity-0 pointer-events-none"
+        )}
+      >
+        <img src="/images/pepe-loader.gif" alt="PEPE" />
+      </div>
+
+      {!coins.loading && (
+        <div className="flex justify-between group/showcase max-w-[1400px]">
+          {coinsSplit &&
+            coinsSplit.map((items, key) => (
+              <div key={key} className="flex flex-col gap-y-8 w-[32%]">
+                {items &&
+                  items.map((coin, key) => <CoinCard coin={coin} key={key} />)}
+              </div>
+            ))}
+        </div>
+      )}
     </section>
   );
 }
@@ -64,40 +91,45 @@ function CoinCard(props: { coin: Coin; className?: string }) {
   }, []);
 
   return (
-    <div className={twMerge(props.className, "group/card")}>
-      <Link
-        to={``}
-        className={twMerge(
-          "flex border border-front/20 rounded-lg select-none relative overflow-hidden"
-        )}
-      >
-        <img
-          src={data.image_uri}
-          alt={data.name}
-          className="w-1/3 m-3 object-contain"
-        />
-        <div className="flex flex-col m-3 gap-y-1">
-          <h3
-            className="font-semibold tracking-wide text-lg"
-            style={{ color: color }}
-          >
-            {data.name
-              .replaceAll(/solana/gi, "Fraxtal")
-              .replaceAll(/sol/gi, "frax")}
-          </h3>
-          <h4 className="text-sm font-semibold text-front/70">
-            TICKER : {data.symbol}
-          </h4>
+    <Link
+      to={`/T/${data.signature}`}
+      className={twMerge(
+        props.className,
+        "flex border border-front/20 rounded-lg select-none relative overflow-hidden group"
+      )}
+    >
+      <img
+        src="/images/rainbow-bg.gif"
+        alt="rainbouu"
+        className="absolute-cover opacity-0 group-hover:opacity-100 group-hover:duration-[100000ms] ease-out duration-[3000ms] -z-1"
+      />
 
-          <h5 className="text-pink-400 truncate max-w-[16ch] text-xs my-[1px]">
-            Created by {data.creator}
-          </h5>
+      <img
+        src={data.image_uri}
+        alt={data.name}
+        className="w-1/3 m-3 object-contain"
+      />
+      <div className="flex flex-col m-3 gap-y-1 group-hover:mix-blend-difference">
+        <h3
+          className="font-semibold tracking-wide text-lg"
+          style={{ color: color }}
+        >
+          {data.name
+            .replaceAll(/solana/gi, "Fraxtal")
+            .replaceAll(/sol/gi, "frax")}
+        </h3>
+        <h4 className="text-sm font-semibold text-front/70">
+          TICKER : {data.symbol}
+        </h4>
 
-          <p className="mt-1 text-sm text-front/90 font-light line-clamp-4">
-            {data.description.replaceAll(/sol/gi, "usd")}
-          </p>
-        </div>
-      </Link>
-    </div>
+        <h5 className="text-pink-400 truncate max-w-[16ch] text-xs my-[1px]">
+          Created by {data.creator}
+        </h5>
+
+        <p className="mt-1 text-sm text-front/90 font-light line-clamp-4">
+          {data.description.replaceAll(/sol/gi, "usd")}
+        </p>
+      </div>
+    </Link>
   );
 }

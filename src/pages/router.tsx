@@ -17,6 +17,7 @@ const router = createBrowserRouter(
         <Route index element={<HomePage />} />
         <Route path="showcase" element={<ShowcasePage />} />
         <Route path="dashboard" element={<DashboardPage />} />
+        <Route path="/T/:id" element={<DashboardPage />} />
       </Route>
 
       <Route path="*" element={<ErrorPage />} />
