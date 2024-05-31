@@ -46,7 +46,7 @@ export default function Showcase() {
 
       <div
         className={twMerge(
-          "w-1/2",
+          "w-1/3",
           !coins.loading && "h-0 opacity-0 pointer-events-none"
         )}
       >
