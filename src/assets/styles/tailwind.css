@@ -29,6 +29,6 @@
   }
 
   .input-retro {
-    @apply border-black border-2 px-3 py-1 text-lg font-mono;
+    @apply border-black border-[1.5px] px-3 py-1 text-lg font-mono bg-white text-stone-700;
   }
 }
