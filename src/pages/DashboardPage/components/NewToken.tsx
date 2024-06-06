@@ -6,12 +6,15 @@ import { useAccount } from "wagmi";
 export default function NewToken() {
   const { address } = useAccount();
   const [imagePreview, setImagePreview] = useState<string>("");
+  const [selectedFile, setSelectedFile]: any = useState();
+
   const [token, setToken] = useState<any>({
     name: "",
     image_uri: imagePreview,
     symbol: "",
     creator: address,
     description: "",
+    ipfsImage: "",
   });
 
   const handleChange = (e: { target: { name: string; value: string } }) => {
@@ -25,6 +28,7 @@ export default function NewToken() {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files && files.length > 0) {
+      setSelectedFile(files[0]);
       const file = files[0];
       const imageUrl = URL.createObjectURL(file);
       setImagePreview(imageUrl);
@@ -32,6 +36,44 @@ export default function NewToken() {
         ...prevToken,
         image_uri: imageUrl,
       }));
+    }
+  };
+
+  const handleSubmission = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("file", selectedFile);
+      const metadata = JSON.stringify({
+        name: token.name,
+      });
+      formData.append("pinataMetadata", metadata);
+
+      const options = JSON.stringify({
+        cidVersion: 0,
+      });
+      formData.append("pinataOptions", options);
+
+      const res = await fetch(
+        "https://api.pinata.cloud/pinning/pinFileToIPFS",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${import.meta.env.VITE_PINATA_JWT}`,
+          },
+          body: formData,
+        }
+      );
+      const resData = await res.json();
+
+      const updatedToken = {
+        ...token,
+        ipfsImage: "https://ipfs.io/ipfs/" + resData.IpfsHash, 
+      };
+
+      setToken(updatedToken);
+      console.log(updatedToken);
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -82,7 +124,12 @@ export default function NewToken() {
         onChange={handleImageChange}
       />
 
-      <button className="btn-retro self-center px-8 py-1 -mb-2">
+      <button
+        className="btn-retro self-center px-8 py-1 -mb-2"
+        onClick={() => {
+          handleSubmission();
+        }}
+      >
         Create Token
       </button>
       <div className="bg-background w-max p-2">
