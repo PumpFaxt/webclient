@@ -15,6 +15,9 @@ export default function NewToken() {
     creator: address,
     description: "",
     ipfsImage: "",
+    telegram: "",
+    twitter: "",
+    website: "",
   });
 
   const handleChange = (e: { target: { name: string; value: string } }) => {
@@ -67,7 +70,7 @@ export default function NewToken() {
 
       const updatedToken = {
         ...token,
-        ipfsImage: "https://ipfs.io/ipfs/" + resData.IpfsHash, 
+        ipfsImage: "https://ipfs.io/ipfs/" + resData.IpfsHash,
       };
 
       setToken(updatedToken);
@@ -114,6 +117,33 @@ export default function NewToken() {
         value={token.description}
         onChange={handleChange}
       />
+
+      <div className="flex gap-x-5">
+        <input
+          type="link"
+          name="website"
+          placeholder="Website"
+          className="input-retro flex-1"
+          value={token.website}
+          onChange={handleChange}
+        />
+        <input
+          type="link"
+          name="telegram"
+          placeholder="Telegram"
+          className="input-retro flex-1"
+          value={token.telegram}
+          onChange={handleChange}
+        />
+        <input
+          type="link"
+          name="twitter"
+          placeholder="Twitter"
+          value={token.twitter}
+          onChange={handleChange}
+          className="input-retro flex-1"
+        />
+      </div>
 
       <input
         type="file"
