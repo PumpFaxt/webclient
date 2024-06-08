@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import Icon from "../../../common/Icon";
 import { twMerge } from "tailwind-merge";
 import NewToken from "./NewToken";
-import TokenYouHold from "./TokenYouHold";
+import TokensYouHold from "./TokensYouHold";
+import TokensYouDeployed from "./TokensYouDeployed";
 
 const displays = [
   { title: "Create New Token", element: <NewToken /> },
-  { title: "Coins you hold", element: <TokenYouHold /> },
-  { title: "Coins you deployed" },
+  { title: "Coins you hold", element: <TokensYouHold /> },
+  { title: "Coins you deployed", element: <TokensYouDeployed /> },
 ];
 
 export default function Stats() {

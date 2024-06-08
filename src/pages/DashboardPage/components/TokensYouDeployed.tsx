@@ -3,7 +3,7 @@ import { twMerge } from "tailwind-merge";
 import { getImageDominantRgb, getLuminicanceFromRgb } from "../../../utils";
 import { Link } from "react-router-dom";
 
-export default function TokenYouHold() {
+export default function TokensYouDeployed() {
   return (
     <section className="flex flex-col items-center p-page">
       {/* <div
@@ -94,22 +94,8 @@ function CoinCard(props: { coin: any; className?: string }) {
       </div>
       <div className="m-3 flex flex-col justify-around font-mono">
         <p>
-          <span className="font-bold text-neutral-400">Amount: </span>
-          {data.amount}
-        </p>
-        <p>
-          <span className="font-bold text-neutral-400">Price: </span>
-          {data.price} USD
-        </p>
-        <p>
-          <span className="font-bold text-neutral-400">24hr Change: </span>
-          <span
-            className={twMerge(
-              data.change < 0 ? "text-red-500" : "text-green-500"
-            )}
-          >
-            {data.change}%
-          </span>
+          <span className="font-bold text-neutral-400">Market Cap: </span>
+          {data.marketCap}
         </p>
       </div>
     </Link>
