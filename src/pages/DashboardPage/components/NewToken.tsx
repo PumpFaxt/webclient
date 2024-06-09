@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Coin } from "../../../types";
 import CoinCard from "../../../common/CoinCard";
-import { useAccount } from "wagmi";
+import { useAccount, useContractWrite } from "wagmi";
 
 export default function NewToken() {
   const { address } = useAccount();
