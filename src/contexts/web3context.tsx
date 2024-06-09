@@ -3,9 +3,7 @@ import { WagmiConfig } from "wagmi";
 import wagmiConfig from "../config/wagmi";
 import getContracts from "../contracts";
 
-interface Web3ContextType {
-  contracts: ReturnType<typeof getContracts>;
-}
+interface Web3ContextType {}
 
 const Web3Context = createContext<Web3ContextType>({} as Web3ContextType);
 
@@ -20,11 +18,7 @@ export function Web3Provider({ children }: { children: React.ReactNode }) {
 }
 
 function Wrapper({ children }: { children: React.ReactNode }) {
-  const contracts = getContracts();
-
-  const value = {
-    contracts,
-  };
+  const value = {};
 
   return <Web3Context.Provider value={value}>{children}</Web3Context.Provider>;
 }
