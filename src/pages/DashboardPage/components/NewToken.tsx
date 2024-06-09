@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Coin } from "../../../types";
 import CoinCard from "../../../common/CoinCard";
-import { useAccount, useContractWrite } from "wagmi";
+import { useAccount, useContractRead, useContractWrite } from "wagmi";
+import contractDefinitions from "../../../contracts";
 
 export default function NewToken() {
   const { address } = useAccount();
@@ -19,6 +20,19 @@ export default function NewToken() {
     twitter: "",
     website: "",
   });
+
+  const minimumInitialSupply = useContractRead({
+    ...contractDefinitions.pumpItFaxtInterface,
+    functionName: "minimumInitialSupply",
+  });
+
+  console.log(minimumInitialSupply)
+
+  // const newTokenOnPumpItFaxt = useContractWrite({
+  //   ...contractDefinitions.pumpItFaxtInterface,
+  //   functionName: "deployNewToken",
+  //   args: [BigInt()],
+  // });
 
   const handleChange = (e: { target: { name: string; value: string } }) => {
     const { name, value } = e.target;

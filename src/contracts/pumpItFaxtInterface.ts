@@ -1,4 +1,4 @@
-const address = "0x57f1887a8BF19b14fC0dF6Fd9B2acc9Af147eA85" as const;
+const address = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512" as const;
 
 const abi = [
   {
@@ -174,6 +174,32 @@ const abi = [
   {
     inputs: [
       {
+        internalType: "uint256",
+        name: "newMaxium_",
+        type: "uint256",
+      },
+    ],
+    name: "setMaximumInitialTokenSupply",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "newMinimum_",
+        type: "uint256",
+      },
+    ],
+    name: "setMinimumInitialTokenSupply",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "address",
         name: "newOwner",
         type: "address",
@@ -202,6 +228,5 @@ const abi = [
     stateMutability: "nonpayable",
     type: "function",
   },
-] as const;
-
+];
 export default { address, abi };
