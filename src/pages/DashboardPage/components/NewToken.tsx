@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Coin } from "../../../types";
 import CoinCard from "../../../common/CoinCard";
 import { useAccount, useContractRead, useContractWrite } from "wagmi";
 import contractDefinitions from "../../../contracts";
+import { format18DecimalsToken } from "../../../utils";
 
 export default function NewToken() {
   const { address } = useAccount();
@@ -19,20 +20,18 @@ export default function NewToken() {
     telegram: "",
     twitter: "",
     website: "",
+    initial_supply: "",
   });
 
-  const minimumInitialSupply = useContractRead({
+  const { data: minimumInitialSupply } = useContractRead({
     ...contractDefinitions.pumpItFaxtInterface,
     functionName: "minimumInitialSupply",
   });
 
-  console.log(minimumInitialSupply)
-
-  // const newTokenOnPumpItFaxt = useContractWrite({
-  //   ...contractDefinitions.pumpItFaxtInterface,
-  //   functionName: "deployNewToken",
-  //   args: [BigInt()],
-  // });
+  const { data: maximumInitialSupply } = useContractRead({
+    ...contractDefinitions.pumpItFaxtInterface,
+    functionName: "maximumInitialSupply",
+  });
 
   const handleChange = (e: { target: { name: string; value: string } }) => {
     const { name, value } = e.target;
@@ -115,14 +114,19 @@ export default function NewToken() {
           value={token.symbol}
           onChange={handleChange}
         />
-        <input
-          type="number"
-          min={69_420_000}
-          max={69_420_000_000_000}
-          name="total_supply"
-          placeholder="Total Supply of Token"
-          className="input-retro flex-1"
-        />
+        {minimumInitialSupply != undefined &&
+          maximumInitialSupply != undefined && (
+            <input
+              type="number"
+              name="initial_supply"
+              placeholder="Total Supply of Token"
+              className="input-retro flex-1"
+              min={format18DecimalsToken(minimumInitialSupply)}
+              max={format18DecimalsToken(maximumInitialSupply)}
+              value={token.initial_supply}
+              onChange={handleChange}
+            />
+          )}
       </div>
       <textarea
         name="description"
