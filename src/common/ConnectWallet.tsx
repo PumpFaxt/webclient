@@ -1,5 +1,5 @@
-import React, { useRef, useState } from "react";
-import { useAccount, useConnect } from "wagmi";
+import React, { useEffect, useRef, useState } from "react";
+import { useAccount, useConnect, useNetwork, useSwitchNetwork } from "wagmi";
 import useModal from "../hooks/useModal";
 import FlexSeparator from "./FlexSeparator";
 import Icon from "./Icon";
@@ -9,9 +9,16 @@ import { Link } from "react-router-dom";
 export default function ConnectWallet() {
   const { connect, connectors, error, isLoading, pendingConnector } =
     useConnect();
+  const network = useNetwork();
+  const { switchNetwork } = useSwitchNetwork();
   const { address } = useAccount();
 
   const modal = useModal();
+
+  useEffect(() => {
+    if (!network.chains.map((c) => c.id).includes(network.chain?.id || -1))
+      switchNetwork && switchNetwork(network.chains[0].id);
+  }, [address]);
 
   return (
     <>

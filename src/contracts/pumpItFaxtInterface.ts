@@ -1,4 +1,4 @@
-const address = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512" as const;
+const address = "0xDD182d58c57B2FF0b97B17D3Dae27C63BADD56a5" as const;
 
 const abi = [
   {
@@ -140,6 +140,32 @@ const abi = [
   },
   {
     inputs: [],
+    name: "maximumInitialSupply",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "minimumInitialSupply",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
     name: "owner",
     outputs: [
       {
@@ -228,5 +254,6 @@ const abi = [
     stateMutability: "nonpayable",
     type: "function",
   },
-];
+] as const;
+
 export default { address, abi };
