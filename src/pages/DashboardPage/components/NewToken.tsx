@@ -12,7 +12,9 @@ import { format18DecimalsToken } from "../../../utils";
 
 export default function NewToken() {
   const { address } = useAccount();
-  const [imagePreview, setImagePreview] = useState<string>("https://i.gifer.com/origin/91/9149202982b33cff11875a823529d8a1_w200.gif");
+  const [imagePreview, setImagePreview] = useState<string>(
+    "https://i.gifer.com/origin/91/9149202982b33cff11875a823529d8a1_w200.gif"
+  );
   const [selectedFile, setSelectedFile]: any = useState();
 
   const [token, setToken] = useState<any>({
@@ -157,7 +159,6 @@ export default function NewToken() {
       console.error(error);
     }
   }
-  
   return (
     <div className="p-5 flex flex-col gap-y-5">
       <div className="flex gap-x-5">
