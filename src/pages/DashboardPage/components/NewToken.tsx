@@ -9,6 +9,7 @@ import {
 } from "wagmi";
 import contractDefinitions from "../../../contracts";
 import { format18DecimalsToken } from "../../../utils";
+import api from "../../../utils/api";
 
 export default function NewToken() {
   const { address } = useAccount();
@@ -58,14 +59,6 @@ export default function NewToken() {
   useWaitForTransaction({
     hash: approveFraxToInterface.data?.hash,
     onSettled() {
-      console.log([
-        format18DecimalsToken(Number(minimumInitialSupply)),
-        format18DecimalsToken(Number(maximumInitialSupply)),
-        BigInt(Number(token.initial_supply)),
-        token.name,
-        token.symbol,
-        token.ipfsImage,
-      ]);
       newCoinOnPumpItFaxt.write({
         args: [
           BigInt(Number(token.initial_supply)),
@@ -74,17 +67,13 @@ export default function NewToken() {
           token.ipfsImage,
         ],
       });
-
-      // newPolicyArgs && newPolicyOnSurity.write({ args: newPolicyArgs });
-      // console.log("New Token created");
     },
   });
 
   useWaitForTransaction({
     hash: newCoinOnPumpItFaxt.data?.hash,
     onSettled() {
-      // newPolicyArgs && newPolicyOnSurity.write({ args: newPolicyArgs });
-      console.log("New Token created");
+      api.token.new();
     },
   });
 
@@ -110,55 +99,61 @@ export default function NewToken() {
     }
   }
 
-  async function handleSubmission() {
-    console.log("Creating Token...");
-    try {
-      if (!deploymentCharge) return;
+  async function uploadAtIPFS() {
+    const formData = new FormData();
+    formData.append("file", selectedFile);
+    const metadata = JSON.stringify({
+      name: token.name,
+    });
+    formData.append("pinataMetadata", metadata);
 
-      const formData = new FormData();
-      formData.append("file", selectedFile);
-      const metadata = JSON.stringify({
-        name: token.name,
-      });
-      formData.append("pinataMetadata", metadata);
+    const options = JSON.stringify({
+      cidVersion: 0,
+    });
+    formData.append("pinataOptions", options);
 
-      const options = JSON.stringify({
-        cidVersion: 0,
-      });
-      formData.append("pinataOptions", options);
+    const res = await fetch("https://api.pinata.cloud/pinning/pinFileToIPFS", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${import.meta.env.VITE_PINATA_JWT}`,
+      },
+      body: formData,
+    });
+    const resData = await res.json();
 
-      const res = await fetch(
-        "https://api.pinata.cloud/pinning/pinFileToIPFS",
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${import.meta.env.VITE_PINATA_JWT}`,
-          },
-          body: formData,
-        }
-      );
-      const resData = await res.json();
+    const updatedToken = {
+      ...token,
+      ipfsImage: "https://ipfs.io/ipfs/" + resData.IpfsHash,
+    };
 
-      const updatedToken = {
-        ...token,
-        ipfsImage: "https://ipfs.io/ipfs/" + resData.IpfsHash,
-      };
-
-      console.log("Created IPFS Image");
-      approveFraxToInterface.write({
-        args: [
-          contractDefinitions.pumpItFaxtInterface.address,
-          deploymentCharge,
-        ],
-      });
-
-      console.log("Created");
-
-      setToken(updatedToken);
-    } catch (error) {
-      console.error(error);
-    }
+    setToken(updatedToken);
   }
+
+  async function handleSubmission() {
+    if (!deploymentCharge) return;
+
+    uploadAtIPFS();
+    await api.token
+      .enqueue(
+        token.name,
+        token.symbol,
+        token.ipfsImage,
+        token.website,
+        token.description,
+        token.telegram,
+        token.twitter
+      )
+      .then((res) => {
+        if (!res) return;
+        approveFraxToInterface.write({
+          args: [
+            contractDefinitions.pumpItFaxtInterface.address,
+            deploymentCharge,
+          ],
+        });
+      });
+  }
+
   return (
     <div className="p-5 flex flex-col gap-y-5">
       <div className="flex gap-x-5">

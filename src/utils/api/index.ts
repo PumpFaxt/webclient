@@ -2,6 +2,7 @@ import axios from "axios";
 import { serverUrl } from "../../config";
 import dummy from "./dummy";
 import user from "./user";
+import token from "./token";
 
 let jwt: string | null = null;
 export let client = createApi();
@@ -45,6 +46,7 @@ function createApi() {
 
 export function setJwt(token: string) {
   jwt = token;
+  client = createApi();
 }
 
 export function clearJwt() {
@@ -55,6 +57,6 @@ export function jwtExists() {
   return jwt ? true : false;
 }
 
-const api = { dummy, user };
+const api = { dummy, user, token };
 
 export default api;

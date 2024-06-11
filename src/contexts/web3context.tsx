@@ -5,6 +5,7 @@ import wagmiConfig from "../config/wagmi";
 import getContracts from "../contracts";
 import api, { jwtExists, setJwt } from "../utils/api";
 import useModal from "../hooks/useModal";
+import { getJwtStorageName } from "../config";
 
 interface Web3ContextType {}
 
@@ -25,17 +26,17 @@ function Wrapper({ children }: { children: React.ReactNode }) {
   const { address } = useAccount();
   const modal = useModal();
 
-  const { signMessageAsync } = useSignMessage();
-
   async function getAndSignNonce() {
     if (!address || jwtExists()) return;
-    const jwtToken = localStorage.getItem("jwtToken");
+    const jwtToken = localStorage.getItem(getJwtStorageName(address));
+
     if (jwtToken) {
       setJwt(jwtToken);
-      return
+      return;
     }
 
     const nonce = await api.user.requestNonce(address);
+
     modal.show(<VerificationModal nonce={nonce} />);
   }
 
@@ -82,7 +83,7 @@ function VerificationModal(props: { nonce: string }) {
               if (!address) return;
               api.user.login(address, res).then((result) => {
                 setJwt(result.token);
-                localStorage.setItem("jwtToken", result.token);
+                localStorage.setItem(getJwtStorageName(address), result.token);
               });
               modal.hide();
             });

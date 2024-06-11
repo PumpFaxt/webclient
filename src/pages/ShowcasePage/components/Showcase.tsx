@@ -19,8 +19,6 @@ export default function Showcase() {
     }
   }, [coins.data]);
 
-  console.log(coinsSplit);
-
   return (
     <section className="flex flex-col items-center p-page">
       <div className="mt-7 mb-16 font-bold text-5xl font-comicNeue relative text-center flex self-stretch">
