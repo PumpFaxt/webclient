@@ -3,7 +3,7 @@ import { WagmiConfig, useAccount } from "wagmi";
 import { useDisconnect, useSignMessage } from "wagmi";
 import wagmiConfig from "../config/wagmi";
 import getContracts from "../contracts";
-import api, { jwtExists } from "../utils/api";
+import api, { jwtExists, setJwt } from "../utils/api";
 import useModal from "../hooks/useModal";
 
 interface Web3ContextType {}
@@ -47,11 +47,11 @@ export default function useWeb3() {
 function VerificationModal(props: { nonce: string }) {
   const { disconnect } = useDisconnect();
   const { signMessageAsync } = useSignMessage();
+  const { address } = useAccount();
 
   const modal = useModal();
 
   const [loading, setLoading] = useState(false);
-  console.log("true");
 
   return (
     <div className="bg-background p-8 rounded-md flex flex-col text-center gap-y-2 z-10 min-w-[30vw]">
@@ -73,8 +73,11 @@ function VerificationModal(props: { nonce: string }) {
           onClick={() => {
             setLoading(true);
             signMessageAsync({ message: props.nonce }).then((res) => {
+              if (!address) return;
+              api.user.login(address, res).then((result) => {
+                setJwt(result.token);
+              });
               modal.hide();
-              console.log(res);
             });
           }}
         >
