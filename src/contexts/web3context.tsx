@@ -29,7 +29,12 @@ function Wrapper({ children }: { children: React.ReactNode }) {
 
   async function getAndSignNonce() {
     if (!address || jwtExists()) return;
-    if (localStorage.getItem("jwtToken")) return;
+    const jwtToken = localStorage.getItem("jwtToken");
+    if (jwtToken) {
+      setJwt(jwtToken);
+      return
+    }
+
     const nonce = await api.user.requestNonce(address);
     modal.show(<VerificationModal nonce={nonce} />);
   }

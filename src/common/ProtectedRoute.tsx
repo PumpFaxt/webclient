@@ -1,9 +1,11 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useAccount } from "wagmi";
+import { jwtExists } from "../utils/api";
 
 export enum ProtectedTypes {
   PUBLICONLY,
   CONNECTEDONLY,
+  VERIFIEDONLY,
   ADMINONLY,
 }
 
@@ -24,6 +26,17 @@ export default function ProtectedRoute(props: ProtectedRouteProps) {
     return (
       <>
         {!loading && <>{!address ? <Outlet /> : <Navigate to="/showcase" />}</>}
+      </>
+    );
+  }
+
+  if (props.type === ProtectedTypes.VERIFIEDONLY) {
+    console.log(jwtExists());
+    return (
+      <>
+        {!loading && (
+          <> {address && jwtExists() ? <Outlet /> : <Navigate to="/" />} </>
+        )}
       </>
     );
   }

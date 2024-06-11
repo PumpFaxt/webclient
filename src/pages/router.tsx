@@ -9,6 +9,7 @@ import HomePage from "./HomePage/HomePage";
 import ErrorPage from "./ErrorPage/ErrorPage";
 import ShowcasePage from "./ShowcasePage";
 import DashboardPage from "./DashboardPage";
+import ProtectedRoute, { ProtectedTypes } from "../common/ProtectedRoute";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -16,7 +17,10 @@ const router = createBrowserRouter(
       <Route element={<Layout.Default />}>
         <Route index element={<HomePage />} />
         <Route path="showcase" element={<ShowcasePage />} />
-        <Route path="dashboard" element={<DashboardPage />} />
+
+        <Route element={<ProtectedRoute type={ProtectedTypes.VERIFIEDONLY} />}>
+          <Route path="dashboard" element={<DashboardPage />} />
+        </Route>
         <Route path="/T/:id" element={<DashboardPage />} />
       </Route>
 

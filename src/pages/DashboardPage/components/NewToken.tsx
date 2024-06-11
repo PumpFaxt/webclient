@@ -13,7 +13,7 @@ import { format18DecimalsToken } from "../../../utils";
 export default function NewToken() {
   const { address } = useAccount();
   const [imagePreview, setImagePreview] = useState<string>(
-    "https://i.gifer.com/origin/91/9149202982b33cff11875a823529d8a1_w200.gif"
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNsf5CeFimg4bm5lFd-Db5s1ypRL111Xf-Pg&s"
   );
   const [selectedFile, setSelectedFile]: any = useState();
 
