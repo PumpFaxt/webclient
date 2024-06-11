@@ -72,9 +72,10 @@ function VerificationModal(props: { nonce: string }) {
           className="flex-1 bg-foreground p-1 font-medium rounded disabled:animate-pulse disabled:opacity-60 disabled:cursor-progress text-back"
           onClick={() => {
             setLoading(true);
-            signMessageAsync({ message: props.nonce }).then((res) =>
-              console.log(res)
-            );
+            signMessageAsync({ message: props.nonce }).then((res) => {
+              modal.hide();
+              console.log(res);
+            });
           }}
         >
           Sign
