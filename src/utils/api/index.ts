@@ -2,8 +2,7 @@ import axios from "axios";
 import { serverUrl } from "../../config";
 import dummy from "./dummy";
 
-let address: string | null = null;
-
+let jwt: string | null = null;
 export let client = createApi();
 
 function createApi() {
@@ -11,7 +10,7 @@ function createApi() {
     baseURL: serverUrl,
     timeout: 32000,
     headers: {
-      Authorization: address,
+      Authorization: `Bearer ${jwt}`,
       "Content-Type": "application/json",
     },
   });
@@ -43,14 +42,12 @@ function createApi() {
   return client;
 }
 
-export function setAddress(addr: string) {
-  address = addr;
-  client.defaults.headers["Authorization"] = address;
+export function setJwt(token: string) {
+  jwt = token;
 }
 
-export function clearAddress() {
-  address = null;
-  client.defaults.headers["Authorization"] = null;
+export function clearJwt() {
+  jwt = null;
 }
 
 const api = { dummy };
