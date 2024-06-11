@@ -48,7 +48,11 @@ export default function Showcase() {
           !coins.loading && "h-0 opacity-0 pointer-events-none"
         )}
       >
-        <img src="/images/pepe-loader.gif" alt="PEPE" />
+        <img
+          src="https://www.memehub.ai/images/poster-loading.png"
+          className="w-full border-2"
+          alt="PEPE"
+        />
       </div>
 
       {!coins.loading && (

@@ -29,6 +29,7 @@ function Wrapper({ children }: { children: React.ReactNode }) {
 
   async function getAndSignNonce() {
     if (!address || jwtExists()) return;
+    if (localStorage.getItem("jwtToken")) return;
     const nonce = await api.user.requestNonce(address);
     modal.show(<VerificationModal nonce={nonce} />);
   }
@@ -76,6 +77,7 @@ function VerificationModal(props: { nonce: string }) {
               if (!address) return;
               api.user.login(address, res).then((result) => {
                 setJwt(result.token);
+                localStorage.setItem("jwtToken", result.token);
               });
               modal.hide();
             });
