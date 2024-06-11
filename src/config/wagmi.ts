@@ -1,11 +1,11 @@
 import { configureChains, createConfig } from "wagmi";
-import { mainnet, sepolia } from "wagmi/chains";
+import { hardhat, sepolia } from "wagmi/chains";
 import { InjectedConnector } from "wagmi/connectors/injected";
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
 import { publicProvider } from "wagmi/providers/public";
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
-  [mainnet, sepolia],
+  [hardhat],
   [publicProvider()]
 );
 
@@ -25,7 +25,7 @@ const wagmiConfig = createConfig({
           url: window.location.hostname,
         },
       },
-      chains: [mainnet, sepolia],
+      chains: [hardhat],
     }),
   ],
   publicClient,

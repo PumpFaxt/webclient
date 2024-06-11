@@ -1,12 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Coin } from "../../../types";
 import CoinCard from "../../../common/CoinCard";
-import { useAccount, useContractRead, useContractWrite } from "wagmi";
+import {
+  useAccount,
+  useContractRead,
+  useContractWrite,
+  useWaitForTransaction,
+} from "wagmi";
 import contractDefinitions from "../../../contracts";
+import { format18DecimalsToken } from "../../../utils";
 
 export default function NewToken() {
   const { address } = useAccount();
-  const [imagePreview, setImagePreview] = useState<string>("");
+  const [imagePreview, setImagePreview] = useState<string>(
+    "https://i.gifer.com/origin/91/9149202982b33cff11875a823529d8a1_w200.gif"
+  );
   const [selectedFile, setSelectedFile]: any = useState();
 
   const [token, setToken] = useState<any>({
@@ -19,30 +27,76 @@ export default function NewToken() {
     telegram: "",
     twitter: "",
     website: "",
+    initial_supply: "",
   });
 
-  const minimumInitialSupply = useContractRead({
+  const { data: minimumInitialSupply } = useContractRead({
     ...contractDefinitions.pumpItFaxtInterface,
     functionName: "minimumInitialSupply",
   });
 
-  console.log(minimumInitialSupply)
+  const { data: maximumInitialSupply } = useContractRead({
+    ...contractDefinitions.pumpItFaxtInterface,
+    functionName: "maximumInitialSupply",
+  });
 
-  // const newTokenOnPumpItFaxt = useContractWrite({
-  //   ...contractDefinitions.pumpItFaxtInterface,
-  //   functionName: "deployNewToken",
-  //   args: [BigInt()],
-  // });
+  const { data: deploymentCharge } = useContractRead({
+    ...contractDefinitions.pumpItFaxtInterface,
+    functionName: "deploymentCharge",
+  });
 
-  const handleChange = (e: { target: { name: string; value: string } }) => {
+  const approveFraxToInterface = useContractWrite({
+    ...contractDefinitions.frax,
+    functionName: "approve",
+  });
+
+  const newCoinOnPumpItFaxt = useContractWrite({
+    ...contractDefinitions.pumpItFaxtInterface,
+    functionName: "deployNewToken",
+  });
+
+  useWaitForTransaction({
+    hash: approveFraxToInterface.data?.hash,
+    onSettled() {
+      console.log([
+        format18DecimalsToken(Number(minimumInitialSupply)),
+        format18DecimalsToken(Number(maximumInitialSupply)),
+        BigInt(Number(token.initial_supply)),
+        token.name,
+        token.symbol,
+        token.ipfsImage,
+      ]);
+      newCoinOnPumpItFaxt.write({
+        args: [
+          BigInt(Number(token.initial_supply)),
+          token.name,
+          token.symbol,
+          token.ipfsImage,
+        ],
+      });
+
+      // newPolicyArgs && newPolicyOnSurity.write({ args: newPolicyArgs });
+      // console.log("New Token created");
+    },
+  });
+
+  useWaitForTransaction({
+    hash: newCoinOnPumpItFaxt.data?.hash,
+    onSettled() {
+      // newPolicyArgs && newPolicyOnSurity.write({ args: newPolicyArgs });
+      console.log("New Token created");
+    },
+  });
+
+  function handleChange(e: { target: { name: string; value: string } }) {
     const { name, value } = e.target;
     setToken((prevToken: any) => ({
       ...prevToken,
       [name]: value,
     }));
-  };
+  }
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
     const files = e.target.files;
     if (files && files.length > 0) {
       setSelectedFile(files[0]);
@@ -54,10 +108,13 @@ export default function NewToken() {
         image_uri: imageUrl,
       }));
     }
-  };
+  }
 
-  const handleSubmission = async () => {
+  async function handleSubmission() {
+    console.log("Creating Token...");
     try {
+      if (!deploymentCharge) return;
+
       const formData = new FormData();
       formData.append("file", selectedFile);
       const metadata = JSON.stringify({
@@ -87,13 +144,21 @@ export default function NewToken() {
         ipfsImage: "https://ipfs.io/ipfs/" + resData.IpfsHash,
       };
 
-      setToken(updatedToken);
-      console.log(updatedToken);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+      console.log("Created IPFS Image");
+      approveFraxToInterface.write({
+        args: [
+          contractDefinitions.pumpItFaxtInterface.address,
+          deploymentCharge,
+        ],
+      });
 
+      console.log("Created");
+
+      setToken(updatedToken);
+    } catch (error) {
+      console.error(error);
+    }
+  }
   return (
     <div className="p-5 flex flex-col gap-y-5">
       <div className="flex gap-x-5">
@@ -115,14 +180,19 @@ export default function NewToken() {
           value={token.symbol}
           onChange={handleChange}
         />
-        <input
-          type="number"
-          min={69_420_000}
-          max={69_420_000_000_000}
-          name="total_supply"
-          placeholder="Total Supply of Token"
-          className="input-retro flex-1"
-        />
+        {minimumInitialSupply != undefined &&
+          maximumInitialSupply != undefined && (
+            <input
+              type="number"
+              name="initial_supply"
+              placeholder="Total Supply of Token"
+              className="input-retro flex-1"
+              min={format18DecimalsToken(minimumInitialSupply)}
+              max={format18DecimalsToken(maximumInitialSupply)}
+              value={token.initial_supply}
+              onChange={handleChange}
+            />
+          )}
       </div>
       <textarea
         name="description"

@@ -162,3 +162,7 @@ export async function getImageDominantRgb(
 export function getLuminicanceFromRgb(rgb: number[]) {
   return 0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2];
 }
+
+export function format18DecimalsToken(num: number | BigInt) {
+  return Number(num) / Math.pow(10, 18);
+}
