@@ -32,6 +32,7 @@ function createApi() {
   // Response Middleware
   client.interceptors.response.use(
     function (res) {
+      console.log(res);
       return res;
     },
 

@@ -1,6 +1,7 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useAccount } from "wagmi";
 import { jwtExists } from "../utils/api";
+import { useEffect, useState } from "react";
 
 export enum ProtectedTypes {
   PUBLICONLY,
@@ -16,7 +17,11 @@ interface ProtectedRouteProps {
 
 export default function ProtectedRoute(props: ProtectedRouteProps) {
   const { address } = useAccount();
-  const loading = false;
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setLoading(true);
+  }, [address]);
 
   if (props.type === ProtectedTypes.CONNECTEDONLY) {
     return <>{!loading && <>{address ? <Outlet /> : <Navigate to="/" />}</>}</>;
@@ -31,7 +36,6 @@ export default function ProtectedRoute(props: ProtectedRouteProps) {
   }
 
   if (props.type === ProtectedTypes.VERIFIEDONLY) {
-    console.log(jwtExists());
     return (
       <>
         {!loading && (
