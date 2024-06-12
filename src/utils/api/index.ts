@@ -1,5 +1,5 @@
 import axios from "axios";
-import { serverUrl } from "../../config";
+import { jwtStorageName, serverUrl } from "../../config";
 import dummy from "./dummy";
 import user from "./user";
 import token from "./token";
@@ -32,7 +32,11 @@ function createApi() {
   // Response Middleware
   client.interceptors.response.use(
     function (res) {
-      console.log(res);
+      if(res.data.invalidToken){
+        clearJwt()
+        localStorage.removeItem(jwtStorageName)
+        location.reload();
+      }
       return res;
     },
 

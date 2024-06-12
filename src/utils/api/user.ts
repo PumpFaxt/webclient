@@ -18,6 +18,13 @@ const user = {
     const data = response.data;
     return data;
   },
+
+  async verifyToken() {
+    const response = await client.get("/user/verify-token");
+
+    const data = response.data;
+    return data;
+  },
 };
 
 export default user;

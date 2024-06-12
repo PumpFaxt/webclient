@@ -1,6 +1,6 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useAccount } from "wagmi";
-import { jwtExists } from "../utils/api";
+import api, { jwtExists } from "../utils/api";
 import { useEffect, useState } from "react";
 
 export enum ProtectedTypes {
@@ -18,9 +18,20 @@ interface ProtectedRouteProps {
 export default function ProtectedRoute(props: ProtectedRouteProps) {
   const { address } = useAccount();
   const [loading, setLoading] = useState(true);
+  const [verified, setVerified] = useState(false);
+
+  async function verifyJwt() {
+    setLoading(true);
+    setVerified(false);
+    if (jwtExists()) {
+      const d = await api.user.verifyToken();
+      setVerified(!d.invalidToken && d.user.address == address);
+    }
+    setLoading(false);
+  }
 
   useEffect(() => {
-    setLoading(true);
+    verifyJwt();
   }, [address]);
 
   if (props.type === ProtectedTypes.CONNECTEDONLY) {
@@ -39,7 +50,7 @@ export default function ProtectedRoute(props: ProtectedRouteProps) {
     return (
       <>
         {!loading && (
-          <> {address && jwtExists() ? <Outlet /> : <Navigate to="/" />} </>
+          <> {address && verified ? <Outlet /> : <Navigate to="/" />} </>
         )}
       </>
     );
