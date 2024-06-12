@@ -3,6 +3,4 @@ export const serverUrl =
     ? "http://127.0.0.1:9000"
     : import.meta.env.VITE_BACKEND_URL;
 
-export function getJwtStorageName(address: string): string {
-  return `pumpfaxt.it-jwt-${address}`;
-}
+export const jwtStorageName = `pumpfaxt.it-jwt-==`;
