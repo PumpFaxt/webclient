@@ -17,15 +17,7 @@ interface ConnectionDialogueProps {
 export default function ConnectionDialogue(props: ConnectionDialogueProps) {
   const { address } = useAccount();
 
-  if (!address)
-    return (
-      <div>
-        <p>Connect your wallet first, before accessing voice chat</p>
-      </div>
-    );
-
   const avatarUrl = "https://wojak-studio.com/res/bases/happy_smug.png";
-  const displayName = address;
 
   const [isJoining, setIsJoining] = useState(false);
   const toast = useToast();
@@ -34,13 +26,15 @@ export default function ConnectionDialogue(props: ConnectionDialogueProps) {
   async function handleStartSpaces() {
     setIsJoining(true);
 
+    if (!address) return;
+
     let token = "";
     if (state !== "connected") {
-      token = await api.huddle.getToken(props.roomId, displayName);
+      token = await api.huddle.getToken(props.roomId, address);
       props.setToken(token);
     }
 
-    if (!displayName.length) {
+    if (!address) {
       toast.error({
         title:
           "Something went wrong with your wallet connection, please try again!",
@@ -77,7 +71,7 @@ export default function ConnectionDialogue(props: ConnectionDialogueProps) {
         Joining as
         <span className="font-light text-sm text-pink-300">
           {" "}
-          {formatAddress(address)}
+          {formatAddress(address || "!ERROR")}
         </span>
       </p>
       <button

@@ -13,30 +13,29 @@ export default function Grid() {
   const { peerIds: speakerIds } = usePeerIds({ roles: [Role.SPEAKER] });
   const { peerIds: listenerIds } = usePeerIds({ roles: [Role.LISTENER] });
 
+  const listeners =
+    listenerIds.length +
+    (localPeerRole && localPeerRole === Role.LISTENER ? 1 : 0);
+
   return (
     <div className="flex flex-col">
-      <p className="">
-        Listeners -{" "}
-        {listenerIds.length +
-          (localPeerRole && localPeerRole === Role.LISTENER ? 1 : 0)}
-      </p>
-
-      <>
+      <section className="flex flex-wrap gap-4">
         {[
-          ...listenerIds,
-          ...speakerIds,
-          ...coHostIds,
           ...hostIds,
           undefined,
+          ...coHostIds,
+          ...speakerIds,
+          ...listenerIds,
         ].map((peerId) => {
           return (
             <FellowCard
               key={`grid-${peerId}`}
-              className={twMerge("h-[10vh]", peerId == localPeerId && "hidden")}
+              className={twMerge("w-[20%]", peerId == localPeerId && "hidden")}
+              peerId={peerId == localPeerId ? undefined : peerId}
             />
           );
         })}
-      </>
+      </section>
     </div>
   );
 }

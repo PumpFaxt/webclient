@@ -169,6 +169,26 @@ export function format18DecimalsToken(num: number | BigInt) {
 
 export function formatAddress(address: string) {
   return (
-    address.slice(0, 5 + 2)+ "..." + address.slice(address.length - 5, address.length)
+    address.slice(0, 5 + 2) +
+    "..." +
+    address.slice(address.length - 5, address.length)
   );
+}
+
+export function generateColorFromAddress(address: string): string {
+  const hash = fnv1aHash(address);
+
+  const color = `#${hash.substring(0, 6)}`;
+
+  return color;
+}
+
+export function fnv1aHash(str: string): string {
+  let hash = 0x811c9dc5; // FNV offset basis
+  for (let i = 0; i < str.length; i++) {
+    hash ^= str.charCodeAt(i);
+    hash +=
+      (hash << 1) + (hash << 4) + (hash << 7) + (hash << 8) + (hash << 24);
+  }
+  return (hash >>> 0).toString(16);
 }

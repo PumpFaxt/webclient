@@ -10,6 +10,7 @@ import {
 } from "@huddle01/react/hooks";
 import { useAccount } from "wagmi";
 import Grid from "./Grid";
+import Options from "./Options";
 
 interface RoomProps {
   leaveCall: () => void;
@@ -27,11 +28,6 @@ export default function Room(props: RoomProps) {
   if (!address) return <></>;
 
   const [requestedPeerId, setRequestedPeerId] = useState("");
-  const [showAcceptRequest, setShowAcceptRequest] = useState();
-  // const addChatMessage = useStore((state) => state.addChatMessage);
-  // const addRequestedPeers = useStore((state) => state.addRequestedPeers);
-  // const removeRequestedPeers = useStore((state) => state.removeRequestedPeers);
-  // const requestedPeers = useStore((state) => state.requestedPeers);
   const avatarUrl = "https://wojak-studio.com/res/bases/happy_smug.png";
   const displayName = address;
   // const isChatOpen = useStore((state) => state.isChatOpen);
@@ -97,6 +93,7 @@ export default function Room(props: RoomProps) {
           {showAcceptRequest && <AcceptRequest peerId={requestedPeerId} />}
         </div>
       </div> */}
+      <Options />
       {/* {isChatOpen && <Chat />} */}
       {/* <BottomBar /> */}
       {/* <Prompts /> */}

@@ -13,7 +13,7 @@ export default function HuddleVoicePage() {
       ) : (
         <ConnectionDialogue
           className="w-1/4"
-          roomId="zqb-mqen-gpk"
+          roomId="ctv-kivf-vyt"
           startCall={() => setVoiceOngoing(true)}
           setToken={setToken}
         />

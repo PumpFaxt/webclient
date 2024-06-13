@@ -7,6 +7,11 @@ import {
 } from "@huddle01/react/hooks";
 import AudioStream from "./AudioStream";
 import { twMerge } from "tailwind-merge";
+import {
+  fnv1aHash,
+  formatAddress,
+  generateColorFromAddress,
+} from "../../../utils";
 
 interface GridCardProps {
   peerId?: string;
@@ -15,6 +20,7 @@ interface GridCardProps {
 
 export default function FellowCard(props: GridCardProps) {
   const [reaction, setReaction] = useState("");
+  const [color, setColor] = useState("#ffffff");
 
   const { peerId } = props;
 
@@ -43,38 +49,50 @@ export default function FellowCard(props: GridCardProps) {
     },
   });
 
+  useEffect(() => {
+    if (metadata?.displayName) {
+      setColor(generateColorFromAddress(metadata.displayName));
+    }
+  }, [metadata?.displayName]);
+
   return (
     <div
       className={twMerge(
-        "relative flex items-center justify-center",
+        "relative flex flex-col items-center p-2 border-2 border-front/20 text-[var(--uclr)] rounded",
         props.className
       )}
+      style={{ "--uclr": color } as React.CSSProperties}
     >
       {peerId && <AudioStream peerId={peerId} />}
 
-      <img
-        src={metadata?.avatarUrl}
-        alt="default-avatar"
-        className="object-contain aspect-square"
-      />
+      <div className="relative w-2/3 m-3 overflow-hidden rounded-full">
+        <img
+          src={
+            metadata?.avatarUrl ||
+            "https://wojak-studio.com/res/bases/happy_smug.png"
+          }
+          alt="default-avatar"
+          className="object-contain aspect-square w-full"
+        />
+        <div className="absolute-cover bg-[var(--uclr)] -z-1 opacity-20" />
+      </div>
 
       <div className="mt-1 text-center">
-        <div className="text-custom-5 text-base font-medium">
-          {metadata?.displayName}
-        </div>
-        <div className="text-custom-6 text-sm font-normal">{role}</div>
-      </div>
-      <div className="absolute left-1/2 bottom-1/2 -translate-x-1/2 mb-2 text-4xl">
-        {reaction}
+        <p className="font-bold font-comicNeue text-lg">
+          {metadata?.displayName && formatAddress(metadata?.displayName)}
+        </p>
+        <p className="text-front/70 text-sm font-light">
+          {role} {!props.peerId && " (You)"}
+        </p>
       </div>
 
       {role && ["host, coHost, speaker"].includes(role) && (
         <div className="absolute right-0">audio</div>
       )}
 
-      {metadata?.isHandRaised && (
-        <div className="absolute flex right-2 w-8 h-8 -top-1 rounded-full justify-center items-center bg-custom-8 text-xl border-custom-1 border-2">
-          ✋
+      {reaction.length > 0 && (
+        <div className="absolute top-0 right-0 text-xl -translate-y-1/3 translate-x-1/3 bg-background p-1 border border-front/50 rounded-full aspect-square">
+          {reaction}
         </div>
       )}
     </div>
