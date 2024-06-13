@@ -8,7 +8,8 @@ import {
   useHuddle01,
   useDataMessage,
 } from "@huddle01/react/hooks";
-import { useNavigate } from "react-router-dom";
+import { useAccount } from "wagmi";
+import Grid from "./Grid";
 
 interface RoomProps {
   leaveCall: () => void;
@@ -21,16 +22,19 @@ export default function Room(props: RoomProps) {
     },
   });
 
-  // const { changePeerRole } = useAcl();
+  const { address } = useAccount();
+
+  if (!address) return <></>;
+
   const [requestedPeerId, setRequestedPeerId] = useState("");
-  const { showAcceptRequest, setShowAcceptRequest } = useStore();
-  const addChatMessage = useStore((state) => state.addChatMessage);
-  const addRequestedPeers = useStore((state) => state.addRequestedPeers);
-  const removeRequestedPeers = useStore((state) => state.removeRequestedPeers);
-  const requestedPeers = useStore((state) => state.requestedPeers);
-  const avatarUrl = useStore((state) => state.avatarUrl);
-  const userDisplayName = useStore((state) => state.userDisplayName);
-  const isChatOpen = useStore((state) => state.isChatOpen);
+  const [showAcceptRequest, setShowAcceptRequest] = useState();
+  // const addChatMessage = useStore((state) => state.addChatMessage);
+  // const addRequestedPeers = useStore((state) => state.addRequestedPeers);
+  // const removeRequestedPeers = useStore((state) => state.removeRequestedPeers);
+  // const requestedPeers = useStore((state) => state.requestedPeers);
+  const avatarUrl = "https://wojak-studio.com/res/bases/happy_smug.png";
+  const displayName = address;
+  // const isChatOpen = useStore((state) => state.isChatOpen);
   const { updateMetadata, metadata, peerId, role } = useLocalPeer<{
     displayName: string;
     avatarUrl: string;
@@ -42,11 +46,11 @@ export default function Room(props: RoomProps) {
 
   useEffect(() => {
     if (state === "idle") {
-      props.leaveCall()
+      props.leaveCall();
       return;
     } else {
       updateMetadata({
-        displayName: userDisplayName,
+        displayName: displayName,
         avatarUrl: avatarUrl,
         isHandRaised: metadata?.isHandRaised || false,
       });
@@ -56,11 +60,11 @@ export default function Room(props: RoomProps) {
   useDataMessage({
     onMessage(payload, from, label) {
       if (label === "requestToSpeak") {
-        setShowAcceptRequest(true);
+        // setShowAcceptRequest(true);
         setRequestedPeerId(from);
-        addRequestedPeers(from);
+        // addRequestedPeers(from);
         setTimeout(() => {
-          setShowAcceptRequest(false);
+          // setShowAcceptRequest(false);
         }, 5000);
       }
 
@@ -71,19 +75,21 @@ export default function Room(props: RoomProps) {
           text: messagePayload.message,
           is_user: false,
         };
-        addChatMessage(newChatMessage);
+        // addChatMessage(newChatMessage);
       }
     },
   });
 
-  useEffect(() => {
-    if (!requestedPeers.includes(requestedPeerId)) {
-      setShowAcceptRequest(false);
-    }
-  }, [requestedPeers]);
+  // useEffect(() => {
+  // if (!requestedPeers.includes(requestedPeerId)) {
+  // setShowAcceptRequest(false);
+  // }
+  // }, [requestedPeers]);
 
   return (
     <section className="bg-audio flex h-screen items-center justify-center w-full relative  text-slate-100">
+      <Grid />
+
       {/* <div className="flex items-center justify-center w-full">
         <GridLayout />
         <Sidebar />

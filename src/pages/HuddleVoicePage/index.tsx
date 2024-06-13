@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import ConnectionDialogue from "./components/ConnectionDialogue";
-import { AccessToken, Role } from "@huddle01/server-sdk/auth";
 import Room from "./components/Room";
 
 export default function HuddleVoicePage() {

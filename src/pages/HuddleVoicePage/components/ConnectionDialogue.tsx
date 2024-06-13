@@ -1,12 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import {
-  useHuddle01,
-  useLobby,
-  usePeerIds,
-  useRoom,
-} from "@huddle01/react/hooks";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useRoom } from "@huddle01/react/hooks";
 import useToast from "../../../hooks/useToast";
 import { useAccount } from "wagmi";
 import { twMerge } from "tailwind-merge";
