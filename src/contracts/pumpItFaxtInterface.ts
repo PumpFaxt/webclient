@@ -1,258 +1,157 @@
-const address = "0xd2599269c6Af143A872140367430adafA4Cf7feA" as const;
+const address = "0xCC834d698E60D283Fa86d08Fd7726535339aC0B1" as const;
 
 const abi = [
   {
-    inputs: [
-      {
-        internalType: "address",
-        name: "fraxAddress_",
-        type: "address",
-      },
-    ],
-    stateMutability: "nonpayable",
     type: "constructor",
+    stateMutability: "undefined",
+    payable: false,
+    inputs: [{ type: "address", name: "fraxAddress_" }],
   },
   {
-    inputs: [
-      {
-        internalType: "address",
-        name: "owner",
-        type: "address",
-      },
-    ],
+    type: "error",
     name: "OwnableInvalidOwner",
-    type: "error",
+    inputs: [{ type: "address", name: "owner" }],
   },
   {
-    inputs: [
-      {
-        internalType: "address",
-        name: "account",
-        type: "address",
-      },
-    ],
+    type: "error",
     name: "OwnableUnauthorizedAccount",
-    type: "error",
+    inputs: [{ type: "address", name: "account" }],
   },
   {
+    type: "event",
     anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "address",
-        name: "creator",
-        type: "address",
-      },
-      {
-        indexed: false,
-        internalType: "address",
-        name: "token",
-        type: "address",
-      },
-    ],
     name: "Launch",
-    type: "event",
+    inputs: [
+      { type: "address", name: "creator", indexed: true },
+      { type: "address", name: "token", indexed: false },
+    ],
   },
   {
+    type: "event",
     anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "address",
-        name: "previousOwner",
-        type: "address",
-      },
-      {
-        indexed: true,
-        internalType: "address",
-        name: "newOwner",
-        type: "address",
-      },
-    ],
     name: "OwnershipTransferred",
-    type: "event",
+    inputs: [
+      { type: "address", name: "previousOwner", indexed: true },
+      { type: "address", name: "newOwner", indexed: true },
+    ],
   },
   {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "initialSupply_",
-        type: "uint256",
-      },
-      {
-        internalType: "string",
-        name: "name_",
-        type: "string",
-      },
-      {
-        internalType: "string",
-        name: "symbol_",
-        type: "string",
-      },
-      {
-        internalType: "string",
-        name: "image_",
-        type: "string",
-      },
-    ],
+    type: "function",
     name: "deployNewToken",
-    outputs: [
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
-      },
+    constant: false,
+    payable: false,
+    inputs: [
+      { type: "uint256", name: "initialSupply_" },
+      { type: "string", name: "name_" },
+      { type: "string", name: "symbol_" },
+      { type: "string", name: "image_" },
     ],
-    stateMutability: "nonpayable",
-    type: "function",
+    outputs: [{ type: "address", name: "" }],
   },
   {
-    inputs: [],
+    type: "function",
     name: "deploymentCharge",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
+    constant: true,
     stateMutability: "view",
-    type: "function",
+    payable: false,
+    inputs: [],
+    outputs: [{ type: "uint256", name: "" }],
   },
   {
-    inputs: [
-      {
-        internalType: "address",
-        name: "addr_",
-        type: "address",
-      },
-    ],
+    type: "function",
+    name: "frax",
+    constant: true,
+    stateMutability: "view",
+    payable: false,
+    inputs: [],
+    outputs: [{ type: "address", name: "" }],
+  },
+  {
+    type: "function",
     name: "isTokenValid",
-    outputs: [
-      {
-        internalType: "bool",
-        name: "",
-        type: "bool",
-      },
-    ],
+    constant: true,
     stateMutability: "view",
-    type: "function",
+    payable: false,
+    inputs: [{ type: "address", name: "addr_" }],
+    outputs: [{ type: "bool", name: "" }],
   },
   {
-    inputs: [],
+    type: "function",
     name: "maximumInitialSupply",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
+    constant: true,
     stateMutability: "view",
-    type: "function",
+    payable: false,
+    inputs: [],
+    outputs: [{ type: "uint256", name: "" }],
   },
   {
-    inputs: [],
+    type: "function",
     name: "minimumInitialSupply",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
+    constant: true,
     stateMutability: "view",
-    type: "function",
+    payable: false,
+    inputs: [],
+    outputs: [{ type: "uint256", name: "" }],
   },
   {
-    inputs: [],
+    type: "function",
     name: "owner",
-    outputs: [
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
-      },
-    ],
+    constant: true,
     stateMutability: "view",
-    type: "function",
-  },
-  {
+    payable: false,
     inputs: [],
+    outputs: [{ type: "address", name: "" }],
+  },
+  {
+    type: "function",
     name: "renounceOwnership",
+    constant: false,
+    payable: false,
+    inputs: [],
     outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
   },
   {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "newCharge_",
-        type: "uint256",
-      },
-    ],
+    type: "function",
     name: "setDeploymentCharge",
+    constant: false,
+    payable: false,
+    inputs: [{ type: "uint256", name: "newCharge_" }],
     outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
   },
   {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "newMaxium_",
-        type: "uint256",
-      },
-    ],
+    type: "function",
     name: "setMaximumInitialTokenSupply",
+    constant: false,
+    payable: false,
+    inputs: [{ type: "uint256", name: "newMaxium_" }],
     outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
   },
   {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "newMinimum_",
-        type: "uint256",
-      },
-    ],
+    type: "function",
     name: "setMinimumInitialTokenSupply",
+    constant: false,
+    payable: false,
+    inputs: [{ type: "uint256", name: "newMinimum_" }],
     outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
   },
   {
-    inputs: [
-      {
-        internalType: "address",
-        name: "newOwner",
-        type: "address",
-      },
-    ],
+    type: "function",
     name: "transferOwnership",
+    constant: false,
+    payable: false,
+    inputs: [{ type: "address", name: "newOwner" }],
     outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
   },
   {
-    inputs: [
-      {
-        internalType: "address",
-        name: "addr_",
-        type: "address",
-      },
-      {
-        internalType: "uint256",
-        name: "amount_",
-        type: "uint256",
-      },
-    ],
-    name: "withdraw",
-    outputs: [],
-    stateMutability: "nonpayable",
     type: "function",
+    name: "withdraw",
+    constant: false,
+    payable: false,
+    inputs: [
+      { type: "address", name: "addr_" },
+      { type: "uint256", name: "amount_" },
+    ],
+    outputs: [],
   },
 ] as const;
 

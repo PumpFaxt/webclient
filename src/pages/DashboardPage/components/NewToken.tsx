@@ -70,13 +70,6 @@ export default function NewToken() {
     },
   });
 
-  useWaitForTransaction({
-    hash: newCoinOnPumpItFaxt.data?.hash,
-    onSettled() {
-      api.token.new();
-    },
-  });
-
   function handleChange(e: { target: { name: string; value: string } }) {
     const { name, value } = e.target;
     setToken((prevToken: any) => ({
@@ -127,31 +120,6 @@ export default function NewToken() {
     };
 
     setToken(updatedToken);
-  }
-
-  async function handleSubmission() {
-    if (!deploymentCharge) return;
-
-    uploadAtIPFS();
-    await api.token
-      .enqueue(
-        token.name,
-        token.symbol,
-        token.ipfsImage,
-        token.website,
-        token.description,
-        token.telegram,
-        token.twitter
-      )
-      .then((res) => {
-        if (!res) return;
-        approveFraxToInterface.write({
-          args: [
-            contractDefinitions.pumpItFaxtInterface.address,
-            deploymentCharge,
-          ],
-        });
-      });
   }
 
   return (
@@ -233,12 +201,7 @@ export default function NewToken() {
         onChange={handleImageChange}
       />
 
-      <button
-        className="btn-retro self-center px-8 py-1 -mb-2"
-        onClick={() => {
-          handleSubmission();
-        }}
-      >
+      <button className="btn-retro self-center px-8 py-1 -mb-2">
         Create Token
       </button>
       <div className="bg-background w-max p-2">
