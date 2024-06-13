@@ -10,6 +10,7 @@ import ErrorPage from "./ErrorPage/ErrorPage";
 import ShowcasePage from "./ShowcasePage";
 import DashboardPage from "./DashboardPage";
 import ProtectedRoute, { ProtectedTypes } from "../common/ProtectedRoute";
+import StreamingTestPage from "./StreamingTestPage/StreamingTestPage";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -22,6 +23,7 @@ const router = createBrowserRouter(
           <Route path="dashboard" element={<DashboardPage />} />
         </Route>
         <Route path="/T/:id" element={<DashboardPage />} />
+        <Route path="/testingPage" element={<StreamingTestPage />} />
       </Route>
 
       <Route path="*" element={<ErrorPage />} />
