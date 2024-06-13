@@ -22,6 +22,7 @@ const router = createBrowserRouter(
         <Route element={<ProtectedRoute type={ProtectedTypes.VERIFIEDONLY} />}>
           <Route path="dashboard" element={<DashboardPage />} />
         </Route>
+        
         <Route path="/T/:id" element={<DashboardPage />} />
         <Route path="/testingPage" element={<StreamingTestPage />} />
       </Route>
