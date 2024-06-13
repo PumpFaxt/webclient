@@ -19,12 +19,10 @@ const router = createBrowserRouter(
         <Route index element={<HomePage />} />
         <Route path="showcase" element={<ShowcasePage />} />
 
-        <Route element={<ProtectedRoute type={ProtectedTypes.VERIFIEDONLY} />}>
+        <Route element={<ProtectedRoute type={ProtectedTypes.CONNECTEDONLY} />}>
           <Route path="dashboard" element={<DashboardPage />} />
+          <Route path="/T/:id" element={<DashboardPage />} />
         </Route>
-        
-        <Route path="/T/:id" element={<DashboardPage />} />
-        <Route path="/testingPage" element={<StreamingTestPage />} />
       </Route>
 
       <Route path="*" element={<ErrorPage />} />

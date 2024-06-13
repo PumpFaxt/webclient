@@ -201,7 +201,14 @@ export default function NewToken() {
         onChange={handleImageChange}
       />
 
-      <button className="btn-retro self-center px-8 py-1 -mb-2">
+      <button
+        className="btn-retro self-center px-8 py-1 -mb-2"
+        onClick={() =>
+          newCoinOnPumpItFaxt.write({
+            args: [BigInt(69420000), ", ", "w", "t"],
+          })
+        }
+      >
         Create Token
       </button>
       <div className="bg-background w-max p-2">

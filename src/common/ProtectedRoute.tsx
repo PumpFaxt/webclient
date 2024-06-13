@@ -46,14 +46,5 @@ export default function ProtectedRoute(props: ProtectedRouteProps) {
     );
   }
 
-  if (props.type === ProtectedTypes.VERIFIEDONLY) {
-    return (
-      <>
-        {!loading && (
-          <> {address && verified ? <Outlet /> : <Navigate to="/" />} </>
-        )}
-      </>
-    );
-  }
   return <Navigate to="/" />;
 }
