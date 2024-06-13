@@ -6,24 +6,35 @@ import {
   usePeerIds,
   useRoom,
 } from "@huddle01/react/hooks";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import useToast from "../../../hooks/useToast";
+import { useAccount } from "wagmi";
+import { twMerge } from "tailwind-merge";
+import { formatAddress } from "../../../utils";
+import api from "../../../utils/api";
 
 interface ConnectionDialogueProps {
+  className?: string;
   roomId: string;
+  startCall: () => void;
+  setToken: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export default function ConnectionDialogue(props: ConnectionDialogueProps) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [avatarUrl, setAvatarUrl] = useState("");
-  const [displayName, setDisplayName] = useState("");
+  const { address } = useAccount();
 
-  const [token, setToken] = useState("");
+  if (!address)
+    return (
+      <div>
+        <p>Connect your wallet first, before accessing voice chat</p>
+      </div>
+    );
+
+  const avatarUrl = "https://wojak-studio.com/res/bases/happy_smug.png";
+  const displayName = address;
+
   const [isJoining, setIsJoining] = useState(false);
-
-  const navigate = useNavigate();
   const toast = useToast();
-
   const { joinRoom, state } = useRoom();
 
   async function handleStartSpaces() {
@@ -31,10 +42,8 @@ export default function ConnectionDialogue(props: ConnectionDialogueProps) {
 
     let token = "";
     if (state !== "connected") {
-      const response = await fetch(
-        `/token?roomId=${props.roomId}&name=${displayName}`
-      );
-      token = await response.text();
+      token = await api.huddle.getToken(props.roomId, displayName);
+      props.setToken(token);
     }
 
     if (!displayName.length) {
@@ -54,47 +63,36 @@ export default function ConnectionDialogue(props: ConnectionDialogueProps) {
 
   useEffect(() => {
     if (state === "connected") {
-      alert("Bhai ye reh gya");
-      //   push(`/${params.roomId}`);
+      props.startCall();
     }
   }, [state]);
 
   return (
-    <main className="flex h-screen flex-col items-center justify-center bg-lobby text-slate-100">
-      <div className="flex flex-col items-center justify-center gap-4 w-[26.25rem]">
-        <div className="relative text-center flex items-center justify-center w-fit mx-auto">
-          <img
-            src={avatarUrl}
-            alt="audio-spaces-img"
-            className="maskAvatar object-contain aspect-square"
-          />
-          <video
-            src={avatarUrl}
-            muted
-            className="maskAvatar absolute left-1/2 top-1/2 z-10 h-full w-full -translate-x-1/2 -translate-y-1/2"
-            // autoPlay
-            loop
-          />
-        </div>
-        <div className="flex items-center w-full flex-col">
-          <button>You will need to connect your wallet</button>
-        </div>
-        <div className="flex items-center w-full">
-          <button
-            className="flex items-center justify-center bg-[#246BFD] text-slate-100 rounded-md p-2 mt-2 w-full"
-            onClick={handleStartSpaces}
-          >
-            {isJoining ? "Joining Spaces..." : "Start Spaces"}
-            {!isJoining && (
-              <img
-                alt="narrow-right"
-                src="/images/arrow-narrow-right.svg"
-                className="w-6 h-6 ml-1"
-              />
-            )}
-          </button>
-        </div>
-      </div>
-    </main>
+    <div
+      className={twMerge(
+        "flex flex-col items-center justify-center gap-y-4 text-center",
+        props.className
+      )}
+    >
+      <img
+        src={avatarUrl}
+        alt={address}
+        className="object-contain aspect-square w-1/2"
+      />
+      <p>
+        Joining as
+        <span className="font-light text-sm text-pink-300">
+          {" "}
+          {formatAddress(address)}
+        </span>
+      </p>
+      <button
+        className="bg-primary text-back font-medium px-6 py-2 rounded-md"
+        onClick={handleStartSpaces}
+        disabled={isJoining}
+      >
+        {isJoining ? "Joining Spaces..." : "Start Spaces"}
+      </button>
+    </div>
   );
 }

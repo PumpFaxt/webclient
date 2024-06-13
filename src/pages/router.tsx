@@ -11,6 +11,7 @@ import ShowcasePage from "./ShowcasePage";
 import DashboardPage from "./DashboardPage";
 import ProtectedRoute, { ProtectedTypes } from "../common/ProtectedRoute";
 import StreamingTestPage from "./StreamingTestPage/StreamingTestPage";
+import HuddleVoicePage from "./HuddleVoicePage";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -22,6 +23,7 @@ const router = createBrowserRouter(
         <Route element={<ProtectedRoute type={ProtectedTypes.CONNECTEDONLY} />}>
           <Route path="dashboard" element={<DashboardPage />} />
           <Route path="/T/:id" element={<DashboardPage />} />
+          <Route path="/T/:id/voice" element={<HuddleVoicePage />} />
         </Route>
       </Route>
 

@@ -166,3 +166,9 @@ export function getLuminicanceFromRgb(rgb: number[]) {
 export function format18DecimalsToken(num: number | BigInt) {
   return Number(num) / Math.pow(10, 18);
 }
+
+export function formatAddress(address: string) {
+  return (
+    address.slice(0, 5 + 2)+ "..." + address.slice(address.length - 5, address.length)
+  );
+}

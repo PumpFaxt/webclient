@@ -3,6 +3,7 @@ import { jwtStorageName, serverUrl } from "../../config";
 import dummy from "./dummy";
 import user from "./user";
 import token from "./token";
+import huddle from "./huddle";
 
 let jwt: string | null = null;
 export let client = createApi();
@@ -62,6 +63,6 @@ export function jwtExists() {
   return jwt ? true : false;
 }
 
-const api = { dummy, user, token };
+const api = { dummy, user, token, huddle };
 
 export default api;
