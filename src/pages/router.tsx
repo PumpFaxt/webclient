@@ -10,6 +10,7 @@ import ErrorPage from "./ErrorPage/ErrorPage";
 import ShowcasePage from "./ShowcasePage";
 import DashboardPage from "./DashboardPage";
 import ProtectedRoute, { ProtectedTypes } from "../common/ProtectedRoute";
+import StreamingTestPage from "./StreamingTestPage/StreamingTestPage";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
