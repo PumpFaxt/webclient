@@ -2,22 +2,24 @@ import React, { useEffect, useState } from "react";
 import useApiResponse from "../../../hooks/useApiResponse";
 import api from "../../../utils/api";
 import { twMerge } from "tailwind-merge";
-import CoinCard from "../../../common/CoinCard";
+import CoinCard from "../../../common/TokenCard";
+import TokenCard from "../../../common/TokenCard";
 
 export default function Showcase() {
-  const coins = useApiResponse(api.dummy.coins);
-  const [coinsSplit, setCoinsSplit] = useState<(typeof coins.data)[]>();
+  const tokens = useApiResponse(api.tokens.getAll);
+  const [coinsSplit, setCoinsSplit] =
+    useState<Array<NonNullable<typeof tokens.data>["tokens"]>>();
 
   useEffect(() => {
-    if (!coins.loading && coins.data) {
-      const totalCoinsSplit = Math.floor(coins.data.length / 3);
+    if (!tokens.loading && tokens.data) {
+      const totalCoinsSplit = Math.floor(tokens.data.tokens.length / 3);
       setCoinsSplit([
-        coins.data.slice(totalCoinsSplit * 0, totalCoinsSplit * 1),
-        coins.data.slice(totalCoinsSplit * 1, totalCoinsSplit * 2),
-        coins.data.slice(totalCoinsSplit * 2, totalCoinsSplit * 3),
+        tokens.data.tokens.slice(totalCoinsSplit * 0, totalCoinsSplit * 1),
+        tokens.data.tokens.slice(totalCoinsSplit * 1, totalCoinsSplit * 2),
+        tokens.data.tokens.slice(totalCoinsSplit * 2, totalCoinsSplit * 3),
       ]);
     }
-  }, [coins.data]);
+  }, [tokens.data]);
 
   return (
     <section className="flex flex-col items-center p-page">
@@ -25,15 +27,15 @@ export default function Showcase() {
         <h1 className="text-center flex-1">Showcase of Memes</h1>
         <button
           className="flex flex-col items-center font-light gap-y-1"
-          onClick={coins.refetch}
-          disabled={coins.loading}
+          onClick={tokens.refetch}
+          disabled={tokens.loading}
         >
           <img
             src="/icons/burn-refresh.png"
             alt="refresh-deepfried-burnt"
             className={twMerge(
               "w-[0.5em] aspect-square object-contain",
-              coins.loading && "animate-spin cursor-progress"
+              tokens.loading && "animate-spin cursor-progress"
             )}
           />
           <span className="text-xs">..refresh..</span>
@@ -43,7 +45,7 @@ export default function Showcase() {
       <div
         className={twMerge(
           "w-1/3",
-          !coins.loading && "h-0 opacity-0 pointer-events-none"
+          !tokens.loading && "h-0 opacity-0 pointer-events-none"
         )}
       >
         <img
@@ -53,13 +55,15 @@ export default function Showcase() {
         />
       </div>
 
-      {!coins.loading && (
+      {!tokens.loading && (
         <div className="flex justify-between group/showcase max-w-[1400px]">
           {coinsSplit &&
             coinsSplit.map((items, key) => (
               <div key={key} className="flex flex-col gap-y-8 w-[32%]">
                 {items &&
-                  items.map((coin, key) => <CoinCard coin={coin} key={key} />)}
+                  items.map((token, key) => (
+                    <TokenCard token={token} key={key} />
+                  ))}
               </div>
             ))}
         </div>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Coin } from "../../../types";
-import CoinCard from "../../../common/CoinCard";
+import CoinCard from "../../../common/TokenCard";
 import {
   useAccount,
   useContractRead,

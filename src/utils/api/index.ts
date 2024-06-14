@@ -2,7 +2,7 @@ import axios from "axios";
 import { jwtStorageName, serverUrl } from "../../config";
 import dummy from "./dummy";
 import user from "./user";
-import token from "./token";
+import tokens from "./tokens";
 import huddle from "./huddle";
 
 let jwt: string | null = null;
@@ -33,9 +33,9 @@ function createApi() {
   // Response Middleware
   client.interceptors.response.use(
     function (res) {
-      if(res.data.invalidToken){
-        clearJwt()
-        localStorage.removeItem(jwtStorageName)
+      if (res.data.invalidToken) {
+        clearJwt();
+        localStorage.removeItem(jwtStorageName);
         location.reload();
       }
       return res;
@@ -63,6 +63,6 @@ export function jwtExists() {
   return jwt ? true : false;
 }
 
-const api = { dummy, user, token, huddle };
+const api = { dummy, user, tokens, huddle };
 
 export default api;

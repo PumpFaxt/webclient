@@ -1,16 +1,21 @@
 import { useEffect, useState } from "react";
 import { getImageDominantRgb, getLuminicanceFromRgb } from "../utils";
-import { Coin } from "../types";
+import { Coin, Token } from "../types";
 import { twMerge } from "tailwind-merge";
 import { Link } from "react-router-dom";
 
-export default function CoinCard(props: { coin: Coin; className?: string }) {
-  const data = props.coin;
+interface TokenCardProps {
+  token: Token;
+  className?: string;
+}
+
+export default function TokenCard(props: TokenCardProps) {
+  const data = props.token;
 
   const [color, setColor] = useState("rgb(255, 255, 255)");
 
   async function loadData() {
-    const rgbClamped = await getImageDominantRgb(data.image_uri);
+    const rgbClamped = await getImageDominantRgb(data.image);
     var rgb = [rgbClamped[0], rgbClamped[1], rgbClamped[2]];
     while (getLuminicanceFromRgb(rgb) < 128) {
       rgb[0] += 1;
@@ -28,7 +33,7 @@ export default function CoinCard(props: { coin: Coin; className?: string }) {
 
   return (
     <Link
-      to={`/T/${data.signature}`}
+      to={`/T/${data.address}`}
       className={twMerge(
         props.className,
         "flex border border-front/20 rounded-lg select-none relative overflow-hidden group"
@@ -41,7 +46,7 @@ export default function CoinCard(props: { coin: Coin; className?: string }) {
       />
 
       <img
-        src={data.image_uri}
+        src={data.image}
         alt={data.name}
         className="w-1/3 m-3 object-contain"
       />
