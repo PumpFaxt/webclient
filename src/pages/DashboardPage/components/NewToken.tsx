@@ -97,6 +97,7 @@ export default function NewToken() {
         data.telegram && (metadata.telegram = data.telegram);
         data.website && (metadata.website = data.website);
         data.twitter && (metadata.twitter = data.twitter);
+        data.description && (metadata.description = data.description);
 
         const ipfs = await uploadAtIPFS();
         if (typeof ipfs != "string")
