@@ -5,6 +5,7 @@ import TokenTrader from "./components/TokenTrader";
 import DexScreener from "./components/DexScreener";
 import useApiResponse from "../../hooks/useApiResponse";
 import api from "../../utils/api";
+import CommentSection from "./components/CommentSection";
 
 export default function TokenPage() {
   const { address } = useParams();
@@ -21,6 +22,9 @@ export default function TokenPage() {
           <div className="flex mt-8 gap-x-4">
             <DexScreener />
             <TokenTrader token={token.data} />
+          </div>
+          <div className="flex mt-8 gap-x-4">
+            <CommentSection />
           </div>
         </div>
       )}

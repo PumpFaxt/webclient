@@ -39,10 +39,10 @@ export default function Header(props: HeaderProps) {
 
   return (
     <section
-      className="bg-foreground/10 p-4 flex gap-x-4 h-[30vh]"
+      className="bg-foreground/5 p-4 flex gap-x-4 h-[30vh] rounded-lg"
       style={{ "--uclr": uclr } as React.CSSProperties}
     >
-      <div className="overflow-hidden max-w-[35%]">
+      <div className="overflow-hidden max-w-[35%] rounded-lg">
         <img src={token.image} className="h-full object-contain hover:animate-ping" />
       </div>
       <div className="flex flex-col gap-y-1">

@@ -179,8 +179,20 @@ export function generateColorFromAddress(address: string): string {
   const hash = fnv1aHash(address);
 
   const color = `#${hash.substring(0, 6)}`;
+  const rgb = convertColorToRGBVec(color);
 
-  return color;
+  rgb[0] *= 255;
+  rgb[1] *= 255;
+  rgb[2] *= 255;
+
+  while (getLuminicanceFromRgb(rgb) < 128) {
+    rgb[0] += 1;
+    rgb[1] += 1;
+    rgb[2] += 1;
+  }
+  const clr = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+
+  return clr;
 }
 
 export function fnv1aHash(str: string): string {
