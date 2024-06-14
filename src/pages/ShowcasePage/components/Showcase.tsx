@@ -12,11 +12,13 @@ export default function Showcase() {
 
   useEffect(() => {
     if (!tokens.loading && tokens.data) {
-      const totalCoinsSplit = Math.floor(tokens.data.tokens.length / 3);
+      const totalTokens = tokens.data.tokens.length;
+      const chunkSize = Math.ceil(totalTokens / 3);
+
       setCoinsSplit([
-        tokens.data.tokens.slice(totalCoinsSplit * 0, totalCoinsSplit * 1),
-        tokens.data.tokens.slice(totalCoinsSplit * 1, totalCoinsSplit * 2),
-        tokens.data.tokens.slice(totalCoinsSplit * 2, totalCoinsSplit * 3),
+        tokens.data.tokens.slice(0, chunkSize),
+        tokens.data.tokens.slice(chunkSize, chunkSize * 2),
+        tokens.data.tokens.slice(chunkSize * 2, totalTokens),
       ]);
     }
   }, [tokens.data]);

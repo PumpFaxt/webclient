@@ -8,9 +8,9 @@ export interface Token {
   name: string;
   symbol: string;
   totalSupply: number;
-  description: string;
+  description?: string;
   image: string;
-  website: string;
-  telegram: string;
-  twitter: string;
+  website?: string;
+  telegram?: string;
+  twitter?: string;
 }

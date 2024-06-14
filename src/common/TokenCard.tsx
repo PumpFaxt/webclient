@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { getImageDominantRgb, getLuminicanceFromRgb } from "../utils";
-import { Coin, Token } from "../types";
+import { Token } from "../types";
 import { twMerge } from "tailwind-merge";
 import { Link } from "react-router-dom";
 
@@ -55,9 +55,7 @@ export default function TokenCard(props: TokenCardProps) {
           className="font-semibold tracking-wide text-lg"
           style={{ color: color }}
         >
-          {data.name
-            .replaceAll(/solana/gi, "Fraxtal")
-            .replaceAll(/sol/gi, "frax")}
+          {data.name}
         </h3>
         <h4 className="text-sm font-semibold text-front/70">
           TICKER : {data.symbol}
@@ -68,7 +66,7 @@ export default function TokenCard(props: TokenCardProps) {
         </h5>
 
         <p className="mt-1 text-sm text-front/90 font-light line-clamp-4">
-          {data.description.replaceAll(/sol/gi, "usd")}
+          {data.description}
         </p>
       </div>
     </Link>
