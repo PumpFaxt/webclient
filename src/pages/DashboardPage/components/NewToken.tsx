@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { Coin } from "../../../types";
+import React, { useState } from "react";
 import CoinCard from "../../../common/TokenCard";
 import {
   useAccount,
@@ -8,28 +7,20 @@ import {
   useWaitForTransaction,
 } from "wagmi";
 import contractDefinitions from "../../../contracts";
-import { format18DecimalsToken } from "../../../utils";
+import { format18DecimalsToken, generateRandomString } from "../../../utils";
+import DataForm from "../../../common/DataForm";
+import TokenCard from "../../../common/TokenCard";
+import { Token } from "../../../types";
+import useToast from "../../../hooks/useToast";
 import api from "../../../utils/api";
+import { useNavigate } from "react-router-dom";
 
 export default function NewToken() {
   const { address } = useAccount();
-  const [imagePreview, setImagePreview] = useState<string>(
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNsf5CeFimg4bm5lFd-Db5s1ypRL111Xf-Pg&s"
-  );
-  const [selectedFile, setSelectedFile]: any = useState();
 
-  const [token, setToken] = useState<any>({
-    name: "",
-    image_uri: imagePreview,
-    symbol: "",
-    creator: address,
-    description: "",
-    ipfsImage: "",
-    telegram: "",
-    twitter: "",
-    website: "",
-    initial_supply: "",
-  });
+  const [selectedImage, setSelectedImage] = useState<File>();
+  const navigate = useNavigate();
+  const toast = useToast();
 
   const { data: minimumInitialSupply } = useContractRead({
     ...contractDefinitions.pumpItFaxtInterface,
@@ -41,62 +32,43 @@ export default function NewToken() {
     functionName: "maximumInitialSupply",
   });
 
-  const { data: deploymentCharge } = useContractRead({
-    ...contractDefinitions.pumpItFaxtInterface,
-    functionName: "deploymentCharge",
-  });
-
-  const approveFraxToInterface = useContractWrite({
-    ...contractDefinitions.frax,
-    functionName: "approve",
-  });
-
-  const newCoinOnPumpItFaxt = useContractWrite({
+  const newToken = useContractWrite({
     ...contractDefinitions.pumpItFaxtInterface,
     functionName: "deployNewToken",
   });
 
   useWaitForTransaction({
-    hash: approveFraxToInterface.data?.hash,
-    onSettled() {
-      newCoinOnPumpItFaxt.write({
-        args: [
-          BigInt(Number(token.initial_supply)),
-          token.name,
-          token.symbol,
-          token.ipfsImage,
-        ],
+    hash: newToken.data?.hash,
+    onSuccess: async () => {
+      await api.tokens.refresh();
+      toast.log({
+        title: "Successfully created new token",
       });
+      navigate("/showcase");
     },
   });
-
-  function handleChange(e: { target: { name: string; value: string } }) {
-    const { name, value } = e.target;
-    setToken((prevToken: any) => ({
-      ...prevToken,
-      [name]: value,
-    }));
-  }
 
   function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
     const files = e.target.files;
     if (files && files.length > 0) {
-      setSelectedFile(files[0]);
+      setSelectedImage(files[0]);
       const file = files[0];
       const imageUrl = URL.createObjectURL(file);
-      setImagePreview(imageUrl);
-      setToken((prevToken: any) => ({
-        ...prevToken,
-        image_uri: imageUrl,
-      }));
+      // setSelectedImage(imageUrl);
+      // setToken((prevToken: any) => ({
+      //   ...prevToken,
+      //   image_uri: imageUrl,
+      // }));
     }
   }
 
   async function uploadAtIPFS() {
+    if (!selectedImage) return toast.error({ title: "Please upload image" });
+
     const formData = new FormData();
-    formData.append("file", selectedFile);
+    formData.append("file", selectedImage);
     const metadata = JSON.stringify({
-      name: token.name,
+      name: "0x" + generateRandomString(32),
     });
     formData.append("pinataMetadata", metadata);
 
@@ -114,24 +86,40 @@ export default function NewToken() {
     });
     const resData = await res.json();
 
-    const updatedToken = {
-      ...token,
-      ipfsImage: "https://ipfs.io/ipfs/" + resData.IpfsHash,
-    };
-
-    setToken(updatedToken);
+    if (resData.IpfsHash) return "https://ipfs.io/ipfs/" + resData.IpfsHash;
   }
 
   return (
-    <div className="p-5 flex flex-col gap-y-5">
+    <DataForm
+      callback={async (data) => {
+        const metadata: Partial<Token> = {};
+
+        data.telegram && (metadata.telegram = data.telegram);
+        data.website && (metadata.website = data.website);
+        data.twitter && (metadata.twitter = data.twitter);
+
+        const ipfs = await uploadAtIPFS();
+        if (typeof ipfs != "string")
+          return toast.error({ title: "IPFS Error, please try again" });
+
+        newToken.write({
+          args: [
+            BigInt(data.initial_supply),
+            data.name,
+            data.symbol,
+            ipfs,
+            JSON.stringify(metadata),
+          ],
+        });
+      }}
+      className="p-5 flex flex-col gap-y-5"
+    >
       <div className="flex gap-x-5">
         <input
           type="text"
           name="name"
           placeholder="Name of token (eg: Frax Doge)"
           className="input-retro flex-1"
-          value={token.name}
-          onChange={handleChange}
         />
         <input
           type="text"
@@ -140,8 +128,6 @@ export default function NewToken() {
           minLength={2}
           maxLength={6}
           className="input-retro flex-1"
-          value={token.symbol}
-          onChange={handleChange}
         />
         {minimumInitialSupply != undefined &&
           maximumInitialSupply != undefined && (
@@ -152,8 +138,6 @@ export default function NewToken() {
               className="input-retro flex-1"
               min={format18DecimalsToken(minimumInitialSupply)}
               max={format18DecimalsToken(maximumInitialSupply)}
-              value={token.initial_supply}
-              onChange={handleChange}
             />
           )}
       </div>
@@ -161,8 +145,6 @@ export default function NewToken() {
         name="description"
         placeholder="Token description"
         className="input-retro flex-1"
-        value={token.description}
-        onChange={handleChange}
       />
 
       <div className="flex gap-x-5">
@@ -171,23 +153,17 @@ export default function NewToken() {
           name="website"
           placeholder="Website"
           className="input-retro flex-1"
-          value={token.website}
-          onChange={handleChange}
         />
         <input
           type="link"
           name="telegram"
           placeholder="Telegram"
           className="input-retro flex-1"
-          value={token.telegram}
-          onChange={handleChange}
         />
         <input
           type="link"
           name="twitter"
           placeholder="Twitter"
-          value={token.twitter}
-          onChange={handleChange}
           className="input-retro flex-1"
         />
       </div>
@@ -195,25 +171,20 @@ export default function NewToken() {
       <input
         type="file"
         accept="image/*"
-        name="image_url"
         placeholder="Image"
         className="input-retro"
         onChange={handleImageChange}
       />
 
-      <button
+      <input
+        type="submit"
         className="btn-retro self-center px-8 py-1 -mb-2"
-        onClick={() =>
-          newCoinOnPumpItFaxt.write({
-            args: [BigInt(69420000), ", ", "w", "t"],
-          })
-        }
-      >
-        Create Token
-      </button>
+        value="Pump It"
+      />
+
       <div className="bg-background w-max p-2">
-        <CoinCard coin={token} className="max-h-[20vh] max-w-[30vw]" />
+        {/* <TokenCard token={token} className="max-h-[20vh] max-w-[30vw]" /> */}
       </div>
-    </div>
+    </DataForm>
   );
 }
