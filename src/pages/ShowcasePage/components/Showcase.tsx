@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import useApiResponse from "../../../hooks/useApiResponse";
 import api from "../../../utils/api";
 import { twMerge } from "tailwind-merge";
-import CoinCard from "../../../common/TokenCard";
 import TokenCard from "../../../common/TokenCard";
 
 export default function Showcase() {
