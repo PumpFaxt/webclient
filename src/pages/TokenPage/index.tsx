@@ -20,7 +20,7 @@ export default function TokenPage() {
           <Header token={token.data} />
           <div className="flex mt-8 gap-x-4">
             <DexScreener />
-            <TokenTrader />
+            <TokenTrader token={token.data} />
           </div>
         </div>
       )}
