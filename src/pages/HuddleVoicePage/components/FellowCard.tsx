@@ -22,6 +22,7 @@ export default function FellowCard(props: GridCardProps) {
   const [reaction, setReaction] = useState("");
   const [color, setColor] = useState("#ffffff");
 
+  const { peerId: localPeerId } = useLocalPeer();
   const { peerId } = props;
 
   const { metadata, role } = peerId
@@ -38,7 +39,7 @@ export default function FellowCard(props: GridCardProps) {
 
   useDataMessage({
     onMessage(payload, from, label) {
-      if (from === peerId) {
+      if (from === peerId || (!peerId && from == localPeerId)) {
         if (label === "reaction") {
           setReaction(payload);
           setTimeout(() => {
