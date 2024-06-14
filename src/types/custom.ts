@@ -1,3 +1,5 @@
+import { Address } from "viem";
+
 export interface Toast {
   title: string;
   id: string;
@@ -12,8 +14,6 @@ export interface Toast {
   element?: React.ReactElement;
   createdAt: number;
 }
-
-export type Address = `0x${string}`;
 
 export interface Coin {
   signature: string;
