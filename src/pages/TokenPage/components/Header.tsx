@@ -43,7 +43,7 @@ export default function Header(props: HeaderProps) {
       style={{ "--uclr": uclr } as React.CSSProperties}
     >
       <div className="overflow-hidden max-w-[35%]">
-        <img src={token.image} className="h-full object-contain" />
+        <img src={token.image} className="h-full object-contain hover:animate-ping" />
       </div>
       <div className="flex flex-col gap-y-1">
         <div className="flex justify-between pb-3 border-b border-front/70">
