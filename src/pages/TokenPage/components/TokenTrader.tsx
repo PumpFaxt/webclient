@@ -52,7 +52,7 @@ export default function TokenTrader(props: TokenTraderProps) {
             <img
               src={token.image}
               alt={token.symbol}
-              className="w-[1.5vw] object-contain rounded-full"
+              className="w-[1.5vw] object-contain rounded-full aspect-square"
             />{" "}
           </div>
         </div>
