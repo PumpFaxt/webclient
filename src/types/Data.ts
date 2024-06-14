@@ -1,9 +1,9 @@
-import { Address } from ".";
+import { Address } from "viem";
 
 export interface custom {}
 
 export interface Token {
-  address: string;
+  address: Address;
   creator: string;
   name: string;
   symbol: string;

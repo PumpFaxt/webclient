@@ -23,7 +23,7 @@ const router = createBrowserRouter(
 
         <Route element={<ProtectedRoute type={ProtectedTypes.CONNECTEDONLY} />}>
           <Route path="dashboard" element={<DashboardPage />} />
-          <Route path="/T/:id" element={<TokenPage />} />
+          <Route path="/T/:address" element={<TokenPage />} />
           <Route path="/T/:id/voice" element={<HuddleVoicePage />} />
           <Route path="/testing" element={<StreamingTestPage />} />
         </Route>
