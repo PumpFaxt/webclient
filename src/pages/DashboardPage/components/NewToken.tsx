@@ -136,7 +136,7 @@ export default function NewToken() {
           name: data.name,
           symbol: data.symbol,
           ipfs: ipfs,
-          metadata: JSON.stringify(data.metadata),
+          metadata: JSON.stringify(metadata),
         });
 
         approveTransfer.write({
