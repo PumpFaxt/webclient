@@ -26,7 +26,6 @@ export default function NewToken() {
     ...contractDefinitions.pumpItFaxtInterface,
     functionName: "minimumInitialSupply",
   });
-
   const { data: maximumInitialSupply } = useContractRead({
     ...contractDefinitions.pumpItFaxtInterface,
     functionName: "maximumInitialSupply",
