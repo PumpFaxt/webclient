@@ -1,11 +1,26 @@
 import { configureChains, createConfig } from "wagmi";
-import { hardhat, sepolia } from "wagmi/chains";
+import { Chain } from "viem/chains";
 import { InjectedConnector } from "wagmi/connectors/injected";
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
 import { publicProvider } from "wagmi/providers/public";
 
+const fraxtalTestnet: Chain = {
+  id: 2522,
+  name: "Fraxtal Testnet L2",
+  network: "Fraxtal",
+  nativeCurrency: { symbol: "frxETH", name: "Frax Eth", decimals: 18 },
+  rpcUrls: {
+    default: { http: ["https://rpc.testnet.frax.com"] },
+    public: { http: ["https://rpc.testnet.frax.com"] },
+  },
+  testnet: true,
+  blockExplorers: {
+    default: { name: "fraxscan", url: "https://holesky.fraxscan.com" },
+  },
+};
+
 const { chains, publicClient, webSocketPublicClient } = configureChains(
-  [hardhat],
+  [fraxtalTestnet],
   [publicProvider()]
 );
 
@@ -25,7 +40,7 @@ const wagmiConfig = createConfig({
           url: window.location.hostname,
         },
       },
-      chains: [hardhat],
+      chains: [fraxtalTestnet],
     }),
   ],
   publicClient,

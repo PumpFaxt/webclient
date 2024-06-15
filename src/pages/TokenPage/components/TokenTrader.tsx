@@ -2,61 +2,121 @@ import React, { useState } from "react";
 import { twMerge } from "tailwind-merge";
 import Icon from "../../../common/Icon";
 import { Token } from "../../../types";
+import {
+  useAccount,
+  useContractEvent,
+  useContractRead,
+  useContractWrite,
+} from "wagmi";
+import contractDefinitions from "../../../contracts";
+import { ONE_FRAX, ONE_TOKEN } from "../../../config";
 
 interface TokenTraderProps {
   token: Token;
 }
 
+type TradingPairEntry = {
+  name: string;
+  image: string;
+  balance: bigint | undefined;
+};
+
 export default function TokenTrader(props: TokenTraderProps) {
   const { token } = props;
+  const { address } = useAccount();
+
+  if (!address) return <></>;
+
+  const fraxBalance = useContractRead({
+    ...contractDefinitions.frax,
+    functionName: "balanceOf",
+    args: [address],
+  });
+  const tokenBalance = useContractRead({
+    ...contractDefinitions.token,
+    address: token.address,
+    functionName: "balanceOf",
+    args: [address],
+  });
+
+  const tradingPair = [
+    { name: "FRAX", image: "/icons/frax.png", balance: fraxBalance.data },
+    { name: token.symbol, image: token.image, balance: tokenBalance.data },
+  ];
+
+  const [tradeState, setTradeState] = useState<"BUY" | "SELL">("BUY");
+
+  const buying = tradeState == "BUY" ? 1 : 0;
+  const selling = tradeState == "SELL" ? 1 : 0;
+
+  const reserve = useContractRead({
+    ...contractDefinitions.token,
+    address: token.address,
+    functionName: "reserve",
+  });
+  const supply = useContractRead({
+    ...contractDefinitions.token,
+    address: token.address,
+    functionName: "supply",
+  });
+
+  useContractEvent({
+    ...contractDefinitions.token,
+    address: token.address,
+    eventName: "PriceChange",
+    listener: () => {
+      reserve.refetch();
+      supply.refetch();
+    },
+  });
+
+  const [amount, setAmount] = useState({ buy: 0n, sell: 0n });
+
+  function setSellAmount(amt: number) {
+    if (!supply.data || !reserve.data) return;
+
+    if (tradeState == "BUY") {
+      const amount = BigInt(amt) * ONE_FRAX;
+      setAmount({
+        sell: amount,
+        buy: (supply.data * amount) / (reserve.data + amount),
+      });
+    }
+
+    if (tradeState == "SELL") {
+      const amount = BigInt(amt) * ONE_TOKEN;
+      setAmount({
+        sell: amount,
+        buy: (reserve.data * amount) / (supply.data + amount),
+      });
+    }
+  }
+
+  const buyF = useContractWrite({
+    ...contractDefinitions.token,
+    address: token.address,
+    functionName: "buy",
+    args: [amount.sell],
+  });
+  const sellF = useContractWrite({
+    ...contractDefinitions.token,
+    address: token.address,
+    functionName: "sell",
+    args: [amount.sell],
+  });
 
   return (
-    <div className="w-1/4 flex flex-col items-center relative gap-y-2">
-      <p className="self-start animate-pulse">You are buying {token.symbol}</p>
-      <div className="border border-front/20 p-3 rounded-lg min-h-[15vh]">
-        <h1>Sell</h1>
-        <div className="flex gap-x-2 justify-between">
-          <input
-            className="bg-back text-xl py-2 w-2/3 focus-within:outline-none"
-            placeholder="0"
-          />
-          <div className="flex gap-x-2 items-center bg-front/10 w-max rounded-2xl h-max py-1 px-2 justify-end">
-            <h1>FRAX</h1>
-            <img
-              src="https://s2.coinmarketcap.com/static/img/coins/64x64/6952.png"
-              alt="frax"
-              className="w-[1.5vw] object-contain"
-            />{" "}
-          </div>
-        </div>
-        <p className="text-sm flex justify-end pt-1 text-front/70">
-          Balance: 32.10 FRAX
-        </p>
-      </div>
+    <div
+      className={twMerge(
+        "w-1/4 flex flex-col items-center relative gap-y-2",
+        (reserve.isLoading || supply.isLoading) &&
+          "opacity-75 animate-pulse pointer-events-none cursor-progress"
+      )}
+    >
+      <p className="self-start animate-pulse">
+        You are {tradeState.toLowerCase()}ing {token.symbol} for {"FRAX"}
+      </p>
 
-      <button className="p-1 scale-150 border w-max border-front/20 text-xs bg-background rounded-md rotate-90 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-        <Icon icon="arrow_forward" />
-      </button>
-
-      <div className="border border-front/20 p-3 rounded-lg min-h-[15vh]">
-        <h1>Buy</h1>
-        <div className="flex gap-x-2 justify-between">
-          <input
-            disabled
-            type="number"
-            className="bg-back text-xl py-2 w-2/3"
-            placeholder="0"
-          />
-          <div className="flex gap-x-2 items-center bg-front/10 w-max rounded-2xl h-max py-1 px-2 justify-between">
-            <h1>{token.symbol}</h1>
-            <img
-              src={token.image}
-              alt={token.symbol}
-              className="w-[1.5vw] object-contain rounded-full aspect-square"
-            />{" "}
-          </div>
-        </div>
-      </div>
       <div className="flex gap-x-1">
         <input
           placeholder="current slippage 1%"
@@ -66,6 +126,91 @@ export default function TokenTrader(props: TokenTraderProps) {
           Set max slippage
         </button>
       </div>
+
+      <div className="border border-front/20 p-3 rounded-lg min-h-[15vh]">
+        <h1>Sell</h1>
+        <TradingPairMember
+          token={tradingPair[selling]}
+          max={Number(tradingPair[selling].balance) / Number(ONE_FRAX)}
+          setSellAmount={setSellAmount}
+        />
+      </div>
+
+      <button
+        className="p-1 scale-150 border w-max border-front/20 text-xs bg-background rounded-md rotate-90 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+        onClick={() => {
+          setTradeState((p) => (p === "BUY" ? "SELL" : "BUY"));
+          setSellAmount(0);
+        }}
+      >
+        <Icon icon="arrow_forward" />
+      </button>
+
+      <div className="border border-front/20 p-3 rounded-lg min-h-[15vh]">
+        <h1>Buy</h1>
+        <TradingPairMember
+          token={tradingPair[buying]}
+          buyAmount={Number(amount.buy) / Number(ONE_TOKEN)}
+        />
+      </div>
+
+      <button
+        className={twMerge(
+          "w-full rounded-md py-2 text-black font-semibold",
+          tradeState == "BUY" ? "bg-green-400" : "bg-red-400"
+        )}
+        onClick={() => {
+          if (tradeState == "BUY") buyF.write();
+          if (tradeState == "SELL") sellF.write();
+        }}
+      >
+        {tradeState}
+      </button>
     </div>
+  );
+}
+
+interface TradingPairMemberProps {
+  token: TradingPairEntry;
+  setSellAmount?: (amt: number) => void;
+  buyAmount?: number;
+  max?: number;
+}
+
+function TradingPairMember(props: TradingPairMemberProps) {
+  const { token, setSellAmount } = props;
+
+  return (
+    <>
+      <div className="flex gap-x-2 justify-between">
+        <input
+          className="bg-back text-xl py-2 w-2/3 focus-within:outline-none"
+          placeholder="0"
+          disabled={!setSellAmount}
+          value={props.buyAmount}
+          min={0}
+          onChange={(e) => {
+            const amt = Number(e.target.value);
+            if (props.max && amt > props.max) {
+              e.target.value = props.max.toString();
+            }
+            setSellAmount && setSellAmount(Number(e.target.value));
+          }}
+          type="number"
+        />
+        <div className="flex gap-x-2 items-center bg-front/10 w-max rounded-2xl h-max py-1 px-2 justify-end">
+          <h1>{token.name}</h1>
+          <img
+            src={token.image}
+            alt={token.name}
+            className="w-[1.5vw] object-contain"
+          />{" "}
+        </div>
+      </div>
+      <p className="text-sm flex justify-end pt-1 text-front/70">
+        MAX: {(Number(token.balance || 0n) / Number(ONE_FRAX)).toString()}{" "}
+        {token.name}
+      </p>
+    </>
   );
 }

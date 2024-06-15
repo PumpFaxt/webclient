@@ -4,3 +4,6 @@ export const serverUrl =
     : import.meta.env.VITE_BACKEND_URL;
 
 export const jwtStorageName = `pumpfaxt.it-jwt-==`;
+
+export const ONE_FRAX = BigInt(Math.pow(10, 18));
+export const ONE_TOKEN = BigInt(Math.pow(10, 18));
