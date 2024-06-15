@@ -1,4 +1,3 @@
-const address = "0x10950e0bA6AaA592490b8E3D31160c8a63854426" as const;
 
 const abi = [
   {
@@ -158,4 +157,3 @@ const abi = [
   },
 ] as const;
 
-export default { address, abi };
