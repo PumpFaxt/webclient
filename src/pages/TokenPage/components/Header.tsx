@@ -37,6 +37,8 @@ export default function Header(props: HeaderProps) {
     functionName: "marketCap",
   });
 
+  console.log(token)
+
   return (
     <section
       className="bg-foreground/5 p-4 flex gap-x-4 h-[30vh] rounded-lg"
@@ -45,8 +47,8 @@ export default function Header(props: HeaderProps) {
       <div className="overflow-hidden max-w-[35%] rounded-lg">
         <img src={token.image} className="h-full object-contain hover:animate-ping" />
       </div>
-      <div className="flex flex-col gap-y-1">
-        <div className="flex justify-between pb-3 border-b border-front/70">
+      <div className="flex flex-col gap-y-1 w-full">
+        <div className="flex justify-between pb-3 border-b border-front/70 w-full">
           <div className="flex flex-col h-max">
             <div className="flex items-center gap-x-4">
               <h1 className="text-2xl font-bold text-[var(--uclr)]">

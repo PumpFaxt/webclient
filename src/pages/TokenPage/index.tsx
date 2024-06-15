@@ -6,6 +6,7 @@ import DexScreener from "./components/DexScreener";
 import useApiResponse from "../../hooks/useApiResponse";
 import api from "../../utils/api";
 import CommentSection from "./components/CommentSection";
+import HuddleVoicePage from "../HuddleVoicePage";
 
 export default function TokenPage() {
   const { address } = useParams();
@@ -25,6 +26,7 @@ export default function TokenPage() {
           </div>
           <div className="flex mt-8 gap-x-4">
             <CommentSection />
+            <HuddleVoicePage />
           </div>
         </div>
       )}

@@ -14,6 +14,7 @@ import { Token } from "../../../types";
 import useToast from "../../../hooks/useToast";
 import api from "../../../utils/api";
 import { useNavigate } from "react-router-dom";
+import { twMerge } from "tailwind-merge";
 
 export default function NewToken() {
   const { address } = useAccount();
@@ -21,6 +22,10 @@ export default function NewToken() {
   const [selectedImage, setSelectedImage] = useState<File>();
   const navigate = useNavigate();
   const toast = useToast();
+
+  const [formData, setFormData] = useState<Record<string, any>>({});
+
+  const [loading, setLoading] = useState(false);
 
   const { data: minimumInitialSupply } = useContractRead({
     ...contractDefinitions.pumpItFaxtInterface,
@@ -31,9 +36,34 @@ export default function NewToken() {
     functionName: "maximumInitialSupply",
   });
 
+  const approveTransfer = useContractWrite({
+    ...contractDefinitions.frax,
+    functionName: "approve",
+  });
+
+  useWaitForTransaction({
+    hash: approveTransfer.data?.hash,
+    onSuccess: async () => {
+      newToken.write({
+        args: [
+          formData.supply,
+          formData.name,
+          formData.symbol,
+          formData.ipfs,
+          formData.metadata,
+        ],
+      });
+    },
+  });
+
   const newToken = useContractWrite({
     ...contractDefinitions.pumpItFaxtInterface,
     functionName: "deployNewToken",
+  });
+
+  const deploymentCharge = useContractRead({
+    ...contractDefinitions.pumpItFaxtInterface,
+    functionName: "deploymentCharge",
   });
 
   useWaitForTransaction({
@@ -53,11 +83,6 @@ export default function NewToken() {
       setSelectedImage(files[0]);
       const file = files[0];
       const imageUrl = URL.createObjectURL(file);
-      // setSelectedImage(imageUrl);
-      // setToken((prevToken: any) => ({
-      //   ...prevToken,
-      //   image_uri: imageUrl,
-      // }));
     }
   }
 
@@ -91,6 +116,7 @@ export default function NewToken() {
   return (
     <DataForm
       callback={async (data) => {
+        setLoading(true);
         const metadata: Partial<Token> = {};
 
         data.telegram && (metadata.telegram = data.telegram);
@@ -102,15 +128,25 @@ export default function NewToken() {
         if (typeof ipfs != "string")
           return toast.error({ title: "IPFS Error, please try again" });
 
-        newToken.write({
+        if (!deploymentCharge.data)
+          return toast.error({ title: "Try again later" });
+
+        setFormData({
+          supply: BigInt(data.initial_supply),
+          name: data.name,
+          symbol: data.symbol,
+          ipfs: ipfs,
+          metadata: JSON.stringify(data.metadata),
+        });
+
+        approveTransfer.write({
           args: [
-            BigInt(data.initial_supply),
-            data.name,
-            data.symbol,
-            ipfs,
-            JSON.stringify(metadata),
+            contractDefinitions.pumpItFaxtInterface.address,
+            deploymentCharge.data,
           ],
         });
+
+        setLoading(false);
       }}
       className="p-5 flex flex-col gap-y-5"
     >
@@ -129,16 +165,25 @@ export default function NewToken() {
           maxLength={6}
           className="input-retro flex-1"
         />
+
         {minimumInitialSupply != undefined &&
           maximumInitialSupply != undefined && (
-            <input
-              type="number"
-              name="initial_supply"
-              placeholder="Total Supply of Token"
-              className="input-retro flex-1"
-              min={format18DecimalsToken(minimumInitialSupply)}
-              max={format18DecimalsToken(maximumInitialSupply)}
-            />
+            <div className="relative flex-1 group">
+              <p className="absolute text-red-600 leading-none text-xs bottom-full left-0 -translate-y-1 font-semibold group-focus-within:opacity-100 opacity-0 duration-150">
+                * MinimumSupply:{" "}
+                {format18DecimalsToken(minimumInitialSupply).toLocaleString()} &
+                MaximumSupply:{" "}
+                {format18DecimalsToken(maximumInitialSupply).toLocaleString()}
+              </p>
+              <input
+                type="number"
+                name="initial_supply"
+                placeholder="Total Supply of Token"
+                className="input-retro w-full"
+                min={format18DecimalsToken(minimumInitialSupply)}
+                max={format18DecimalsToken(maximumInitialSupply)}
+              />
+            </div>
           )}
       </div>
       <textarea
@@ -151,19 +196,19 @@ export default function NewToken() {
         <input
           type="link"
           name="website"
-          placeholder="Website"
+          placeholder="Website (Optional)"
           className="input-retro flex-1"
         />
         <input
           type="link"
           name="telegram"
-          placeholder="Telegram"
+          placeholder="Telegram (Optional)"
           className="input-retro flex-1"
         />
         <input
           type="link"
           name="twitter"
-          placeholder="Twitter"
+          placeholder="Twitter (Optional)"
           className="input-retro flex-1"
         />
       </div>
@@ -178,8 +223,12 @@ export default function NewToken() {
 
       <input
         type="submit"
-        className="btn-retro self-center px-8 py-1 -mb-2"
+        className={twMerge(
+          "btn-retro self-center px-8 py-1 -mb-2",
+          loading ? "animate-pulse" : ""
+        )}
         value="Pump It"
+        disabled={loading}
       />
 
       <div className="bg-background w-max p-2">
