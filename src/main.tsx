@@ -5,7 +5,7 @@ import "./assets/styles/index.css";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <main className="saturate-[110%] contrast-[110%] min-h-screen">
+    <main className="saturate-[110%] contrast-[110%] h-screen overflow-y-scroll">
       <App />
     </main>
   </React.StrictMode>

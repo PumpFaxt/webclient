@@ -24,7 +24,9 @@ export default function (props: { address: string; className?: string }) {
         width: rect.width,
         height: rect.height,
         watermark: { text: "pumpfaxt.it" },
-        layout: { background: { color: "#112" } },
+
+        layout: { background: { color: "#112" }, textColor: "#fff" },
+        grid: { vertLines: { color: "#333" }, horzLines: { color: "#333" } },
       });
       // const candles = chart.addAreaSeries({
       //   lineColor: "#2962FF",
@@ -45,6 +47,7 @@ export default function (props: { address: string; className?: string }) {
       );
 
       chart.timeScale().fitContent();
+      // (ref.current as any).timeScale().fitContent();
     }
   }, [feed]);
 
