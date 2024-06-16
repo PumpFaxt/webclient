@@ -203,7 +203,7 @@ function TradingPairMember(props: TradingPairMemberProps) {
           <img
             src={token.image}
             alt={token.name}
-            className="w-[1.5vw] object-contain"
+            className="w-[1.5vw] aspect-square object-cover rounded-full"
           />{" "}
         </div>
       </div>
