@@ -21,7 +21,7 @@ export default function TokenPage() {
         <div className="p-page py-4">
           <Header token={token.data} />
           <div className="flex mt-8 gap-x-4">
-            <PriceChart address={address} className="w-3/4 h-full" />
+            <PriceChart address={address} className="w-3/4 aspect-video" />
             <TokenTrader token={token.data} />
           </div>
           <div className="flex mt-8 gap-x-4">

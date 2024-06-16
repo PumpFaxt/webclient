@@ -5,7 +5,7 @@ import api from "../../../utils/api";
 import { twMerge } from "tailwind-merge";
 
 export default function (props: { address: string; className?: string }) {
-  const ref = useRef() as React.MutableRefObject<HTMLCanvasElement>;
+  const ref = useRef() as React.MutableRefObject<HTMLDivElement>;
   const flag = useRef(false);
 
   const feed = useApiResponse(api.tokens.getPriceFeed, props.address);
@@ -14,11 +14,39 @@ export default function (props: { address: string; className?: string }) {
     if (!flag.current && feed.data) {
       flag.current = true;
 
-      const chart = createChart(ref.current, {});
-      const candles = chart.addCandlestickSeries({});
-      candles.setData(feed.data);
+      feed.data.sort((a: any, b: any) => a.time - b.time);
+
+      console.log(feed.data);
+
+      const rect = ref.current.getBoundingClientRect();
+
+      const chart = createChart(ref.current, {
+        width: rect.width,
+        height: rect.height,
+        watermark: { text: "pumpfaxt.it" },
+        layout: { background: { color: "#112" } },
+      });
+      // const candles = chart.addAreaSeries({
+      //   lineColor: "#2962FF",
+      //   topColor: "#2962FF",
+      //   bottomColor: "rgba(41, 98, 255, 0.28)",
+      // });
+
+      // candles.setData(feed.data);
+
+      // chart.timeScale().fitContent();
+      const areaSeries = chart.addAreaSeries({
+        lineColor: "#2962FF",
+        topColor: "#2962FF",
+        bottomColor: "rgba(41, 98, 255, 0.28)",
+      });
+      areaSeries.setData(
+        feed.data.map((o: any) => ({ time: o.time, price: o.mktCap }))
+      );
+
+      chart.timeScale().fitContent();
     }
   }, [feed]);
 
-  return <canvas className={twMerge(props.className)} ref={ref} />;
+  return <div className={twMerge(props.className)} ref={ref} />;
 }

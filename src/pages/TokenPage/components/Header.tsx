@@ -121,7 +121,7 @@ export default function Header(props: HeaderProps) {
                 <p>
                   Market Cap:{" "}
                   <span className="text-front font-semibold">
-                    ${Number(marketCap.data / ONE_TOKEN)}
+                    ${Math.ceil(Number(marketCap.data) / Number(ONE_TOKEN))}
                   </span>
                 </p>
               )}
