@@ -37,8 +37,6 @@ export default function Header(props: HeaderProps) {
     functionName: "marketCap",
   });
 
-  console.log(token)
-
   return (
     <section
       className="bg-foreground/5 p-4 flex gap-x-4 h-[30vh] rounded-lg"
@@ -54,7 +52,7 @@ export default function Header(props: HeaderProps) {
               <h1 className="text-2xl font-bold text-[var(--uclr)]">
                 {token.name}
               </h1>
-              <h4 className="text-front/70 border border-front/70 py-1 px-3 rounded-md text-xs">
+              <h4 className="text-front border border-front py-1 px-3 rounded-md text-xs">
                 Ticker : {token.symbol}
               </h4>
             </div>

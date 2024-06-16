@@ -11,7 +11,7 @@ export default function CommentSection() {
         />
         <div className="w-full flex flex-col gap-y-3">
           <textarea
-            className="bg-background resize-none w-full focus-within:outline-none border-b border-foreground pb-2"
+            className="bg-transparent resize-none w-full focus-within:outline-none border-b border-foreground pb-2"
             placeholder="Comment"
           />
           <button className="bg-foreground w-max self-end text-back py-1 px-3 text-sm">
@@ -22,7 +22,10 @@ export default function CommentSection() {
 
       <div className="flex flex-col gap-y-4 mt-6">
         {comments.map((comment, i) => (
-          <div key={i} className="flex items-start gap-x-4 bg-front/5 p-4 rounded-md border-b border-front/30">
+          <div
+            key={i}
+            className="flex items-start gap-x-4 bg-front/5 p-4 rounded-md border-b border-front/30"
+          >
             <img
               src={comment.image}
               alt={comment.address}

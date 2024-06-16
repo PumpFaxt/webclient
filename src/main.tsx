@@ -5,6 +5,8 @@ import "./assets/styles/index.css";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <App />
+    <main className="saturate-150 contrast-125">
+      <App />
+    </main>
   </React.StrictMode>
 );

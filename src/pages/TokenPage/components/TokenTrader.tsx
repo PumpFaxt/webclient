@@ -7,6 +7,7 @@ import {
   useContractEvent,
   useContractRead,
   useContractWrite,
+  useWaitForTransaction,
 } from "wagmi";
 import contractDefinitions from "../../../contracts";
 import { ONE_FRAX, ONE_TOKEN } from "../../../config";
@@ -32,6 +33,7 @@ export default function TokenTrader(props: TokenTraderProps) {
     functionName: "balanceOf",
     args: [address],
   });
+
   const tokenBalance = useContractRead({
     ...contractDefinitions.token,
     address: token.address,
@@ -71,6 +73,7 @@ export default function TokenTrader(props: TokenTraderProps) {
   });
 
   const [amount, setAmount] = useState({ buy: 0n, sell: 0n });
+  const [slippage, setSlippage] = useState(0.01);
 
   function setSellAmount(amt: number) {
     if (!supply.data || !reserve.data) return;
@@ -92,12 +95,38 @@ export default function TokenTrader(props: TokenTraderProps) {
     }
   }
 
+  const approveFrax = useContractWrite({
+    ...contractDefinitions.frax,
+    functionName: "approve",
+  });
+
+  const approveToken = useContractWrite({
+    ...contractDefinitions.token,
+    address: token.address,
+    functionName: "approve",
+  });
+
+  useWaitForTransaction({
+    hash: approveFrax.data?.hash,
+    onSuccess: async () => {
+      buyF.write();
+    },
+  });
+
+  useWaitForTransaction({
+    hash: approveToken.data?.hash,
+    onSuccess: async () => {
+      sellF.write();
+    },
+  });
+
   const buyF = useContractWrite({
     ...contractDefinitions.token,
     address: token.address,
     functionName: "buy",
-    args: [amount.sell],
+    args: [amount.buy],
   });
+
   const sellF = useContractWrite({
     ...contractDefinitions.token,
     address: token.address,
@@ -119,10 +148,10 @@ export default function TokenTrader(props: TokenTraderProps) {
 
       <div className="flex gap-x-1">
         <input
-          placeholder="current slippage 1%"
-          className="text-sm px-2 py-1 bg-background border border-front/20 rounded-md focus-within:outline-none"
+          placeholder={`current slippage ${slippage * 100}%`}
+          className="text-sm px-2 py-1 bg-transparent border border-front/20 rounded-md focus-within:outline-none"
         />
-        <button className="text-sm self-end py-1 px-3 rounded-md bg-front/10 whitespace-nowrap ">
+        <button className="text-sm self-end py-1 px-3 rounded-md bg-front/10 whitespace-nowrap">
           Set max slippage
         </button>
       </div>
@@ -137,7 +166,7 @@ export default function TokenTrader(props: TokenTraderProps) {
       </div>
 
       <button
-        className="p-1 scale-150 border w-max border-front/20 text-xs bg-background rounded-md rotate-90 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+        className="p-1 scale-150 border w-max border-front/20 text-xs bg-background rounded-md rotate-90 absolute top-1/2 left-1/2 -translate-x-1/2"
         onClick={() => {
           setTradeState((p) => (p === "BUY" ? "SELL" : "BUY"));
           setSellAmount(0);
@@ -160,8 +189,15 @@ export default function TokenTrader(props: TokenTraderProps) {
           tradeState == "BUY" ? "bg-green-400" : "bg-red-400"
         )}
         onClick={() => {
-          if (tradeState == "BUY") buyF.write();
-          if (tradeState == "SELL") sellF.write();
+          if (tradeState == "BUY")
+            approveFrax.write({
+              args: [token.address, 10000n * ONE_FRAX],
+            });
+
+          if (tradeState == "SELL")
+            approveToken.write({
+              args: [token.address, BigInt(token.totalSupply) * ONE_TOKEN],
+            });
         }}
       >
         {tradeState}
@@ -184,7 +220,7 @@ function TradingPairMember(props: TradingPairMemberProps) {
     <>
       <div className="flex gap-x-2 justify-between">
         <input
-          className="bg-back text-xl py-2 w-2/3 focus-within:outline-none"
+          className="bg-transparent text-xl py-2 w-2/3 focus-within:outline-none"
           placeholder="0"
           disabled={!setSellAmount}
           value={props.buyAmount}
