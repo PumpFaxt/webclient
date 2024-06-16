@@ -154,7 +154,7 @@ export default function TokenTrader(props: TokenTraderProps) {
   return (
     <div
       className={twMerge(
-        "w-1/4 flex flex-col items-center relative gap-y-2",
+        "w-1/4 flex flex-col items-center relative gap-y-2 h-max",
         (reserve.isLoading || supply.isLoading) &&
           "opacity-75 animate-pulse pointer-events-none cursor-progress"
       )}
@@ -179,11 +179,12 @@ export default function TokenTrader(props: TokenTraderProps) {
           token={tradingPair[selling]}
           max={Number(tradingPair[selling].balance) / Number(ONE_FRAX)}
           setSellAmount={setSellAmount}
+          label="Max"
         />
       </div>
 
       <button
-        className="p-1 scale-150 border w-max border-front/20 text-xs bg-background rounded-md rotate-90 absolute top-1/2 left-1/2 -translate-x-1/2"
+        className="p-1 scale-150 border w-max border-front/20 text-xs bg-background rounded-md rotate-90 absolute left-1/2 -translate-x-1/2 top-1/2 "
         onClick={() => {
           setTradeState((p) => (p === "BUY" ? "SELL" : "BUY"));
           setSellAmount(0);
@@ -197,6 +198,7 @@ export default function TokenTrader(props: TokenTraderProps) {
         <TradingPairMember
           token={tradingPair[buying]}
           buyAmount={Number(amount.buy) / Number(ONE_TOKEN)}
+          label="Balance"
         />
       </div>
 
@@ -245,10 +247,11 @@ interface TradingPairMemberProps {
   setSellAmount?: (amt: number) => void;
   buyAmount?: number;
   max?: number;
+  label: string;
 }
 
 function TradingPairMember(props: TradingPairMemberProps) {
-  const { token, setSellAmount } = props;
+  const { token, setSellAmount, label } = props;
 
   return (
     <>
@@ -278,7 +281,7 @@ function TradingPairMember(props: TradingPairMemberProps) {
         </div>
       </div>
       <p className="text-sm flex justify-end pt-1 text-front/70">
-        MAX: {(Number(token.balance || 0n) / Number(ONE_FRAX)).toString()}{" "}
+        {props.label}: {(Number(token.balance || 0n) / Number(ONE_FRAX)).toString()}{" "}
         {token.name}
       </p>
     </>
