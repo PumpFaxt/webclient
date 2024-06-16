@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { Token } from "../../../types";
 import { useContractRead } from "wagmi";
 import contractDefinitions from "../../../contracts";
+import { ONE_TOKEN } from "../../../config";
 
 interface HeaderProps {
   token: Token;
@@ -43,7 +44,10 @@ export default function Header(props: HeaderProps) {
       style={{ "--uclr": uclr } as React.CSSProperties}
     >
       <div className="overflow-hidden max-w-[35%] rounded-lg">
-        <img src={token.image} className="h-full object-contain hover:animate-ping" />
+        <img
+          src={token.image}
+          className="h-full object-contain hover:animate-ping"
+        />
       </div>
       <div className="flex flex-col gap-y-1 w-full">
         <div className="flex justify-between pb-3 border-b border-front/70 w-full">
@@ -112,10 +116,16 @@ export default function Header(props: HeaderProps) {
                 {token.totalSupply}
               </span>
             </p>
-            <p>
-              Market Cap:{" "}
-              <span className="text-front font-semibold">${Number(marketCap.data)}</span>
-            </p>
+            <>
+              {marketCap.data && (
+                <p>
+                  Market Cap:{" "}
+                  <span className="text-front font-semibold">
+                    ${Number(marketCap.data / ONE_TOKEN)}
+                  </span>
+                </p>
+              )}
+            </>
           </div>
         </div>
       </div>
