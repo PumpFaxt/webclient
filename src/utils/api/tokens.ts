@@ -31,6 +31,15 @@ const token = {
     const data = response.data;
     return data.data;
   },
+
+  async getByUserAddress(address: string) {
+    const response = await client.get<{ tokens: Token[] }>(
+      `/tokens/by-user/${address}`
+    );
+
+    const data = response.data;
+    return data.tokens;
+  },
 };
 
 export default token;
