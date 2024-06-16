@@ -295,11 +295,8 @@ export default function NewToken() {
         <img
           src="/images/loading-doge.gif"
           alt="loading"
-          className="w-[12vw]"
+          className="w-[16vw]"
         />
-        <span className="btn-retro bg-secondary py-2 px-8 select-none">
-          Pumping your token
-        </span>
       </div>
     </DataForm>
   );
