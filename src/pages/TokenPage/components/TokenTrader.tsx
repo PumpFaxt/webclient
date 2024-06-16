@@ -26,6 +26,8 @@ export default function TokenTrader(props: TokenTraderProps) {
   const { token } = props;
   const { address } = useAccount();
 
+  const [loading, setLoading] = useState(false);
+
   if (!address) return <></>;
 
   const fraxBalance = useContractRead({
@@ -147,6 +149,13 @@ export default function TokenTrader(props: TokenTraderProps) {
     },
   });
 
+  useWaitForTransaction({
+    hash: sellF.data?.hash || buyF.data?.hash,
+    onSuccess: () => {
+      setLoading(false);
+    },
+  });
+
   const hasInsufficientFunds =
     (tradeState === "BUY" && (fraxBalance.data || 0n) < amount.sell) ||
     (tradeState === "SELL" && (tokenBalance.data || 0n) < amount.sell);
@@ -156,7 +165,8 @@ export default function TokenTrader(props: TokenTraderProps) {
       className={twMerge(
         "w-1/4 flex flex-col items-center relative gap-y-2 h-max",
         (reserve.isLoading || supply.isLoading) &&
-          "opacity-75 animate-pulse pointer-events-none cursor-progress"
+          "opacity-75 animate-pulse pointer-events-none cursor-progress",
+        loading && "animate-pulse"
       )}
     >
       <p className="self-start animate-pulse">
@@ -207,8 +217,9 @@ export default function TokenTrader(props: TokenTraderProps) {
           "w-full rounded-md py-2 text-black font-semibold disabled:opacity-50",
           tradeState == "BUY" ? "bg-green-400" : "bg-red-400"
         )}
-        disabled={hasInsufficientFunds}
+        disabled={hasInsufficientFunds || loading}
         onClick={() => {
+          setLoading(true);
           if (tradeState == "BUY") {
             const requiredAllowance = amount.sell;
             if (fraxAllowance.data || 0n < requiredAllowance) {
@@ -281,7 +292,8 @@ function TradingPairMember(props: TradingPairMemberProps) {
         </div>
       </div>
       <p className="text-sm flex justify-end pt-1 text-front/70">
-        {props.label}: {(Number(token.balance || 0n) / Number(ONE_FRAX)).toString()}{" "}
+        {props.label}:{" "}
+        {(Number(token.balance || 0n) / Number(ONE_FRAX)).toString()}{" "}
         {token.name}
       </p>
     </>
