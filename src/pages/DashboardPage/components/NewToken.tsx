@@ -26,6 +26,7 @@ export default function NewToken() {
   const [formData, setFormData] = useState<Record<string, any>>({});
 
   const [loading, setLoading] = useState(false);
+  console.log(loading)
 
   const { data: minimumInitialSupply } = useContractRead({
     ...contractDefinitions.pumpItFaxtInterface,
@@ -74,6 +75,7 @@ export default function NewToken() {
         title: "Successfully created new token",
       });
       navigate("/showcase");
+      setLoading(false);
     },
   });
 
@@ -145,10 +147,10 @@ export default function NewToken() {
             deploymentCharge.data,
           ],
         });
-
-        setLoading(false);
       }}
-      className="p-5 flex flex-col gap-y-5"
+      className={twMerge(
+        "p-5 flex flex-col gap-y-5",
+      )}
     >
       <div className="flex gap-x-5">
         <input
@@ -224,15 +226,26 @@ export default function NewToken() {
       <input
         type="submit"
         className={twMerge(
-          "btn-retro self-center px-8 py-1 -mb-2",
-          loading ? "animate-pulse" : ""
+          "btn-retro self-center px-8 py-1 -mb-2 disabled:hidden"
         )}
         value="Pump It"
         disabled={loading}
       />
 
-      <div className="bg-background w-max p-2">
-        {/* <TokenCard token={token} className="max-h-[20vh] max-w-[30vw]" /> */}
+      <div
+        className={twMerge(
+          "self-center flex gap-y-2 items-center flex-col absolute top-1/2 -translate-y-1/2 bg-secondary/90 w-full h-full justify-center",
+          loading ? "" : "hidden"
+        )}
+      >
+        <img
+          src="/images/loading-doge.gif"
+          alt="loading"
+          className="w-[12vw]"
+        />
+        <span className="btn-retro bg-secondary py-2 px-8 select-none">
+          Pumping your token
+        </span>
       </div>
     </DataForm>
   );
