@@ -24,6 +24,13 @@ const token = {
     const data = response.data;
     return data.token;
   },
+
+  async getPriceFeed(address: string) {
+    const response = await client.get<{ data: any }>(`/tokens/${address}/feed`);
+
+    const data = response.data;
+    return data.data;
+  },
 };
 
 export default token;

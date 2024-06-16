@@ -2274,6 +2274,11 @@ fake-mediastreamtrack@^1.2.0:
     event-target-shim "^6.0.2"
     uuid "^9.0.0"
 
+fancy-canvas@2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/fancy-canvas/-/fancy-canvas-2.1.0.tgz#44b40e40419ad8ef8304df365e4276767e918552"
+  integrity sha512-nifxXJ95JNLFR2NgRV4/MxVP45G9909wJTEKz5fg/TZS20JJZA6hfgRVh/bC9bwl2zBtBNcYPjiBE4njQHVBwQ==
+
 fast-glob@^3.3.0:
   version "3.3.2"
   resolved "https://registry.yarnpkg.com/fast-glob/-/fast-glob-3.3.2.tgz#a904501e57cfdd2ffcded45e99a54fef55e46129"
@@ -2939,6 +2944,13 @@ keyvaluestorage-interface@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/keyvaluestorage-interface/-/keyvaluestorage-interface-1.0.0.tgz#13ebdf71f5284ad54be94bd1ad9ed79adad515ff"
   integrity sha512-8t6Q3TclQ4uZynJY9IGr2+SsIGwK9JHcO6ootkHCGA0CrQCRy+VkouYNO2xicET6b9al7QKzpebNow+gkpCL8g==
+
+lightweight-charts@^4.1.5:
+  version "4.1.5"
+  resolved "https://registry.yarnpkg.com/lightweight-charts/-/lightweight-charts-4.1.5.tgz#af9be0fa9e497947f7def062c65aa647efd5629e"
+  integrity sha512-2ML3CgwKGX3FsvLs+ExvIM+C4/cYaa4dsYUy8BHfdqAgYY+bwjIzSDsv5PpTE2a1rDKQBI5LJRtocELcWeXTWw==
+  dependencies:
+    fancy-canvas "2.1.0"
 
 lilconfig@^2.1.0:
   version "2.1.0"
