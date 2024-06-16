@@ -15,6 +15,8 @@ import useToast from "../../../hooks/useToast";
 import api from "../../../utils/api";
 import { useNavigate } from "react-router-dom";
 import { twMerge } from "tailwind-merge";
+import token from "../../../contracts/token";
+import { ONE_FRAX, ONE_TOKEN } from "../../../config";
 
 export default function NewToken() {
   const { address } = useAccount();
@@ -26,7 +28,7 @@ export default function NewToken() {
   const [formData, setFormData] = useState<Record<string, any>>({});
 
   const [loading, setLoading] = useState(false);
-  console.log(loading)
+  console.log(loading);
 
   const { data: minimumInitialSupply } = useContractRead({
     ...contractDefinitions.pumpItFaxtInterface,
@@ -126,12 +128,66 @@ export default function NewToken() {
         data.twitter && (metadata.twitter = data.twitter);
         data.description && (metadata.description = data.description);
 
-        const ipfs = await uploadAtIPFS();
-        if (typeof ipfs != "string")
-          return toast.error({ title: "IPFS Error, please try again" });
+        if (
+          !data.name &&
+          !data.description &&
+          !data.symbol &&
+          !data.initial_supply
+        ) {
+          setLoading(false);
+          return toast.error({ title: "Bruh??" });
+        }
 
-        if (!deploymentCharge.data)
+        if (!data.name || !data.symbol) {
+          setLoading(false);
+          return toast.error({
+            title: "iota token?  { Name or symbol missing }",
+          });
+        }
+
+        if (data.description.length < 10) {
+          setLoading(false);
+          return toast.error({ title: "Too short, or no Description" });
+        }
+
+        if (!data.initial_supply) {
+          setLoading(false);
+          return toast.error({
+            title: "Missing Initial Supplu, What will people even buy?",
+          });
+        }
+
+        if (
+          BigInt(data.initial_supply) * ONE_TOKEN >
+          (maximumInitialSupply || Infinity)
+        ) {
+          setLoading(false);
+          return toast.error({
+            title: "Initial Supply greater than maximum",
+          });
+        }
+
+        if (
+          BigInt(data.initial_supply) * ONE_TOKEN <
+          (minimumInitialSupply || 0n)
+        ) {
+          setLoading(false);
+          return toast.error({
+            title: "Initial Supply smaller than minimum",
+          });
+        }
+
+        const ipfs = await uploadAtIPFS();
+
+        if (typeof ipfs != "string") {
+          setLoading(false);
+          return toast.error({ title: "IPFS Error, please try again" });
+        }
+
+        if (!deploymentCharge.data) {
+          setLoading(false);
           return toast.error({ title: "Try again later" });
+        }
 
         setFormData({
           supply: BigInt(data.initial_supply),
@@ -148,9 +204,7 @@ export default function NewToken() {
           ],
         });
       }}
-      className={twMerge(
-        "p-5 flex flex-col gap-y-5",
-      )}
+      className={twMerge("p-5 flex flex-col gap-y-5")}
     >
       <div className="flex gap-x-5">
         <input
