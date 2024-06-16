@@ -153,6 +153,10 @@ export default function TokenTrader(props: TokenTraderProps) {
     hash: sellF.data?.hash || buyF.data?.hash,
     onSuccess: () => {
       setLoading(false);
+      fraxBalance.refetch();
+      tokenBalance.refetch();
+      fraxAllowance.refetch();
+      tokenAllowance.refetch();
     },
   });
 
