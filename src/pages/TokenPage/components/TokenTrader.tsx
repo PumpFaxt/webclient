@@ -41,6 +41,19 @@ export default function TokenTrader(props: TokenTraderProps) {
     args: [address],
   });
 
+  const fraxAllowance = useContractRead({
+    ...contractDefinitions.frax,
+    functionName: "allowance",
+    args: [address, contractDefinitions.frax.address],
+  });
+
+  const tokenAllowance = useContractRead({
+    ...contractDefinitions.token,
+    address: token.address,
+    functionName: "allowance",
+    args: [address, token.address],
+  });
+
   const tradingPair = [
     { name: "FRAX", image: "/icons/frax.png", balance: fraxBalance.data },
     { name: token.symbol, image: token.image, balance: tokenBalance.data },
@@ -106,6 +119,20 @@ export default function TokenTrader(props: TokenTraderProps) {
     functionName: "approve",
   });
 
+  const buyF = useContractWrite({
+    ...contractDefinitions.token,
+    address: token.address,
+    functionName: "buy",
+    args: [amount.buy],
+  });
+
+  const sellF = useContractWrite({
+    ...contractDefinitions.token,
+    address: token.address,
+    functionName: "sell",
+    args: [amount.sell],
+  });
+
   useWaitForTransaction({
     hash: approveFrax.data?.hash,
     onSuccess: async () => {
@@ -120,19 +147,9 @@ export default function TokenTrader(props: TokenTraderProps) {
     },
   });
 
-  const buyF = useContractWrite({
-    ...contractDefinitions.token,
-    address: token.address,
-    functionName: "buy",
-    args: [amount.buy],
-  });
-
-  const sellF = useContractWrite({
-    ...contractDefinitions.token,
-    address: token.address,
-    functionName: "sell",
-    args: [amount.sell],
-  });
+  const hasInsufficientFunds =
+    (tradeState === "BUY" && (fraxBalance.data || 0n) < amount.sell) ||
+    (tradeState === "SELL" && (tokenBalance.data || 0n) < amount.sell);
 
   return (
     <div
@@ -185,23 +202,40 @@ export default function TokenTrader(props: TokenTraderProps) {
 
       <button
         className={twMerge(
-          "w-full rounded-md py-2 text-black font-semibold",
+          "w-full rounded-md py-2 text-black font-semibold disabled:opacity-50",
           tradeState == "BUY" ? "bg-green-400" : "bg-red-400"
         )}
+        disabled={hasInsufficientFunds}
         onClick={() => {
-          if (tradeState == "BUY")
-            approveFrax.write({
-              args: [token.address, 10000n * ONE_FRAX],
-            });
+          if (tradeState == "BUY") {
+            const requiredAllowance = amount.sell;
+            if (fraxAllowance.data || 0n < requiredAllowance) {
+              const nextAllowance =
+                BigInt(10) ** BigInt(requiredAllowance.toString().length);
+              approveFrax.write({
+                args: [token.address, nextAllowance],
+              });
+            } else {
+              buyF.write();
+            }
+          }
 
-          if (tradeState == "SELL")
-            approveToken.write({
-              args: [token.address, BigInt(token.totalSupply) * ONE_TOKEN],
-            });
+          if (tradeState == "SELL") {
+            if (tokenAllowance.data || 0n < amount.buy) {
+              approveToken.write({
+                args: [token.address, BigInt(token.totalSupply) * ONE_TOKEN],
+              });
+            } else {
+              sellF.write();
+            }
+          }
         }}
       >
         {tradeState}
       </button>
+      {hasInsufficientFunds && (
+        <p className="text-red-500 text-sm self-end">* Insufficient funds</p>
+      )}
     </div>
   );
 }
