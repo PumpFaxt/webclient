@@ -225,11 +225,16 @@ export default function NewToken() {
         {minimumInitialSupply != undefined &&
           maximumInitialSupply != undefined && (
             <div className="relative flex-1 group">
-              <p className="absolute text-red-600 leading-none text-xs bottom-full left-0 -translate-y-1 font-semibold group-focus-within:opacity-100 opacity-0 duration-150">
-                * MinimumSupply:{" "}
-                {format18DecimalsToken(minimumInitialSupply).toLocaleString()} &
-                MaximumSupply:{" "}
-                {format18DecimalsToken(maximumInitialSupply).toLocaleString()}
+              <p className="absolute flex flex-col gap-y-1 text-red-600 leading-none text-[0.7rem] bottom-full right-0 text-end -translate-y-1 font-semibold group-focus-within:opacity-100 opacity-0 duration-150">
+                <span>
+                  * MinimumSupply:{" "}
+                  {format18DecimalsToken(minimumInitialSupply).toLocaleString()}{" "}
+                </span>
+
+                <span>
+                  * MaximumSupply:{" "}
+                  {format18DecimalsToken(maximumInitialSupply).toLocaleString()}
+                </span>
               </p>
               <input
                 type="number"

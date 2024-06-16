@@ -46,7 +46,7 @@ export default function TokenTrader(props: TokenTraderProps) {
   const fraxAllowance = useContractRead({
     ...contractDefinitions.frax,
     functionName: "allowance",
-    args: [address, contractDefinitions.frax.address],
+    args: [address, token.address],
   });
 
   const tokenAllowance = useContractRead({
@@ -152,6 +152,7 @@ export default function TokenTrader(props: TokenTraderProps) {
   useWaitForTransaction({
     hash: sellF.data?.hash || buyF.data?.hash,
     onSuccess: () => {
+      console.log(fraxAllowance.data);
       setLoading(false);
       fraxBalance.refetch();
       tokenBalance.refetch();
@@ -226,7 +227,15 @@ export default function TokenTrader(props: TokenTraderProps) {
           setLoading(true);
           if (tradeState == "BUY") {
             const requiredAllowance = amount.sell;
-            if (fraxAllowance.data || 0n < requiredAllowance) {
+            {
+              fraxAllowance.data &&
+                console.log(
+                  fraxAllowance.data / ONE_FRAX,
+                  requiredAllowance / ONE_FRAX,
+                  fraxAllowance.data || 0 < requiredAllowance
+                );
+            }
+            if ((fraxAllowance.data || 0n) < requiredAllowance) {
               const nextAllowance =
                 BigInt(10) ** BigInt(requiredAllowance.toString().length);
               approveFrax.write({
@@ -238,7 +247,7 @@ export default function TokenTrader(props: TokenTraderProps) {
           }
 
           if (tradeState == "SELL") {
-            if (tokenAllowance.data || 0n < amount.buy) {
+            if ((tokenAllowance.data || 0n) < amount.buy) {
               approveToken.write({
                 args: [token.address, BigInt(token.totalSupply) * ONE_TOKEN],
               });
