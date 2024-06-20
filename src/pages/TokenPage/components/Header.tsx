@@ -43,7 +43,7 @@ export default function Header(props: HeaderProps) {
       className="bg-foreground/5 p-4 flex gap-x-4 h-[30vh] rounded-lg"
       style={{ "--uclr": uclr } as React.CSSProperties}
     >
-      <div className="overflow-hidden max-w-[35%] rounded-lg">
+      <div className="overflow-hidden min-w-[20%] max-w-[45%] rounded-lg">
         <img
           src={token.image}
           className="h-full object-contain hover:animate-ping"
@@ -51,7 +51,7 @@ export default function Header(props: HeaderProps) {
       </div>
       <div className="flex flex-col gap-y-1 w-full">
         <div className="flex justify-between pb-3 border-b border-front/70 w-full">
-          <div className="flex flex-col h-max">
+          <div className="flex flex-col h-max max-w-[70%]">
             <div className="flex items-center gap-x-4">
               <h1 className="text-2xl font-bold text-[var(--uclr)]">
                 {token.name}
@@ -66,7 +66,7 @@ export default function Header(props: HeaderProps) {
             <p className="text-front/70 text-sm ">{token.description}</p>
           </div>
 
-          <div className="flex flex-col text-end items-end text-sm gap-y-2 w-[20%]">
+          <div className="flex flex-col text-end items-end text-sm gap-y-2 w-[30%]">
             {token.website && (
               <Link
                 to={token.website}
