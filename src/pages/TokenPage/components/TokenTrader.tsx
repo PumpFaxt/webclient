@@ -11,6 +11,8 @@ import {
 } from "wagmi";
 import contractDefinitions from "../../../contracts";
 import { ONE_FRAX, ONE_TOKEN } from "../../../config";
+import DataForm from "../../../common/DataForm";
+import useToast from "../../../hooks/useToast";
 
 interface TokenTraderProps {
   token: Token;
@@ -27,6 +29,8 @@ export default function TokenTrader(props: TokenTraderProps) {
   const { address } = useAccount();
 
   const [loading, setLoading] = useState(false);
+
+  const toast = useToast();
 
   if (!address) return <></>;
 
@@ -88,7 +92,7 @@ export default function TokenTrader(props: TokenTraderProps) {
   });
 
   const [amount, setAmount] = useState({ buy: 0n, sell: 0n });
-  const [slippage, setSlippage] = useState(0.01);
+  const [slippage, setSlippage] = useState(1);
 
   function setSellAmount(amt: number) {
     if (!supply.data || !reserve.data) return;
@@ -178,15 +182,25 @@ export default function TokenTrader(props: TokenTraderProps) {
         You are {tradeState.toLowerCase()}ing {token.symbol} for {"FRAX"}
       </p>
 
-      <div className="flex gap-x-1">
+      <DataForm
+        className="flex gap-x-1 w-full"
+        callback={(data) => {
+          setSlippage(Number(data.slippage));
+          toast.log({ title: `New Slippage saved as ${data.slippage}%` });
+        }}
+      >
         <input
-          placeholder={`current slippage ${slippage * 100}%`}
-          className="text-sm px-2 py-1 bg-transparent border border-front/20 rounded-md focus-within:outline-none"
+          placeholder={`current slippage ${slippage}%`}
+          className="text-sm px-2 py-1 bg-transparent border border-front/20 rounded-md focus-within:outline-none w-full"
+          name="slippage"
+          type="number"
+          min={1}
+          max={100}
         />
         <button className="text-sm self-end py-1 px-3 rounded-md bg-front/10 whitespace-nowrap">
           Set max slippage
         </button>
-      </div>
+      </DataForm>
 
       <div className="border border-front/20 p-3 rounded-lg min-h-[15vh]">
         <h1>Sell</h1>
