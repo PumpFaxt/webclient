@@ -92,9 +92,9 @@ function convertToCandlestick(
       candleSticks.push(JSON.parse(JSON.stringify(cs)));
 
       cs = {
-        low: 69420,
-        high: 0,
-        close: 0,
+        low: tick.value,
+        high: tick.value,
+        close: tick.value,
         open: tick.value,
         time: tick.time + interval,
       };

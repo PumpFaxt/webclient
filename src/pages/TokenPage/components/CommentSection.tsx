@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { generateColorFromAddress } from "../../../utils";
+import { serverUrl } from "../../../config";
+import { useAccount } from "wagmi";
 
 export default function CommentSection() {
   return (
@@ -9,15 +11,16 @@ export default function CommentSection() {
           src="https://pngimg.com/d/wojak_PNG109613.png"
           className="w-[3vw] object-contain border p-1 rounded-full"
         />
-        <div className="w-full flex flex-col gap-y-3">
+        <form className="w-full flex flex-col gap-y-3">
           <textarea
             className="bg-transparent resize-none w-full focus-within:outline-none border-b border-foreground pb-2"
             placeholder="Comment"
+            name="content"
           />
           <button className="bg-foreground w-max self-end text-back py-1 px-3 text-sm">
             Comment
           </button>
-        </div>
+        </form>
       </div>
 
       <div className="flex flex-col gap-y-4 mt-6">
@@ -39,7 +42,9 @@ export default function CommentSection() {
                 >
                   {comment.address}
                 </h1>
-                <p className="text-xs">{comment.timestamp}</p>
+                <p className="text-xs">
+                  {new Date(comment.timestamp).toLocaleString()}
+                </p>
               </div>
               <p className="text-front/80" placeholder="Comment">
                 {comment.comment}
