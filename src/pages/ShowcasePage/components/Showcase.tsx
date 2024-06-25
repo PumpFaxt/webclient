@@ -50,7 +50,7 @@ export default function Showcase() {
         )}
       >
         <img
-          src="https://www.memehub.ai/images/poster-loading.png"
+          src="/images/pepe-sailor.png"
           className="w-full border-2"
           alt="PEPE"
         />

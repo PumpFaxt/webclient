@@ -33,6 +33,16 @@ const token = {
     const data = response.data;
     return data.tokens;
   },
+
+  async reply(address: string, reply: string, signature: string) {
+    const response = await client.post(`/tokens/${address}/reply`, {
+      reply: reply,
+      signature: signature,
+    });
+
+    const data = response.data;
+    return data.tokens;
+  },
 };
 
 export default token;
