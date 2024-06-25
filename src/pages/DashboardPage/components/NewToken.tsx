@@ -72,7 +72,6 @@ export default function NewToken() {
   useWaitForTransaction({
     hash: newToken.data?.hash,
     onSuccess: async () => {
-      await api.tokens.refresh();
       toast.log({
         title: "Successfully created new token",
       });

@@ -7,6 +7,7 @@ import api from "../../utils/api";
 import CommentSection from "./components/CommentSection";
 import HuddleVoicePage from "../HuddleVoicePage";
 import PriceChart from "./components/PriceChart";
+import Chart from "./components/Chart";
 
 export default function TokenPage() {
   const { address } = useParams();
@@ -21,7 +22,8 @@ export default function TokenPage() {
         <div className="p-page py-4">
           <Header token={token.data} />
           <div className="flex mt-8 gap-x-4">
-            <PriceChart address={address} className="w-3/4 aspect-video" />
+            {/* <PriceChart address={address} className="w-3/4 aspect-video" /> */}
+            <Chart address={address} />
             <TokenTrader token={token.data} />
           </div>
           <div className="flex mt-8 gap-x-4">

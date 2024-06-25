@@ -1,8 +1,9 @@
 import React from "react";
-import { useAccount } from "wagmi";
+import { useAccount, useDisconnect } from "wagmi";
 
 export default function Header() {
   const { address } = useAccount();
+  const { disconnect } = useDisconnect();
 
   return (
     <section className="p-page">
@@ -19,6 +20,15 @@ export default function Header() {
                 <h1>{address}</h1>
                 <button className="bg-[#008000] w-max px-3 relative z-1 shadow-[4px_4px_2px_#001100bb]">
                   Get Username
+                </button>
+              </div>
+
+              <div className="absolute right-1/4 translate-x-full">
+                <button
+                  className="bg-red-700 px-4 py-1 shadow-[4px_4px_2px_#001100bb]"
+                  onClick={() => disconnect()}
+                >
+                  Disconnect
                 </button>
               </div>
             </div>
