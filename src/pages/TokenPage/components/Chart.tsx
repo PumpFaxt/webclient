@@ -102,33 +102,6 @@ export default function Chart(props: {
       className={twMerge("", props.className)}
       key={series.length.toString()}
     >
-      <div className="flex mb-2">
-        <FlexSeparator />
-
-        <button
-          className={twMerge(
-            "px-3 border border-slate-800 font-light text-sm",
-            indexBy == "value" && "bg-slate-700 "
-          )}
-          onClick={() => {
-            setIndexBy("value");
-          }}
-        >
-          Price
-        </button>
-        <button
-          className={twMerge(
-            "px-3 border border-slate-800 font-light text-sm",
-            indexBy == "marketCap" && "bg-slate-700 "
-          )}
-          onClick={() => {
-            setIndexBy("marketCap");
-          }}
-        >
-          Mkt Cap
-        </button>
-      </div>
-
       {token && series && series.length > 0 && (
         <ReactApexChart
           options={{ ...config }}

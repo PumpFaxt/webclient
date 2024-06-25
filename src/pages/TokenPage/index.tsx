@@ -10,6 +10,8 @@ import PriceChart from "./components/PriceChart";
 import Chart from "./components/Chart";
 import { getImageDominantRgb, getLuminicanceFromRgb } from "../../utils";
 import Gun from "gun";
+import { twMerge } from "tailwind-merge";
+import FlexSeparator from "../../common/FlexSeparator";
 
 export default function TokenPage() {
   const { address } = useParams();
@@ -17,6 +19,14 @@ export default function TokenPage() {
   const token = useApiResponse(api.tokens.getByAddress, address || "");
 
   const [uclr, setUclr] = useState("#fff");
+
+  const analysisModes = [
+    { name: "value" },
+    { name: "marketCap" },
+    { name: "transactions" },
+  ] as const;
+  const [analyticsMode, setAnalyticsMode] =
+    useState<(typeof analysisModes)[number]["name"]>();
 
   async function loadColorFromImage() {
     if (!token.data) return;
@@ -47,14 +57,43 @@ export default function TokenPage() {
       <div className="p-page py-4">
         <Header token={token.data} color={uclr} />
         <div className="flex mt-8 gap-x-4">
-          {/* <PriceChart address={address} className="w-3/4 aspect-video" /> */}
-          <Chart
-            token={token.data}
-            className="w-3/4 aspect-video"
-            color={uclr}
-          />
+          <div className="">
+            <div className="flex mb-2">
+              <FlexSeparator />
+
+              <button
+                className={twMerge(
+                  "px-3 border border-slate-800 font-light text-sm",
+                  analyticsMode == "value" && "bg-slate-700 "
+                )}
+                onClick={() => {
+                  setAnalyticsMode("value");
+                }}
+              >
+                Price
+              </button>
+              <button
+                className={twMerge(
+                  "px-3 border border-slate-800 font-light text-sm",
+                  analyticsMode == "marketCap" && "bg-slate-700 "
+                )}
+                onClick={() => {
+                  setAnalyticsMode("marketCap");
+                }}
+              >
+                Mkt Cap
+              </button>
+            </div>
+            <Chart
+              token={token.data}
+              className="w-3/4 aspect-video"
+              color={uclr}
+            />
+          </div>
+
           {token.data && <TokenTrader token={token.data} />}
         </div>
+
         <div className="flex mt-8 gap-x-4">
           {token?.data?.replies && (
             <CommentSection
