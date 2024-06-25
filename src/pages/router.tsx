@@ -20,12 +20,10 @@ const router = createBrowserRouter(
       <Route element={<Layout.Default />}>
         <Route index element={<HomePage />} />
         <Route path="showcase" element={<ShowcasePage />} />
+        <Route path="/T/:address" element={<TokenPage />} />
 
-        <Route element={<ProtectedRoute type={ProtectedTypes.CONNECTEDONLY} />}>
+        <Route element={<ProtectedRoute type={ProtectedTypes.USABLEONLY} />}>
           <Route path="dashboard" element={<DashboardPage />} />
-          <Route path="/T/:address" element={<TokenPage />} />
-          <Route path="/T/:id/voice" element={<HuddleVoicePage />} />
-          <Route path="/testing" element={<StreamingTestPage />} />
         </Route>
       </Route>
 

@@ -5,6 +5,7 @@ export interface custom {}
 export interface Token {
   address: Address;
   creator: string;
+  createdBlock: string;
   name: string;
   symbol: string;
   totalSupply: number;
@@ -13,4 +14,5 @@ export interface Token {
   website?: string;
   telegram?: string;
   twitter?: string;
+  replies?: string[];
 }

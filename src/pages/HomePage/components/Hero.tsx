@@ -7,10 +7,6 @@ import { useAccount } from "wagmi";
 import useToast from "../../../hooks/useToast";
 
 export default function Hero() {
-  const { address } = useAccount();
-
-  const toast = useToast();
-
   const navigate = useNavigate();
 
   return (
@@ -38,7 +34,6 @@ export default function Hero() {
         <button
           className="px-6 py-2 bg-foreground text-back mt-5 w-max"
           onClick={() => {
-            if (!address) return toast.error({ title: "Connect Wallet first" });
             navigate("/showcase");
           }}
         >

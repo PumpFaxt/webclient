@@ -129,14 +129,14 @@ export default function TokenTrader(props: TokenTraderProps) {
     ...contractDefinitions.token,
     address: token.address,
     functionName: "buy",
-    args: [amount.buy],
+    args: [amount.sell, (amount.buy * BigInt(100 - slippage)) / BigInt(100)],
   });
 
   const sellF = useContractWrite({
     ...contractDefinitions.token,
     address: token.address,
     functionName: "sell",
-    args: [amount.sell],
+    args: [amount.sell, (amount.buy * BigInt(100 - slippage)) / BigInt(100)],
   });
 
   useWaitForTransaction({
@@ -156,7 +156,6 @@ export default function TokenTrader(props: TokenTraderProps) {
   useWaitForTransaction({
     hash: sellF.data?.hash || buyF.data?.hash,
     onSuccess: () => {
-      console.log(fraxAllowance.data);
       setLoading(false);
       fraxBalance.refetch();
       tokenBalance.refetch();
@@ -241,14 +240,7 @@ export default function TokenTrader(props: TokenTraderProps) {
           setLoading(true);
           if (tradeState == "BUY") {
             const requiredAllowance = amount.sell;
-            {
-              fraxAllowance.data &&
-                console.log(
-                  fraxAllowance.data / ONE_FRAX,
-                  requiredAllowance / ONE_FRAX,
-                  fraxAllowance.data || 0 < requiredAllowance
-                );
-            }
+
             if ((fraxAllowance.data || 0n) < requiredAllowance) {
               const nextAllowance =
                 BigInt(10) ** BigInt(requiredAllowance.toString().length);
@@ -319,8 +311,7 @@ function TradingPairMember(props: TradingPairMemberProps) {
         </div>
       </div>
       <p className="text-sm flex justify-end pt-1 text-front/70">
-        {props.label}:{" "}
-        {(Number(token.balance || 0n) / Number(ONE_FRAX)).toString()}{" "}
+        {label}: {(Number(token.balance || 0n) / Number(ONE_FRAX)).toString()}{" "}
         {token.name}
       </p>
     </>

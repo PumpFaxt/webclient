@@ -2,13 +2,6 @@ import { client } from ".";
 import { Token } from "../../types";
 
 const token = {
-  async refresh() {
-    const response = await client.post<{ success: boolean }>("/tokens/refresh");
-
-    const data = response.data;
-    return data.success;
-  },
-
   async getAll() {
     const response = await client.get<{ total: number; tokens: Token[] }>(
       "/tokens/"
@@ -36,6 +29,16 @@ const token = {
     const response = await client.get<{ tokens: Token[] }>(
       `/tokens/by-user/${address}`
     );
+
+    const data = response.data;
+    return data.tokens;
+  },
+
+  async reply(address: string, reply: string, signature: string) {
+    const response = await client.post(`/tokens/${address}/reply`, {
+      reply: reply,
+      signature: signature,
+    });
 
     const data = response.data;
     return data.tokens;

@@ -5,6 +5,7 @@ import FlexSeparator from "./FlexSeparator";
 import Icon from "./Icon";
 import { twMerge } from "tailwind-merge";
 import { Link } from "react-router-dom";
+import useWeb3 from "../contexts/web3context";
 
 export default function ConnectWallet() {
   const { connect, connectors, error, isLoading, pendingConnector } =
@@ -13,12 +14,9 @@ export default function ConnectWallet() {
   const { switchNetwork } = useSwitchNetwork();
   const { address } = useAccount();
 
-  const modal = useModal();
+  const { usable } = useWeb3();
 
-  useEffect(() => {
-    if (!network.chains.map((c) => c.id).includes(network.chain?.id || -1))
-      switchNetwork && switchNetwork(network.chains[0].id);
-  }, [address]);
+  const modal = useModal();
 
   return (
     <>
@@ -74,7 +72,18 @@ export default function ConnectWallet() {
         </button>
       )}
 
-      {address && (
+      {address && !usable && (
+        <button
+          className="text-red-600 font-semibold tracking-wide"
+          onClick={() => {
+            switchNetwork && switchNetwork(network.chains[0].id);
+          }}
+        >
+          Wrong Network!
+        </button>
+      )}
+
+      {address && usable && (
         <Link
           to="/dashboard"
           className="group hover:hue-rotate-[499999deg] duration-[999999ms]"

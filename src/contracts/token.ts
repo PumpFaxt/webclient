@@ -232,6 +232,13 @@ const abi = [
   },
   {
     inputs: [],
+    name: "createdBlock",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
     name: "creator",
     outputs: [{ internalType: "address", name: "", type: "address" }],
     stateMutability: "view",

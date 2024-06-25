@@ -7,45 +7,27 @@ import contractDefinitions from "../../../contracts";
 import { ONE_TOKEN } from "../../../config";
 
 interface HeaderProps {
-  token: Token;
+  token?: Token;
+  color: string;
 }
 
 export default function Header(props: HeaderProps) {
   const { token } = props;
 
-  const [uclr, setUclr] = useState("#fff");
-
-  async function loadColorFromImage() {
-    const rgbClamped = await getImageDominantRgb(token.image);
-    var rgb = [rgbClamped[0], rgbClamped[1], rgbClamped[2]];
-    while (getLuminicanceFromRgb(rgb) < 128) {
-      rgb[0] += 1;
-      rgb[1] += 1;
-      rgb[2] += 1;
-    }
-    const clr = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
-
-    setUclr(clr);
-  }
-
-  useEffect(() => {
-    loadColorFromImage();
-  }, [token]);
-
   const marketCap = useContractRead({
     ...contractDefinitions.token,
-    address: token.address,
+    address: token?.address,
     functionName: "marketCap",
   });
 
   return (
     <section
       className="bg-foreground/5 p-4 flex gap-x-4 widescreen:h-[30vh] rounded-lg mobile:flex-col mobile:gap-y-2"
-      style={{ "--uclr": uclr } as React.CSSProperties}
+      style={{ "--uclr": props.color } as React.CSSProperties}
     >
       <div className="overflow-hidden widescreen:max-w-[35%] rounded-lg mobile:w-full mobile:max-h-[30vh]">
         <img
-          src={token.image}
+          src={token?.image}
           className="h-full object-contain hover:animate-ping"
         />
       </div>
@@ -54,22 +36,22 @@ export default function Header(props: HeaderProps) {
           <div className="flex flex-col h-max">
             <div className="flex items-center gap-x-4">
               <h1 className="text-2xl font-bold text-[var(--uclr)] mobile:text-3xl">
-                {token.name}
+                {token?.name}
               </h1>
               <h4 className="text-front border border-front py-1 px-3 rounded-md text-xs">
-                Ticker : {token.symbol}
+                Ticker : {token?.symbol}
               </h4>
             </div>
             <h3 className="text-pink-400 font-medium py-1 mobile:text-sm">
-              Creator: {token.creator}
+              Creator: {token?.creator}
             </h3>
-            <p className="text-front/70 text-sm ">{token.description}</p>
+            <p className="text-front/70 text-sm ">{token?.description}</p>
           </div>
 
           <div className="flex widescreen:flex-col text-end items-end text-sm gap-y-2 widescreen:w-[20%] mobile:w-full mobile:mt-2 mobile:gap-x-3">
-            {token.website && (
+            {token?.website && (
               <Link
-                to={token.website}
+                to={token?.website}
                 target="_blank"
                 className="flex gap-x-2 items-center mobile:flex-row-reverse"
               >
@@ -80,7 +62,7 @@ export default function Header(props: HeaderProps) {
                 />
               </Link>
             )}
-            {token.telegram && (
+            {token?.telegram && (
               <Link
                 to={`https://t.me/${token.telegram}`}
                 target="_blank"
@@ -93,7 +75,7 @@ export default function Header(props: HeaderProps) {
                 />
               </Link>
             )}
-            {token.twitter && (
+            {token?.twitter && (
               <Link
                 to={`https://x.com/${token.twitter}`}
                 className="flex gap-x-2 items-center mobile:flex-row-reverse"
@@ -113,7 +95,7 @@ export default function Header(props: HeaderProps) {
             <p>
               Token Supply :{" "}
               <span className="text-front font-semibold">
-                {token.totalSupply}
+                {token?.totalSupply}
               </span>
             </p>
             <>
