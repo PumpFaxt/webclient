@@ -12,6 +12,7 @@ import { getImageDominantRgb, getLuminicanceFromRgb } from "../../utils";
 import Gun from "gun";
 import { twMerge } from "tailwind-merge";
 import FlexSeparator from "../../common/FlexSeparator";
+import Transactions from "./components/Transactions";
 
 export default function TokenPage() {
   const { address } = useParams();
@@ -21,12 +22,37 @@ export default function TokenPage() {
   const [uclr, setUclr] = useState("#fff");
 
   const analysisModes = [
-    { name: "value" },
-    { name: "marketCap" },
-    { name: "transactions" },
+    {
+      name: "Price",
+      element: (
+        <Chart
+          color={uclr}
+          indexBy="value"
+          token={token.data}
+          className="w-full aspect-video"
+        />
+      ),
+    },
+    {
+      name: "Mkt Cap",
+      element: (
+        <Chart
+          color={uclr}
+          indexBy="marketCap"
+          token={token.data}
+          className="w-full aspect-video"
+        />
+      ),
+    },
+    { name: "Transactions", element: <Transactions token={token.data} /> },
   ] as const;
-  const [analyticsMode, setAnalyticsMode] =
-    useState<(typeof analysisModes)[number]["name"]>();
+  const [analyticsMode, setAnalyticsMode] = useState<number>(1);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setAnalyticsMode(0);
+    }, 2000);
+  }, []);
 
   async function loadColorFromImage() {
     if (!token.data) return;
@@ -57,38 +83,26 @@ export default function TokenPage() {
       <div className="p-page py-4">
         <Header token={token.data} color={uclr} />
         <div className="flex mt-8 gap-x-4">
-          <div className="">
+          <div className="flex-1 h-full">
             <div className="flex mb-2">
               <FlexSeparator />
 
-              <button
-                className={twMerge(
-                  "px-3 border border-slate-800 font-light text-sm",
-                  analyticsMode == "value" && "bg-slate-700 "
-                )}
-                onClick={() => {
-                  setAnalyticsMode("value");
-                }}
-              >
-                Price
-              </button>
-              <button
-                className={twMerge(
-                  "px-3 border border-slate-800 font-light text-sm",
-                  analyticsMode == "marketCap" && "bg-slate-700 "
-                )}
-                onClick={() => {
-                  setAnalyticsMode("marketCap");
-                }}
-              >
-                Mkt Cap
-              </button>
+              {analysisModes.map((item, key) => (
+                <button
+                  key={key}
+                  className={twMerge(
+                    "px-3 border border-slate-800 font-light text-sm",
+                    analyticsMode == key && "bg-slate-700 "
+                  )}
+                  onClick={() => {
+                    setAnalyticsMode(key);
+                  }}
+                >
+                  {item.name}
+                </button>
+              ))}
             </div>
-            <Chart
-              token={token.data}
-              className="w-3/4 aspect-video"
-              color={uclr}
-            />
+            {analysisModes[analyticsMode].element}
           </div>
 
           {token.data && <TokenTrader token={token.data} />}
@@ -97,6 +111,7 @@ export default function TokenPage() {
         <div className="flex mt-8 gap-x-4">
           {token?.data?.replies && (
             <CommentSection
+              key={`${gun.get(token.data.address)}`}
               comments={token.data.replies}
               tokenAddress={token.data.address}
               gun={gun}

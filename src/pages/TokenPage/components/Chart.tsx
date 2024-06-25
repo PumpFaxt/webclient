@@ -13,12 +13,11 @@ export default function Chart(props: {
   token: Token | undefined;
   className?: string;
   color: string;
+  indexBy: "value" | "marketCap";
 }) {
-  const { token } = props;
+  const { token, indexBy } = props;
 
   const [series, setSeries] = useState<Array<[number, number]>>([]);
-
-  const [indexBy, setIndexBy] = useState<"value" | "marketCap">("value");
 
   const { getContractEvents } = usePublicClient();
 
