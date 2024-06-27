@@ -41,7 +41,7 @@ export default function CommentSection(props: CommentSectionProps) {
       <div className="flex items-start gap-x-4">
         <img
           src="https://pngimg.com/d/wojak_PNG109613.png"
-          className="w-[3vw] object-contain border p-1 rounded-full"
+          className="w-[3vw] object-contain border p-1 rounded-full aspect-square"
         />
         {address ? (
           <DataForm
@@ -84,11 +84,11 @@ function ReplyCard(props: { comment: string }) {
   const comment = JSON.parse(props.comment);
 
   return (
-    <div className="flex items-start gap-x-4 bg-front/5 p-4 rounded-md border-b border-front/30">
+    <div className="flex items-start gap-x-4 bg-front/5 p-4 border-b border-front/30">
       <img
         src={"https://pngimg.com/d/wojak_PNG109613.png"}
         alt={comment.author}
-        className="w-[3vw] object-contain border p-1 rounded-full"
+        className="w-[3vw] object-contain border p-1 rounded-full aspect-square"
       />
       <div className="w-full flex flex-col text-sm">
         <div className="flex justify-between items-start">

@@ -22,10 +22,10 @@ export default function Header(props: HeaderProps) {
 
   return (
     <section
-      className="bg-foreground/5 p-4 flex gap-x-4 widescreen:h-[30vh] rounded-lg mobile:flex-col mobile:gap-y-2"
+      className="bg-foreground/5 p-4 flex gap-x-4 widescreen:h-[30vh] mobile:flex-col mobile:gap-y-2 flex-1"
       style={{ "--uclr": props.color } as React.CSSProperties}
     >
-      <div className="overflow-hidden widescreen:max-w-[35%] rounded-lg mobile:w-full mobile:max-h-[30vh]">
+      <div className="overflow-hidden widescreen:max-w-[35%] mobile:w-full mobile:max-h-[30vh]">
         <img
           src={token?.image}
           className="h-full object-contain hover:animate-ping"
@@ -48,7 +48,7 @@ export default function Header(props: HeaderProps) {
             <p className="text-front/70 text-sm ">{token?.description}</p>
           </div>
 
-          <div className="flex widescreen:flex-col text-end items-end text-sm gap-y-2 widescreen:w-[20%] mobile:w-full mobile:mt-2 mobile:gap-x-3">
+          <div className="flex widescreen:flex-col text-end items-end text-sm gap-y-2 widescreen:w-[50%] mobile:w-full mobile:mt-2 mobile:gap-x-3">
             {token?.website && (
               <Link
                 to={token?.website}
