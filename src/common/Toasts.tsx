@@ -8,7 +8,7 @@ export default function Toasts() {
   const toast = useToast();
 
   return (
-    <article className="pointer-events-none fixed left-0 top-0 z-[999] flex h-full w-full flex-col">
+    <article className="pointer-events-none fixed left-0 top-[100vh] -translate-y-full z-[999] flex h-full w-full flex-col">
       <figure role="separator" className="flex-1" />
 
       <section className="flex flex-col items-center">

@@ -86,51 +86,54 @@ export default function Transactions(props: TransactionsProps) {
   console.log(transactions);
 
   return (
-    <div
-      className="flex my-2"
-      style={{ "--boxSize": "2.5rem" } as React.CSSProperties}
-    >
-      {!transactions && <p>Loading...</p>}
-      {transactions && (
-        <>
-          <IndexedTxList
-            transactions={transactions}
-            index="time"
-            className={"w-[20%] text-sm"}
-          />
+    <section className="aspect-video w-full overflow-y-scroll scrollbar-slate-800 scrollbar-thin scrollbar-bg-none my-4">
+      <div
+        className="flex"
+        style={{ "--boxSize": "2.5rem" } as React.CSSProperties}
+      >
+        {!transactions && <p>Loading...</p>}
 
-          <IndexedTxList
-            transactions={transactions}
-            index="type"
-            className={"w-[10%] font-light text-sm"}
-          />
+        {transactions && (
+          <>
+            <IndexedTxList
+              transactions={transactions}
+              index="time"
+              className={"w-[20%] text-sm"}
+            />
 
-          <IndexedTxList
-            transactions={transactions}
-            index="cost"
-            className={"w-[15%] text-sm"}
-          />
+            <IndexedTxList
+              transactions={transactions}
+              index="type"
+              className={"w-[10%] font-light text-sm"}
+            />
 
-          <IndexedTxList
-            transactions={transactions}
-            index="amount"
-            className={"w-[20%] text-sm"}
-          />
+            <IndexedTxList
+              transactions={transactions}
+              index="cost"
+              className={"w-[15%] text-sm"}
+            />
 
-          <IndexedTxList
-            transactions={transactions}
-            index="price"
-            className={"w-[20%] text-xs"}
-          />
+            <IndexedTxList
+              transactions={transactions}
+              index="amount"
+              className={"w-[20%] text-sm"}
+            />
 
-          <IndexedTxList
-            transactions={transactions}
-            index="maker"
-            className={"w-[15%] text-xs"}
-          />
-        </>
-      )}
-    </div>
+            <IndexedTxList
+              transactions={transactions}
+              index="price"
+              className={"w-[20%] text-xs"}
+            />
+
+            <IndexedTxList
+              transactions={transactions}
+              index="maker"
+              className={"w-[15%] text-xs"}
+            />
+          </>
+        )}
+      </div>
+    </section>
   );
 }
 
@@ -157,14 +160,15 @@ function IndexedTxList(props: {
   const toast = useToast();
 
   return (
-    <ol className={twMerge(props.className, "flex flex-col")}>
+    <ol className={twMerge(props.className, "flex flex-col relative")}>
       <li
         className={twMerge(
-          "p-2 border border-front/20 capitalize text-front/60 font-medium text-lg"
+          "p-2 border border-front/20 capitalize text-front/60 font-medium text-lg bg-background h-[var(--boxSize)] sticky top-0 w-full"
         )}
       >
         {index}
       </li>
+
       {props.transactions?.map((tx, key) => (
         <li
           className={twMerge(

@@ -50,7 +50,7 @@ export default function TokenPage() {
 
   useEffect(() => {
     setTimeout(() => {
-      setAnalyticsMode(2);
+      setAnalyticsMode(0);
     }, 2000);
   }, []);
 

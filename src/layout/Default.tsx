@@ -8,6 +8,7 @@ export default function Default() {
   return (
     <main className="relative">
       <Modal />
+
       <Toasts />
 
       <Navbar />
