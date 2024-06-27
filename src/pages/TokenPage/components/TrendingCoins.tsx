@@ -3,6 +3,7 @@ import useApiResponse from "../../../hooks/useApiResponse";
 import api from "../../../utils/api";
 import { getImageDominantRgb, getLuminicanceFromRgb } from "../../../utils";
 import Icon from "../../../common/Icon";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function TrendingCoins() {
   const tokens = useApiResponse(api.tokens.getAll);
@@ -17,7 +18,8 @@ export default function TrendingCoins() {
         {!tokens.loading &&
           tokens.data &&
           tokens.data.tokens.map((token, key) => (
-            <div
+            <a
+              href={`/T/${token.address}`}
               key={key}
               className="relative bg-background flex group justify-between px-2 py-2 border items-center rounded-md border-primary border-opacity-20 hover:bg-primary hover:bg-opacity-5"
             >
@@ -41,7 +43,7 @@ export default function TrendingCoins() {
                   className="self-end hidden group-hover:block duration-300 ease-in"
                 />
               </div>
-            </div>
+            </a>
           ))}
       </div>
     </div>
