@@ -13,6 +13,7 @@ import Gun from "gun";
 import { twMerge } from "tailwind-merge";
 import FlexSeparator from "../../common/FlexSeparator";
 import Transactions from "./components/Transactions";
+import TrendingCoins from "./components/TrendingCoins";
 
 export default function TokenPage() {
   const { address } = useParams();
@@ -81,7 +82,10 @@ export default function TokenPage() {
   return (
     <>
       <div className="p-page py-4">
-        <Header token={token.data} color={uclr} />
+        <div className="flex gap-x-4">
+          <Header token={token.data} color={uclr} />
+          <TrendingCoins />
+        </div>
         <div className="flex mt-8 gap-x-4">
           <div className="flex-1 h-full">
             <div className="flex mb-2">
