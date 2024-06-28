@@ -8,6 +8,7 @@ import { twMerge } from "tailwind-merge";
 import { ApexOptions } from "apexcharts";
 import { ONE_FRAX } from "../../../config";
 import FlexSeparator from "../../../common/FlexSeparator";
+import useWeb3 from "../../../contexts/web3context";
 
 export default function Chart(props: {
   token: Token | undefined;
@@ -29,6 +30,14 @@ export default function Chart(props: {
       fromBlock: BigInt(token?.createdBlock || 0),
       toBlock: "latest",
       eventName: "PriceChange",
+    });
+
+    logs.push({
+      ...logs[logs.length - 1],
+      args: {
+        ...logs[logs.length - 1].args,
+        time: BigInt(Date.now()) / BigInt(1000),
+      },
     });
 
     setSeries(

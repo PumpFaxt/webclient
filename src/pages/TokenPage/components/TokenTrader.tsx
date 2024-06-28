@@ -13,6 +13,7 @@ import contractDefinitions from "../../../contracts";
 import { ONE_FRAX, ONE_TOKEN } from "../../../config";
 import DataForm from "../../../common/DataForm";
 import useToast from "../../../hooks/useToast";
+import useWeb3 from "../../../contexts/web3context";
 
 interface TokenTraderProps {
   token: Token;
@@ -32,32 +33,30 @@ export default function TokenTrader(props: TokenTraderProps) {
 
   const toast = useToast();
 
-  if (!address) return <></>;
-
   const fraxBalance = useContractRead({
     ...contractDefinitions.frax,
     functionName: "balanceOf",
-    args: [address],
+    args: [address || "0x"],
   });
 
   const tokenBalance = useContractRead({
     ...contractDefinitions.token,
     address: token.address,
     functionName: "balanceOf",
-    args: [address],
+    args: [address || "0x"],
   });
 
   const fraxAllowance = useContractRead({
     ...contractDefinitions.frax,
     functionName: "allowance",
-    args: [address, token.address],
+    args: [address || "0x", token.address],
   });
 
   const tokenAllowance = useContractRead({
     ...contractDefinitions.token,
     address: token.address,
     functionName: "allowance",
-    args: [address, token.address],
+    args: [address || "0x", token.address],
   });
 
   const tradingPair = [
@@ -167,6 +166,10 @@ export default function TokenTrader(props: TokenTraderProps) {
   const hasInsufficientFunds =
     (tradeState === "BUY" && (fraxBalance.data || 0n) < amount.sell) ||
     (tradeState === "SELL" && (tokenBalance.data || 0n) < amount.sell);
+
+  const { usable } = useWeb3();
+
+  if (!usable) return <></>;
 
   return (
     <div
