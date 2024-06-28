@@ -242,27 +242,15 @@ export default function TokenTrader(props: TokenTraderProps) {
         onClick={() => {
           setLoading(true);
           if (tradeState == "BUY") {
-            const requiredAllowance = amount.sell;
-
-            if ((fraxAllowance.data || 0n) < requiredAllowance) {
-              const nextAllowance =
-                BigInt(10) ** BigInt(requiredAllowance.toString().length);
-              approveFrax.write({
-                args: [token.address, nextAllowance],
-              });
-            } else {
-              buyF.write();
-            }
+            approveFrax.write({
+              args: [token.address, amount.sell],
+            });
           }
 
           if (tradeState == "SELL") {
-            if ((tokenAllowance.data || 0n) < amount.buy) {
-              approveToken.write({
-                args: [token.address, BigInt(token.totalSupply) * ONE_TOKEN],
-              });
-            } else {
-              sellF.write();
-            }
+            approveToken.write({
+              args: [token.address, amount.sell],
+            });
           }
         }}
       >
