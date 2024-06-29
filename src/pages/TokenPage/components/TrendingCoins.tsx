@@ -31,8 +31,8 @@ export default function TrendingCoins() {
                 />
                 <div>
                   <h1 className="text-sm">{token.name}</h1>
-                  <p className="text-xs w-[8vw] truncate text-front/60">
-                    {token.creator}
+                  <p className="text-xs w-[10vw] truncate text-front/60">
+                    Creator: {token.creator}
                   </p>
                 </div>
               </div>
