@@ -4,13 +4,13 @@ import api from "../../../utils/api";
 import { twMerge } from "tailwind-merge";
 import TokenCard from "../../../common/TokenCard";
 
-export default function Showcase() {
-  const tokens = useApiResponse(api.tokens.getAll);
+export default function Showcase(props: { query: string }) {
+  const tokens = useApiResponse(api.tokens.getAll, props.query);
   const [coinsSplit, setCoinsSplit] =
     useState<Array<NonNullable<typeof tokens.data>["tokens"]>>();
 
   useEffect(() => {
-    if (!tokens.loading && tokens.data) {
+    if (!tokens.loading && tokens.data && tokens.data.tokens.length) {
       const totalTokens = tokens.data.tokens.length;
       const chunkSize = Math.ceil(totalTokens / 3);
 
@@ -56,7 +56,7 @@ export default function Showcase() {
         />
       </div>
 
-      {!tokens.loading && (
+      {!tokens.loading &&(
         <div className="flex justify-between group/showcase max-w-[1400px]">
           {coinsSplit &&
             coinsSplit.map((items, key) => (

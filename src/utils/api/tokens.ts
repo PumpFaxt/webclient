@@ -2,11 +2,11 @@ import { client } from ".";
 import { Token } from "../../types";
 
 const token = {
-  async getAll() {
+  async getAll(query?: string) {
     const response = await client.get<{ total: number; tokens: Token[] }>(
-      "/tokens/"
+      "/tokens" + (query ? `?q=${query}` : "")
     );
-
+    console.log(response)
     const data = response.data;
     return data;
   },
