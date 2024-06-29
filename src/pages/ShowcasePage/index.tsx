@@ -8,7 +8,7 @@ export default function () {
   return (
     <>
       <Header setQuery={setQuery} />
-      <Showcase query={query} />
+      <Showcase query={query} setQuery={setQuery} />
     </>
   );
 }
