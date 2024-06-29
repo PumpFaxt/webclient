@@ -22,6 +22,10 @@ export default function Showcase(props: { query: string }) {
     }
   }, [tokens.data]);
 
+  useEffect(() => {
+    tokens.refetch();
+  }, [props.query]);
+
   return (
     <section className="flex flex-col items-center p-page">
       <div className="mt-7 mb-16 font-bold text-5xl font-comicNeue relative text-center flex self-stretch">
@@ -56,7 +60,7 @@ export default function Showcase(props: { query: string }) {
         />
       </div>
 
-      {!tokens.loading &&(
+      {!tokens.loading && (
         <div className="flex justify-between group/showcase max-w-[1400px]">
           {coinsSplit &&
             coinsSplit.map((items, key) => (
