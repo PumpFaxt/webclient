@@ -43,6 +43,12 @@ const token = {
     const data = response.data;
     return data.tokens;
   },
+
+  async randomAddress(){
+    const response = await client.get('/tokens/random/address')
+    const data = response.data;
+    return data.token.address;
+  }
 };
 
 export default token;

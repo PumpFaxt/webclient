@@ -1,9 +1,14 @@
 import React, { useRef } from "react";
+import useApiResponse from "../../../hooks/useApiResponse";
+import api from "../../../utils/api";
+import { Link } from "react-router-dom";
 
 export default function Header(props: {
   setQuery: React.Dispatch<React.SetStateAction<string>>;
 }) {
   const inputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
+
+  const randomAddress = useApiResponse(api.tokens.randomAddress).data
 
   return (
     <section className="p-page py-5 flex flex-col items-center">
@@ -25,14 +30,14 @@ export default function Header(props: {
           >
             Search Token
           </button>
-          <button className="btn-retro px-5 py-1 flex gap-x-1 items-center">
+          <Link to={`/t/${randomAddress}`} className="btn-retro px-5 py-1 flex gap-x-1 items-center">
             <img
               src="https://i.kym-cdn.com/entries/icons/original/000/031/727/cover10.jpg"
               alt="YES"
               className="h-[1.4em]"
             />
             Yes
-          </button>
+          </Link>
         </div>
       </div>
     </section>
