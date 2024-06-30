@@ -9,7 +9,7 @@ export default function TrendingCoins() {
   const tokens = useApiResponse(api.tokens.getAll);
 
   return (
-    <div className="w-1/4 h-[30vh]">
+    <div className="w-1/4 h-[15em]">
       <h1 className="text-lg flex gap-x-1 px-1 items-end">
         <img src="/images/fire-flame.gif" className="h-[1.6em]" />
         <span className="uppercase font-medium text-yellow-200">Trending</span>
