@@ -7,7 +7,7 @@ import TokensYouDeployed from "./TokensYouDeployed";
 
 const displays = [
   { title: "Create New Meme coin", element: <NewToken /> },
-  { title: "Coins you hold", element: <TokensYouHold /> },
+  // { title: "Coins you hold", element: <TokensYouHold /> },
   { title: "Coins you deployed", element: <TokensYouDeployed /> },
 ];
 
