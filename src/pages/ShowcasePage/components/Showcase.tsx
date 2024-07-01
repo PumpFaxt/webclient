@@ -4,13 +4,16 @@ import api from "../../../utils/api";
 import { twMerge } from "tailwind-merge";
 import TokenCard from "../../../common/TokenCard";
 
-export default function Showcase() {
-  const tokens = useApiResponse(api.tokens.getAll);
+export default function Showcase(props: {
+  query: string;
+  setQuery: React.Dispatch<React.SetStateAction<string>>;
+}) {
+  const tokens = useApiResponse(api.tokens.getAll, props.query);
   const [coinsSplit, setCoinsSplit] =
     useState<Array<NonNullable<typeof tokens.data>["tokens"]>>();
 
   useEffect(() => {
-    if (!tokens.loading && tokens.data) {
+    if (!tokens.loading && tokens.data && tokens.data.tokens.length) {
       const totalTokens = tokens.data.tokens.length;
       const chunkSize = Math.ceil(totalTokens / 3);
 
@@ -22,13 +25,22 @@ export default function Showcase() {
     }
   }, [tokens.data]);
 
+  useEffect(() => {
+    tokens.refetch();
+  }, [props.query]);
+
+  function refreshToken() {
+    props.setQuery("");
+    tokens.refetch;
+  }
+
   return (
     <section className="flex flex-col items-center p-page">
       <div className="mt-7 mb-16 font-bold text-5xl font-comicNeue relative text-center flex self-stretch">
         <h1 className="text-center flex-1">Showcase of Memes</h1>
         <button
           className="flex flex-col items-center font-light gap-y-1"
-          onClick={tokens.refetch}
+          onClick={() => refreshToken()}
           disabled={tokens.loading}
         >
           <img

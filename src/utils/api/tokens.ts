@@ -2,11 +2,11 @@ import { client } from ".";
 import { Token } from "../../types";
 
 const token = {
-  async getAll() {
+  async getAll(query?: string) {
     const response = await client.get<{ total: number; tokens: Token[] }>(
-      "/tokens/"
+      "/tokens" + (query ? `?q=${query}` : "")
     );
-
+    console.log(response)
     const data = response.data;
     return data;
   },
@@ -43,6 +43,12 @@ const token = {
     const data = response.data;
     return data.tokens;
   },
+
+  async randomAddress(){
+    const response = await client.get('/tokens/random/address')
+    const data = response.data;
+    return data.token.address;
+  }
 };
 
 export default token;

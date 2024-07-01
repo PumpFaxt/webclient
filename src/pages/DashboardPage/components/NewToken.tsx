@@ -262,13 +262,13 @@ export default function NewToken() {
         <input
           type="link"
           name="telegram"
-          placeholder="Telegram (Optional)"
+          placeholder="Telegram Username (Optional)"
           className="input-retro flex-1"
         />
         <input
           type="link"
           name="twitter"
-          placeholder="Twitter (Optional)"
+          placeholder="Twitter username (Optional)"
           className="input-retro flex-1"
         />
       </div>

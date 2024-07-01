@@ -39,10 +39,21 @@ export default function CommentSection(props: CommentSectionProps) {
   return (
     <div className="w-2/3">
       <div className="flex items-start gap-x-4">
-        <img
-          src="https://pngimg.com/d/wojak_PNG109613.png"
-          className="w-[3vw] object-contain border p-1 rounded-full aspect-square"
-        />
+        <div className="relative w-[3vw] aspect-square">
+          <img
+            src={"https://pngimg.com/d/wojak_PNG109613.png"}
+            alt={address}
+            className="w-full h-full object-contain border p-1 rounded-full"
+          />
+          {address && (
+            <div
+              className="absolute inset-0 rounded-full mix-blend-color"
+              style={{
+                backgroundColor: generateColorFromAddress(address),
+              }}
+            />
+          )}
+        </div>
         {address ? (
           <DataForm
             className="w-full flex flex-col gap-y-3"
@@ -85,11 +96,17 @@ function ReplyCard(props: { comment: string }) {
 
   return (
     <div className="flex items-start gap-x-4 bg-front/5 p-4 border-b border-front/30">
-      <img
-        src={"https://pngimg.com/d/wojak_PNG109613.png"}
-        alt={comment.author}
-        className="w-[3vw] object-contain border p-1 rounded-full aspect-square"
-      />
+      <div className="relative w-[3vw] aspect-square">
+        <img
+          src={"https://pngimg.com/d/wojak_PNG109613.png"}
+          alt={comment.author}
+          className="w-full h-full object-contain border p-1 rounded-full"
+        />
+        <div
+          className="absolute inset-0 rounded-full mix-blend-color"
+          style={{ backgroundColor: generateColorFromAddress(comment.author) }}
+        />
+      </div>
       <div className="w-full flex flex-col text-sm">
         <div className="flex justify-between items-start">
           <h1

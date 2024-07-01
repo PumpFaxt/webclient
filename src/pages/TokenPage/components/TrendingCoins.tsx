@@ -9,7 +9,7 @@ export default function TrendingCoins() {
   const tokens = useApiResponse(api.tokens.getAll);
 
   return (
-    <div className="w-1/4 h-[30vh]">
+    <div className="w-1/4 h-[15em]">
       <h1 className="text-lg flex gap-x-1 px-1 items-end">
         <img src="/images/fire-flame.gif" className="h-[1.6em]" />
         <span className="uppercase font-medium text-yellow-200">Trending</span>
@@ -31,8 +31,8 @@ export default function TrendingCoins() {
                 />
                 <div>
                   <h1 className="text-sm">{token.name}</h1>
-                  <p className="text-xs w-[8vw] truncate text-front/60">
-                    {token.creator}
+                  <p className="text-xs w-[10vw] truncate text-front/60">
+                    Creator: {token.creator}
                   </p>
                 </div>
               </div>
