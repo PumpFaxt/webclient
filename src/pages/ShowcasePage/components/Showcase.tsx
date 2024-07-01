@@ -31,7 +31,7 @@ export default function Showcase(props: {
 
   function refreshToken() {
     props.setQuery("");
-    tokens.refetch;
+    tokens.refetch();
   }
 
   return (
