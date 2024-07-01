@@ -12,7 +12,9 @@ export default function Navbar() {
         className="flex items-center text-2xl gap-x-4"
       >
         <img src="/logo.png" className="h-[1.8em] aspect-square" />
-        <h1>PumpFaxt.it</h1>
+        <h1>
+          PumpFaxt <span className="text-xs opacity-50">(Pump It Fast)</span>
+        </h1>
       </button>
 
       <FlexSeparator />

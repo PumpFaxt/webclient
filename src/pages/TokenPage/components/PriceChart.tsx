@@ -56,7 +56,7 @@ export default function PriceChart(props: {
 //       const chart = createChart(ref.current, {
 //         width: rect.width,
 //         height: rect.height,
-//         watermark: { text: "pumpfaxt.it" },
+//         watermark: { text: "pumpfaxt" },
 //         rightPriceScale: { autoScale: true },
 //         layout: { background: { color: "#111" }, textColor: "#fff" },
 //         grid: { vertLines: { color: "#222" }, horzLines: { color: "#222" } },
