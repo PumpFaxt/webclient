@@ -7,8 +7,6 @@ import { Token } from "../../../types";
 import { twMerge } from "tailwind-merge";
 import { ApexOptions } from "apexcharts";
 import { ONE_FRAX } from "../../../config";
-import FlexSeparator from "../../../common/FlexSeparator";
-import useWeb3 from "../../../contexts/web3context";
 
 export default function Chart(props: {
   token: Token | undefined;
