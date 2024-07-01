@@ -5,8 +5,8 @@ import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
 import { publicProvider } from "wagmi/providers/public";
 
 const fraxtal: Chain = {
-  id: 2522,
-  name: "Fraxtal mainnet",
+  id: 252,
+  name: "Fraxtal Mainnet L2",
   network: "Fraxtal",
   nativeCurrency: { symbol: "frxETH", name: "Frax Eth", decimals: 18 },
   rpcUrls: {
