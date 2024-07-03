@@ -19,6 +19,21 @@ const fraxtal: Chain = {
   },
 };
 
+const fraxtalTestnet: Chain = {
+  id: 2522,
+  name: "Fraxtal Testnet L2",
+  network: "Fraxtal Testnet",
+  nativeCurrency: { symbol: "frxETH", name: "Frax Eth", decimals: 18 },
+  rpcUrls: {
+    default: { http: ["https://rpc.testnet.frax.com"] },
+    public: { http: ["https://rpc.testnet.frax.com"] },
+  },
+  testnet: true,
+  blockExplorers: {
+    default: { name: "fraxscan", url: "https://holesky.fraxscan.com" },
+  },
+};
+
 const { chains, publicClient, webSocketPublicClient } = configureChains(
   [fraxtal],
   [publicProvider()]
