@@ -23,12 +23,12 @@ export default function TrendingCoins() {
               key={key}
               className="relative bg-background flex group justify-between px-2 py-2 border items-center rounded-md border-primary border-opacity-20 hover:bg-primary hover:bg-opacity-5"
             >
-              <div className="flex gap-x-2">
-                <img
-                  src={token.image}
-                  alt="img"
-                  className="w-[2vw] aspect-square rounded-full object-cover"
-                />
+              <div className="flex gap-x-2 items-center">
+                  <img
+                    src={token.image}
+                    alt="img"
+                    className="w-[2vw] h-[2vw] aspect-square rounded-full object-cover"
+                  />
                 <div>
                   <h1 className="text-sm">{token.name}</h1>
                   <p className="text-xs w-[10vw] truncate text-front/60">
