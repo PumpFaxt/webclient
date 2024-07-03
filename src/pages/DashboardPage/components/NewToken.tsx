@@ -80,8 +80,8 @@ export default function NewToken() {
       });
       setTimeout(() => {
         navigate("/showcase");
+        setLoading(false);
       }, 3200);
-      setLoading(false);
     },
   });
 
