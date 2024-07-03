@@ -9,14 +9,11 @@ import {
 import contractDefinitions from "../../../contracts";
 import { format18DecimalsToken, generateRandomString } from "../../../utils";
 import DataForm from "../../../common/DataForm";
-import TokenCard from "../../../common/TokenCard";
 import { Token } from "../../../types";
 import useToast from "../../../hooks/useToast";
-import api from "../../../utils/api";
 import { useNavigate } from "react-router-dom";
 import { twMerge } from "tailwind-merge";
-import token from "../../../contracts/token";
-import { ONE_FRAX, ONE_TOKEN } from "../../../config";
+import { ONE_TOKEN } from "../../../config";
 
 export default function NewToken() {
   const { address } = useAccount();
@@ -37,6 +34,12 @@ export default function NewToken() {
   const { data: maximumInitialSupply } = useContractRead({
     ...contractDefinitions.pumpItFaxtInterface,
     functionName: "maximumInitialSupply",
+  });
+
+  const fraxAllowance = useContractRead({
+    ...contractDefinitions.frax,
+    functionName: "allowance",
+    args: [address || "0x", contractDefinitions.pumpItFaxtInterface.address],
   });
 
   const approveTransfer = useContractWrite({
@@ -75,7 +78,9 @@ export default function NewToken() {
       toast.log({
         title: "Successfully created new token",
       });
-      navigate("/showcase");
+      setTimeout(() => {
+        navigate("/showcase");
+      }, 3200);
       setLoading(false);
     },
   });
@@ -196,12 +201,27 @@ export default function NewToken() {
           metadata: JSON.stringify(metadata),
         });
 
-        approveTransfer.write({
-          args: [
-            contractDefinitions.pumpItFaxtInterface.address,
-            deploymentCharge.data,
-          ],
-        });
+        if (
+          fraxAllowance?.data &&
+          fraxAllowance.data >= deploymentCharge.data
+        ) {
+          newToken.write({
+            args: [
+              formData.supply,
+              formData.name,
+              formData.symbol,
+              formData.ipfs,
+              formData.metadata,
+            ],
+          });
+        } else {
+          approveTransfer.write({
+            args: [
+              contractDefinitions.pumpItFaxtInterface.address,
+              deploymentCharge.data,
+            ],
+          });
+        }
       }}
       className={twMerge("p-5 flex flex-col gap-y-5")}
     >
