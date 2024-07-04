@@ -7,10 +7,12 @@ import {
   useWaitForTransaction,
 } from "wagmi";
 import contractDefinitions from "../../../contracts";
+import { twMerge } from "tailwind-merge";
 
 export default function GetUsernameModal() {
   const modal = useModal();
   const [username, setUsername] = useState<string>("");
+  const [loading, setLoading] = useState(false); // Loading state added
 
   const avbl = useContractRead({
     ...contractDefinitions.usernameRental,
@@ -45,7 +47,32 @@ export default function GetUsernameModal() {
         args: [username],
       });
     },
+    onError: () => {
+      setLoading(false);
+    },
   });
+
+  useWaitForTransaction({
+    hash: buyUsername.data?.hash,
+    onSuccess: async () => {
+      setLoading(false);
+      modal.hide();
+    },
+    onError: () => {
+      setLoading(false);
+    },
+  });
+
+  function handleGetUsername() {
+    setLoading(true);
+    if (fee.data) {
+      approveTransfer.write({
+        args: [contractDefinitions.usernameRental.address, fee.data],
+      });
+    } else {
+      setLoading(false);
+    }
+  }
 
   return (
     <div className="bg-background min-w-[50vw] p-2 relative">
@@ -68,7 +95,12 @@ export default function GetUsernameModal() {
               Your identity across PumpFaxt, one name for your comments, and
               your tokens!
             </p>
-            <button className="flex justify-between items-center mt-6 pr-4 text-lg border rounded-lg border-front border-opacity-60 w-full">
+            <div
+              className={twMerge(
+                loading ? "opacity-80 animate-pulse" : "",
+                "flex justify-between items-center mt-6 pr-4 text-lg border rounded-lg border-front border-opacity-60 w-full"
+              )}
+            >
               <input
                 className="bg-background rounded-lg focus-within:outline-none px-4 py-3 text-lg w-[60%]"
                 placeholder="Search for a username"
@@ -82,16 +114,9 @@ export default function GetUsernameModal() {
                 <>
                   {username && (
                     <button
+                      disabled={loading}
                       className="flex gap-x-3 items-center"
-                      onClick={() =>
-                        fee.data &&
-                        approveTransfer.write({
-                          args: [
-                            contractDefinitions.usernameRental.address,
-                            fee.data,
-                          ],
-                        })
-                      }
+                      onClick={() => handleGetUsername()}
                     >
                       <p className="text-green-600 font-bold">Get Username</p>
                       <img src="/images/pepe-dance.gif" className="w-[2vw]" />
@@ -104,7 +129,7 @@ export default function GetUsernameModal() {
                   <img src="/images/pepe-sad.gif" className="w-[2vw]" />
                 </div>
               )}
-            </button>
+            </div>
           </div>
         </div>
       </div>
