@@ -1,42 +1,51 @@
 import { useState } from "react";
 import Icon from "../../../common/Icon";
 import useModal from "../../../hooks/useModal";
-import { useContractRead } from "wagmi";
+import {
+  useContractRead,
+  useContractWrite,
+  useWaitForTransaction,
+} from "wagmi";
 import contractDefinitions from "../../../contracts";
 
 export default function GetUsernameModal() {
   const modal = useModal();
   const [username, setUsername] = useState<string>("");
-  const [avaialble, setAvailable] = useState<boolean>();
 
-  function checkUsernameAvailability(username: string) {
-    const avbl = useContractRead({
-      ...contractDefinitions.usernameRental,
-      functionName: "checkUsernameAvailability",
-      args: [username],
-    });
-    setAvailable(avbl.data);
+  const avbl = useContractRead({
+    ...contractDefinitions.usernameRental,
+    functionName: "checkUsernameAvailability",
+    args: [username],
+  });
+
+  function handleInputChange(username: string) {
+    setUsername(username);
+    console.log(username, avbl.data);
   }
 
-  function handleCheckAvailability() {
-    if (!username) {
-      alert("Please enter a username.");
-      return;
-    }
+  const fee = useContractRead({
+    ...contractDefinitions.usernameRental,
+    functionName: "fee",
+  });
 
-    const isAvailable = checkUsernameAvailability(username);
+  const buyUsername = useContractWrite({
+    ...contractDefinitions.usernameRental,
+    functionName: "registerUsername",
+  });
 
-    if (isAvailable !== undefined) {
-      setAvailable(isAvailable);
-      console.log(isAvailable)
-    } else {
-      console.error("Unable to determine username availability.");
-    }
-  }
+  const approveTransfer = useContractWrite({
+    ...contractDefinitions.frax,
+    functionName: "approve",
+  });
 
-  const handleInputChange = (event: { target: { value: any } }) => {
-    setUsername(event.target.value);
-  };
+  useWaitForTransaction({
+    hash: approveTransfer.data?.hash,
+    onSuccess: async () => {
+      buyUsername.write({
+        args: [username],
+      });
+    },
+  });
 
   return (
     <div className="bg-background min-w-[50vw] p-2 relative">
@@ -59,20 +68,43 @@ export default function GetUsernameModal() {
               Your identity across PumpFaxt, one name for your comments, and
               your tokens!
             </p>
-            <div className="w-full flex gap-x-2 mt-6">
+            <button className="flex justify-between items-center mt-6 pr-4 text-lg border rounded-lg border-front border-opacity-60 w-full">
               <input
-                className="bg-background rounded-lg border px-4 py-3 text-lg  w-full"
+                className="bg-background rounded-lg focus-within:outline-none px-4 py-3 text-lg w-[60%]"
                 placeholder="Search for a username"
                 value={username}
-                onChange={handleInputChange}
+                type="text"
+                onChange={(event) =>
+                  handleInputChange(event?.currentTarget.value)
+                }
               />
-              <button
-                className="w-max text-lg text-center py-3 px-4 rounded-lg border"
-                onClick={() => handleCheckAvailability()}
-              >
-                Check
-              </button>
-            </div>
+              {avbl ? (
+                <>
+                  {username && (
+                    <button
+                      className="flex gap-x-3 items-center"
+                      onClick={() =>
+                        fee.data &&
+                        approveTransfer.write({
+                          args: [
+                            contractDefinitions.usernameRental.address,
+                            fee.data,
+                          ],
+                        })
+                      }
+                    >
+                      <p className="text-green-600 font-bold">Get Username</p>
+                      <img src="/images/pepe-dance.gif" className="w-[2vw]" />
+                    </button>
+                  )}
+                </>
+              ) : (
+                <div className="flex gap-x-3 animate-pulse">
+                  <p className="text-red-700 font-bold">Not Available</p>
+                  <img src="/images/pepe-sad.gif" className="w-[2vw]" />
+                </div>
+              )}
+            </button>
           </div>
         </div>
       </div>
