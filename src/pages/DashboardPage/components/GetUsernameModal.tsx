@@ -12,7 +12,7 @@ import { twMerge } from "tailwind-merge";
 export default function GetUsernameModal() {
   const modal = useModal();
   const [username, setUsername] = useState<string>("");
-  const [loading, setLoading] = useState(false); // Loading state added
+  const [loading, setLoading] = useState(false); 
 
   const avbl = useContractRead({
     ...contractDefinitions.usernameRental,
@@ -85,13 +85,13 @@ export default function GetUsernameModal() {
       <div className="bg-background p-[0.2rem] border-2 border-front">
         <div className="bg-background border-2 border-front py-8">
           <div className="p-6 flex flex-col items-center">
-            <h1 className="text-3xl font-bold relative overflow-hidden">
+            <h1 className="text-3xl font-bold relative overflow-hidden mobile:text-center">
               <span className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 animate-gradient text-transparent">
                 Your PumpFaxt Username
               </span>
               Your PumpFaxt Username
             </h1>
-            <p className="text-opacity-80 text-front mt-2 w-[70%] text-center">
+            <p className="text-opacity-80 text-front mt-2 w-[70%] mobile:w-[90%] text-center">
               Your identity across PumpFaxt, one name for your comments, and
               your tokens!
             </p>
@@ -118,8 +118,8 @@ export default function GetUsernameModal() {
                       className="flex gap-x-3 items-center"
                       onClick={() => handleGetUsername()}
                     >
-                      <p className="text-green-600 font-bold">Get Username</p>
-                      <img src="/images/pepe-dance.gif" className="w-[2vw]" />
+                      <p className="text-green-600 font-bold mobile:whitespace-nowrap">Get Username</p>
+                      <img src="/images/pepe-dance.gif" className="w-[2vw] mobile:w-[5vw]" />
                     </button>
                   )}
                 </>

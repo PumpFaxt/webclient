@@ -223,9 +223,9 @@ export default function NewToken() {
           });
         }
       }}
-      className={twMerge("p-5 flex flex-col gap-y-5")}
+      className={twMerge("p-5 flex flex-col gap-y-5 mobile:p-2")}
     >
-      <div className="flex gap-x-5">
+      <div className="flex gap-x-5 mobile:flex-col mobile:gap-y-5">
         <input
           type="text"
           name="name"
@@ -272,7 +272,7 @@ export default function NewToken() {
         className="input-retro flex-1"
       />
 
-      <div className="flex gap-x-5">
+      <div className="flex gap-x-5 mobile:flex-col mobile:gap-y-5">
         <input
           type="link"
           name="website"
@@ -319,7 +319,7 @@ export default function NewToken() {
         <img
           src="/images/loading-doge.gif"
           alt="loading"
-          className="w-[16vw]"
+          className="w-[16vw] mobile:w-[50vw]"
         />
       </div>
     </DataForm>
