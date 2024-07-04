@@ -1,3 +1,3 @@
 export default function Footer() {
-  return <footer></footer>;
+  return <footer className="mt-10"></footer>;
 }
