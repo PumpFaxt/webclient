@@ -12,7 +12,7 @@ import { twMerge } from "tailwind-merge";
 export default function GetUsernameModal() {
   const modal = useModal();
   const [username, setUsername] = useState<string>("");
-  const [loading, setLoading] = useState(false); 
+  const [loading, setLoading] = useState(false);
 
   const avbl = useContractRead({
     ...contractDefinitions.usernameRental,
@@ -75,7 +75,7 @@ export default function GetUsernameModal() {
   }
 
   return (
-    <div className="bg-background min-w-[50vw] p-2 relative">
+    <div className="bg-background max-w-[50vw] p-2 relative">
       <button
         className="absolute top-6 right-6 hover:text-red-500 hover:border-red-500 duration-100 ease-in text-xl border p-1 rounded-full"
         onClick={() => modal.hide()}
@@ -91,10 +91,24 @@ export default function GetUsernameModal() {
               </span>
               Your PumpFaxt Username
             </h1>
-            <p className="text-opacity-80 text-front mt-2 w-[70%] mobile:w-[90%] text-center">
-              Your identity across PumpFaxt, one name for your comments, and
-              your tokens!
-            </p>
+            <div className="relative flex mt-2 w-[80%] mobile:w-[90%]">
+              <p className="text-opacity-80 text-front text-center">
+                Your identity across PumpFaxt: one name for all your comments,
+                in the voice channels, and for your meme coins
+                <div className="relative inline-block group">
+                  <button className="text-xl border rounded-full ml-2 translate-y-1">
+                    <Icon icon="question" />
+                  </button>
+                  <p className="text-opacity-80 text-front text-center text-sm absolute bg-background border p-2 mt-2 hidden group-hover:block w-[40vw] -translate-x-1/2">
+                    You can get a username for just{" "}
+                    <span className="font-bold text-front">5 frax</span>! Why
+                    get a username? When you buy a username, people can identify
+                    you and remember your memes through your unique name, unless
+                    they have the capability to remember wallet addresses.
+                  </p>
+                </div>
+              </p>
+            </div>
             <div
               className={twMerge(
                 loading ? "opacity-80 animate-pulse" : "",
@@ -118,8 +132,13 @@ export default function GetUsernameModal() {
                       className="flex gap-x-3 items-center"
                       onClick={() => handleGetUsername()}
                     >
-                      <p className="text-green-600 font-bold mobile:whitespace-nowrap">Get Username</p>
-                      <img src="/images/pepe-dance.gif" className="w-[2vw] mobile:w-[5vw]" />
+                      <p className="text-green-600 font-bold mobile:whitespace-nowrap">
+                        Get Username
+                      </p>
+                      <img
+                        src="/images/pepe-dance.gif"
+                        className="w-[2vw] mobile:w-[5vw]"
+                      />
                     </button>
                   )}
                 </>
