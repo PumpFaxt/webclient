@@ -51,6 +51,27 @@
   .scrollbar-active::-webkit-scrollbar-thumb {
     @apply bg-opacity-100;
   }
+  
+  .animate-gradient {
+    animation: gradientAnimation 5s infinite;
+    background-size: 200% 100%;
+    background-image: linear-gradient(
+      90deg,
+      #3182ce,
+      #b794f4,
+      #f687b3,
+      #f6ad55,
+      #90cdf4,
+      #81e6d9,
+      #fbbf24,
+      #e53e3e,
+      #d53f8c,
+      #4a5568
+    );
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
 }
 
 @layer components {

@@ -1,9 +1,13 @@
 import React from "react";
 import { useAccount, useDisconnect } from "wagmi";
+import useModal from "../../../hooks/useModal";
+import GetUsernameModal from "./GetUsernameModal";
 
 export default function Header() {
   const { address } = useAccount();
   const { disconnect } = useDisconnect();
+
+  const modal = useModal();
 
   return (
     <section className="p-page">
@@ -18,7 +22,10 @@ export default function Header() {
               />
               <div className="flex flex-col items-center gap-y-2">
                 <h1>{address}</h1>
-                <button className="bg-[#008000] w-max px-3 relative z-1 shadow-[4px_4px_2px_#001100bb]">
+                <button
+                  className="bg-[#008000] w-max px-3 relative z-1 shadow-[4px_4px_2px_#001100bb]"
+                  onClick={() => modal.show(<GetUsernameModal />)}
+                >
                   Get Username
                 </button>
               </div>
