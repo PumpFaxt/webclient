@@ -12,7 +12,7 @@ export default function Header(props: {
 
   return (
     <section className="p-page py-5 flex flex-col items-center">
-      <div className="flex flex-col w-1/2 bg-secondary px-8 py-6 saturate-0 focus-within:saturate-100 select-none">
+      <div className="flex flex-col w-1/2 bg-secondary px-8 py-6 saturate-0 focus-within:saturate-100 select-none mobile:w-full">
         <input
           type="text"
           name="query"

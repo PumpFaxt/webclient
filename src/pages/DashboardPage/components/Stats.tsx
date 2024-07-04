@@ -20,10 +20,10 @@ export default function Stats() {
       <div className="bg-secondary p-1">
         <div className=" p-1 border-2 border-front">
           <div className="p-4 border-2 border-front">
-            <div className="border-2 border-stone-600 p-3 relative">
+            <div className="border-2 border-stone-600 p-3 relative ">
               <div className="absolute left-1/2 -translate-x-1/2 top-0 -translate-y-1/2 z-10">
                 <button
-                  className="bg-secondary text-back text-sm font-light pl-1 pr-0 flex items-center gap-x-1"
+                  className="bg-secondary text-back text-sm font-light pl-1 mobile:pl-2 pr-0 flex items-center gap-x-1 whitespace-nowrap"
                   onClick={() => setShowingDropdown((b) => !b)}
                 >
                   {displays[currentDispalying].title}

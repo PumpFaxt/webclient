@@ -10,21 +10,23 @@ export default function Hero() {
   const navigate = useNavigate();
 
   return (
-    <section className="p-page relative flex h-screen items-center">
+    <section className="p-page relative flex h-screen items-center mobile:flex-col">
       <div className="absolute-cover pointer-events-none -z-20">
         <Mandelbrot className="opacity-[3%]" />
       </div>
 
-      <div className="flex-1 flex flex-col gap-y-4 font-semibold">
-        <h1 className="text-8xl">It's simple</h1>
-        <h2 className="text-4xl">We're all here to pump it, fast!</h2>
+      <div className="flex-1 flex flex-col gap-y-4 font-semibold mobile:items-center mobile:mt-4">
+        <h1 className="text-8xl mobile:text-6xl">It's simple</h1>
+        <h2 className="text-4xl mobile:text-2xl">
+          We're all here to pump it, fast!
+        </h2>
 
-        <p className="font-light text-xl flex">
+        <p className="font-light text-xl widescreen:flex mobile:text-center">
           Explore the latest and best memecoins on the
           <Link
             to="https://www.frax.com"
             target="_blank"
-            className="italic px-1 mx-1 underline underline-offset-2 hover:no-underline"
+            className="italic px-1 mx-1 underline underline-offset-2 hover:no-underline mobile:mx-1"
           >
             Fraxtal
           </Link>
