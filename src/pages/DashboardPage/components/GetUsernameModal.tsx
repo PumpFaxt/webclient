@@ -78,7 +78,7 @@ export default function GetUsernameModal() {
                   handleInputChange(event?.currentTarget.value)
                 }
               />
-              {avbl ? (
+              {!avbl.data ? (
                 <>
                   {username && (
                     <button
