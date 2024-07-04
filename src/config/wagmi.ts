@@ -34,8 +34,10 @@ const fraxtalTestnet: Chain = {
   },
 };
 
+const primaryChain = fraxtalTestnet;
+
 const { chains, publicClient, webSocketPublicClient } = configureChains(
-  [fraxtal],
+  [primaryChain],
   [publicProvider()]
 );
 
@@ -55,7 +57,7 @@ const wagmiConfig = createConfig({
           url: window.location.hostname,
         },
       },
-      chains: [fraxtal],
+      chains: [primaryChain],
     }),
   ],
   publicClient,
