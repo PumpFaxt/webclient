@@ -5,6 +5,7 @@ import { Token } from "../../../types";
 import { useContractRead } from "wagmi";
 import contractDefinitions from "../../../contracts";
 import { ONE_TOKEN } from "../../../config";
+import UsernameWrapper from "../../../common/UsernameWrapper";
 
 interface HeaderProps {
   token?: Token;
@@ -44,7 +45,7 @@ export default function Header(props: HeaderProps) {
                 </h4>
               </div>
               <h3 className="text-pink-400 font-medium py-1 mobile:text-sm">
-                Creator: {token?.creator}
+                Creator: <UsernameWrapper>{token?.creator}</UsernameWrapper>
               </h3>
               <p className="text-front/70 text-sm ">{token?.description}</p>
             </div>
