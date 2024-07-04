@@ -23,5 +23,5 @@ export default function UsernameWrapper(props: { children: React.ReactNode }) {
     },
   });
 
-  return <>{username || address}</>;
+  return <>{username.data || address}</>;
 }
