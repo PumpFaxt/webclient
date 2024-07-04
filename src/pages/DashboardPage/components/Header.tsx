@@ -2,6 +2,7 @@ import React from "react";
 import { useAccount, useDisconnect } from "wagmi";
 import useModal from "../../../hooks/useModal";
 import GetUsernameModal from "./GetUsernameModal";
+import UsernameWrapper from "../../../common/UsernameWrapper";
 
 export default function Header() {
   const { address } = useAccount();
@@ -24,7 +25,7 @@ export default function Header() {
 
                 <div className="flex flex-col items-center gap-y-2">
                   <h1 className="mobile:w-1/2 mobile:self-start mobile:truncate">
-                    {address}
+                  {address}
                   </h1>
                   <button
                     className="bg-[#008000] w-max px-3 relative z-1 shadow-[4px_4px_2px_#001100bb] mobile:self-start"

@@ -5,6 +5,7 @@ import { useAccount, useSignMessage } from "wagmi";
 import DataForm from "../../../common/DataForm";
 import api from "../../../utils/api";
 import { IGunInstance } from "gun";
+import UsernameWrapper from "../../../common/UsernameWrapper";
 
 interface CommentSectionProps {
   comments: string[];
@@ -113,7 +114,7 @@ function ReplyCard(props: { comment: string }) {
             style={{ color: generateColorFromAddress(comment.author) }}
             className="w-1/3 truncate"
           >
-            {comment.author}
+            <UsernameWrapper>{comment.author}</UsernameWrapper>
           </h1>
           <p className="text-xs">
             {new Date(comment.timestamp).toLocaleString()}
@@ -126,4 +127,3 @@ function ReplyCard(props: { comment: string }) {
     </div>
   );
 }
-
