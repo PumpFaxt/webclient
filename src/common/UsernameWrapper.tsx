@@ -1,6 +1,6 @@
 import React from "react";
 import { isAddress } from "viem";
-import { useContractRead } from "wagmi";
+import { useContractEvent, useContractRead } from "wagmi";
 import contractDefinitions from "../contracts";
 
 export default function UsernameWrapper(props: { children: React.ReactNode }) {
@@ -13,6 +13,14 @@ export default function UsernameWrapper(props: { children: React.ReactNode }) {
     ...contractDefinitions.usernameRental,
     functionName: "getDisplayName",
     args: [address],
+  });
+
+  useContractEvent({
+    ...contractDefinitions.usernameRental,
+    eventName: "UsernameRegistered",
+    listener: () => {
+      username.refetch();
+    },
   });
 
   return <>{username || address}</>;
