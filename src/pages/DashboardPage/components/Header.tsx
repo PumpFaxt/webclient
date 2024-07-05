@@ -4,6 +4,7 @@ import useModal from "../../../hooks/useModal";
 import GetUsernameModal from "./GetUsernameModal";
 import UsernameWrapper from "../../../common/UsernameWrapper";
 import contractDefinitions from "../../../contracts";
+import CustomizeProfileModal from "./CustomizeProfileModal";
 
 export default function Header() {
   const { address } = useAccount();
@@ -16,7 +17,7 @@ export default function Header() {
     ...contractDefinitions.usernameRental,
     functionName: "getDisplayName",
     args,
-    enabled: !!address, // Only fetch when address is truthy
+    enabled: !!address,
   });
 
   console.log(
@@ -43,12 +44,20 @@ export default function Header() {
                       <h1 className="mobile:w-1/2 mobile:self-start mobile:truncate">
                         <UsernameWrapper>{address}</UsernameWrapper>
                       </h1>
-                      <button
-                        className="bg-[#008000] w-max px-3 relative z-1 shadow-[4px_4px_2px_#001100bb] mobile:self-start"
-                        onClick={() => modal.show(<GetUsernameModal />)}
-                      >
-                        Get Username
-                      </button>
+                      <div className="flex gap-x-4">
+                        <button
+                          className="bg-yellow-600 w-max px-3 relative z-1 shadow-[4px_4px_2px_#001100bb] mobile:self-start"
+                          onClick={() => modal.show(<CustomizeProfileModal />)}
+                        >
+                          Customize Profile
+                        </button>
+                        <button
+                          className="bg-[#008000] w-max px-3 relative z-1 shadow-[4px_4px_2px_#001100bb] mobile:self-start"
+                          onClick={() => modal.show(<GetUsernameModal />)}
+                        >
+                          Get Username
+                        </button>
+                      </div>
                     </div>
                   </div>
                   <div className="widescreen:absolute widescreen:right-1/4 widescreen:translate-x-full mobile:self-end">
