@@ -17,6 +17,7 @@ import useWeb3 from "../../../contexts/web3context";
 
 interface TokenTraderProps {
   token: Token;
+  color: string;
 }
 
 type TradingPairEntry = {
@@ -179,6 +180,7 @@ export default function TokenTrader(props: TokenTraderProps) {
           "opacity-75 animate-pulse pointer-events-none cursor-progress",
         loading && "animate-pulse"
       )}
+      style={{ "--uclr": props.color } as React.CSSProperties}
     >
       <p className="self-start animate-pulse">
         You are {tradeState.toLowerCase()}ing {token.symbol} for {"FRAX"}
@@ -259,6 +261,14 @@ export default function TokenTrader(props: TokenTraderProps) {
       {hasInsufficientFunds && (
         <p className="text-red-500 text-sm self-end">* Insufficient funds</p>
       )}
+
+      <div className="flex flex-col w-full self-start mt-3 border-t border-front/20 pt-3">
+        <p className="">Bonding Curve Progress : 30%</p>
+        <div className="w-full h-[2vh] bg-primary/70 mt-3 rounded-xl flex items-center relative">
+          <div className="w-[30%] bg-[var(--uclr)] h-full rounded-xl" />
+          <img src={token.image} className="w-[2vw] rounded-full -translate-x-1/2" />
+        </div>
+      </div>
     </div>
   );
 }

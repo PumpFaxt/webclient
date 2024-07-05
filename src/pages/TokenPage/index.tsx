@@ -109,7 +109,7 @@ export default function TokenPage() {
             {analysisModes[analyticsMode].element}
           </div>
 
-          {token.data && <TokenTrader token={token.data} />}
+          {token.data && <TokenTrader token={token.data} color={uclr} />}
         </div>
 
         <div className="flex mt-8 gap-x-4">

@@ -23,7 +23,7 @@ export default function Header(props: HeaderProps) {
 
   return (
     <section
-      className="bg-foreground/5 p-4 flex gap-x-4 mobile:flex-col mobile:gap-y-2 flex-1"
+      className="bg-foreground/5 p-4 flex gap-x-4 mobile:flex-col mobile:gap-y-2 flex-1 max-w-[70vw] overflow-hidden"
       style={{ "--uclr": props.color } as React.CSSProperties}
     >
       <div className="overflow-hidden widescreen:max-w-[35%] mobile:w-full max-h-[30vh]">
