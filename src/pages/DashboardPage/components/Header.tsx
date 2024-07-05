@@ -73,7 +73,7 @@ export default function Header() {
                   </div>
                 </div>
               </div>
-              <div className="widescreen:absolute widescreen:right-1/4 mobile:self-end mobile:-translate-x-full">
+              <div className="widescreen:absolute widescreen:right-1/4 widescreen:translate-x-full mobile:self-end mobile:-translate-x-full">
                 <button
                   className="bg-red-700 px-4 py-1 shadow-[4px_4px_2px_#001100bb] mobile:text-sm"
                   onClick={() => disconnect()}
