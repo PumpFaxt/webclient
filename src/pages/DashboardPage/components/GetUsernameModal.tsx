@@ -100,7 +100,7 @@ export default function GetUsernameModal() {
                   <button className="text-xl border rounded-full ml-2 translate-y-1">
                     <Icon icon="question" />
                   </button>
-                  <p className="text-opacity-80 text-front text-center text-sm absolute bg-background border p-2 mt-2 hidden group-hover:block w-[40vw] -translate-x-1/2">
+                  <p className="text-opacity-80 z-10 text-front text-center text-sm absolute bg-background border p-2 mt-2 hidden group-hover:block w-[40vw] -translate-x-1/2">
                     You can get a username for just{" "}
                     <span className="font-bold text-front">5 frax</span>! Why
                     get a username? When you buy a username, people can identify
