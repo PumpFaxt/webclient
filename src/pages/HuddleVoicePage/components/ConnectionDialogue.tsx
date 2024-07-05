@@ -60,7 +60,7 @@ export default function ConnectionDialogue(props: ConnectionDialogueProps) {
   return (
     <div
       className={twMerge(
-        "flex items-center justify-center gap-y-4 text-center",
+        "flex gap-y-4 text-center gap-x-4 justify-center items-center",
         props.className
       )}
     >
@@ -72,7 +72,7 @@ export default function ConnectionDialogue(props: ConnectionDialogueProps) {
         </span>
       </p>
       <button
-        className="bg-primary text-back font-medium px-6 py-2 rounded-md whitespace-nowrap"
+        className="bg-primary text-back font-medium px-6 py-2 rounded-md whitespace-nowrap h-max"
         onClick={handleStartSpaces}
         disabled={isJoining}
       >
