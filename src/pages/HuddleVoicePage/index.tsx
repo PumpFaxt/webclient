@@ -42,7 +42,7 @@ export default function HuddleVoicePage(props: {
   }, [signature]);
 
   return (
-    <div className="w-[30vw] bg-white/10 flex flex-col p-4 h-max">
+    <div className="w-[30vw] bg-white/10 flex flex-col p-4 h-max mobile:w-full mobile:mb-6">
       {voiceOngoing && <Room leaveCall={() => setVoiceOngoing(false)} />}
 
       {!voiceOngoing && props.creator == address && !roomExists && (

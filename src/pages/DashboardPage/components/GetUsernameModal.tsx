@@ -92,7 +92,7 @@ export default function GetUsernameModal() {
   }
 
   return (
-    <div className="bg-background max-w-[50vw] p-2 relative">
+    <div className="bg-background max-w-[50vw] p-2 relative mobile:min-w-[70vw]">
       <button
         className="absolute top-6 right-6 hover:text-red-500 hover:border-red-500 duration-100 ease-in text-xl border p-1 rounded-full"
         onClick={() => modal.hide()}
@@ -116,7 +116,7 @@ export default function GetUsernameModal() {
                   <button className="text-xl border rounded-full ml-2 translate-y-1">
                     <Icon icon="question" />
                   </button>
-                  <p className="text-opacity-80 z-10 text-front text-center text-sm absolute bg-background border p-2 mt-2 hidden group-hover:block w-[40vw] -translate-x-1/2">
+                  <p className="text-opacity-80 z-10 text-front text-center text-sm absolute bg-background border p-2 mt-2 hidden group-hover:block w-[40vw] mobile:w-[50vw] -translate-x-1/2">
                     You can get a username for just{" "}
                     <span className="font-bold text-front">5 frax</span>! Why
                     get a username? When you buy a username, people can identify

@@ -39,13 +39,13 @@ export default function CommentSection(props: CommentSectionProps) {
   const taRef = useRef() as React.MutableRefObject<HTMLTextAreaElement>;
 
   return (
-    <div className="w-2/3">
+    <div className="w-2/3 mobile:w-full">
       <div className="flex items-start gap-x-4">
         {address ? (
           <>
             <DisplayPicture
               address={address}
-              className="w-[4vw] overflow-hidden aspect-square"
+              className="w-[4vw] overflow-hidden aspect-square mobile:w-[8vw]"
             />
             <DataForm
               className="w-full flex flex-col gap-y-3"
@@ -90,7 +90,7 @@ function ReplyCard(props: { comment: string }) {
 
   return (
     <div className="flex items-start gap-x-4 bg-front/5 p-4 border-b border-front/30">
-      <DisplayPicture address={comment.author} className="w-[3.5vw]" />
+      <DisplayPicture address={comment.author} className="widescreen:w-[3.5vw] mobile:w-[5vw]" />
       <div className="w-[90%] flex flex-col text-sm">
         <div className="flex justify-between items-start">
           <h1

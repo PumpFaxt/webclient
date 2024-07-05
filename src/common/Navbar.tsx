@@ -23,10 +23,15 @@ export default function Navbar() {
 
       <FlexSeparator />
 
-      <Link to="/faucet" className="mr-4 underline hover:no-underline text-sm">
-        How to get Frax?
-      </Link>
-      <ConnectWallet />
+      <div className="flex items-center mobile:flex-col-reverse mobile:gap-y-1 mobile:items-end">
+        <Link
+          to="/faucet"
+          className="mr-4 underline hover:no-underline widescreen:text-sm"
+        >
+          How to get Frax?
+        </Link>
+        <ConnectWallet />
+      </div>
     </nav>
   );
 }

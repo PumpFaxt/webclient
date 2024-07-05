@@ -122,7 +122,7 @@ export default function Transactions(props: TransactionsProps) {
             <IndexedTxList
               transactions={transactions}
               index="price"
-              className={"w-[20%] text-xs"}
+              className={"w-[20%] text-xs mobile:truncate"}
             />
 
             <IndexedTxList

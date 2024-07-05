@@ -86,7 +86,7 @@ export default function TokenPage() {
           <Header token={token.data} color={uclr} />
           <TrendingCoins />
         </div>
-        <div className="flex mt-8 gap-x-4">
+        <div className="flex mt-8 gap-x-4 mobile:flex-col">
           <div className="flex-1 h-full">
             <div className="flex mb-2">
               <FlexSeparator />
@@ -112,7 +112,7 @@ export default function TokenPage() {
           {token.data && <TokenTrader token={token.data} color={uclr} />}
         </div>
 
-        <div className="flex mt-8 gap-x-4">
+        <div className="flex mt-8 gap-x-4 mobile:flex-col-reverse">
           {token?.data?.replies && (
             <CommentSection
               key={`${gun.get(token.data.address)}`}

@@ -195,7 +195,7 @@ export default function TokenTrader(props: TokenTraderProps) {
   return (
     <div
       className={twMerge(
-        "w-1/4 flex flex-col items-center gap-y-2 h-max",
+        "w-1/4 flex flex-col items-center gap-y-2 h-max mobile:w-full",
         (reserve.isLoading || supply.isLoading) &&
           "opacity-75 animate-pulse pointer-events-none cursor-progress",
         loading && "animate-pulse"
@@ -238,7 +238,7 @@ export default function TokenTrader(props: TokenTraderProps) {
         </div>
 
         <button
-          className="p-1 scale-150 border w-max border-front/20 text-xs bg-background rounded-md rotate-90 absolute left-1/2 -translate-x-1/2 top-1/2 "
+          className="p-1 scale-150 border w-max  border-front/20 text-xs bg-background rounded-md rotate-90 absolute left-1/2 -translate-x-1/2 top-1/2 "
           onClick={() => {
             setTradeState((p) => (p === "BUY" ? "SELL" : "BUY"));
             setSellAmount(0);
@@ -292,7 +292,7 @@ export default function TokenTrader(props: TokenTraderProps) {
           />
           <img
             src={token.image}
-            className="w-[2vw] rounded-full -translate-x-3"
+            className="w-[2vw] rounded-full -translate-x-3 mobile:w-[5vw]"
           />
         </div>
         <p className="mt-4 text-sm text-front/60">

@@ -122,11 +122,11 @@ function ConnectWalletModal() {
   const walletconnect = connectors[1];
 
   return (
-    <div>
-      <div className="flex mb-2">
-        <h1>Choose Your Provider</h1>
+    <div className=" mobile:scale-75">
+      <div className="flex mb-2 mobile:bg-background">
+        <h1 className="mobile:text-2xl">Choose Your Provider</h1>
         <FlexSeparator />
-        <button className="text-xl" onClick={modal.hide}>
+        <button className="text-xl mobile:text-3xl" onClick={modal.hide}>
           <Icon icon="close" />
         </button>
       </div>

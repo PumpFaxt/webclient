@@ -9,7 +9,7 @@ import UsernameWrapper from "../../../common/UsernameWrapper";
 export default function TrendingCoins() {
   const tokens = useApiResponse(api.tokens.trendingToken);
   return (
-    <div className="w-1/4 h-[15em]">
+    <div className="w-1/4 h-[15em] mobile:hidden">
       <h1 className="text-lg flex gap-x-1 px-1 items-end">
         <img src="/images/fire-flame.gif" className="h-[1.6em]" />
         <span className="uppercase font-medium text-yellow-200">Trending</span>

@@ -49,9 +49,9 @@ export default function CustomizeProfileModal() {
   });
 
   return (
-    <div className="bg-background max-w-[60vw] p-2 relative">
+    <div className="bg-background max-w-[60vw] p-2 relative mobile:max-w-[90vw]">
       <button
-        className="absolute top-6 right-6 hover:text-red-500 hover:border-red-500 duration-100 ease-in text-xl border p-1 rounded-full"
+        className="absolute top-6 right-6 hover:text-red-500 hover:border-red-500 duration-100 ease-in text-xl mobile:text-3xl border p-1 rounded-full"
         onClick={() => modal.hide()}
       >
         <Icon icon="close" />

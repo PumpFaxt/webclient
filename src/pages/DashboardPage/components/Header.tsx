@@ -31,7 +31,7 @@ export default function Header() {
       <div className="bg-tertiary p-1 mt-8">
         <div className="bg-tertiary p-1 border-2 border-front">
           <div className="bg-tertiary p-3 border-2 border-front">
-            <div className="flex widescreen:justify-center widescreen:items-center gap-x-4 mobile:flex-col">
+            <div className="flex widescreen:justify-center widescreen:items-center gap-x-4 ">
               {profileIndex.data ? (
                 <img
                   src={`/images/wojack/${profileIndex.data}.png`}
@@ -46,7 +46,7 @@ export default function Header() {
                 />
               )}
               <div className="flex items-center gap-x-4">
-                <div className="flex flex-col items-center gap-y-2">
+                <div className="flex flex-col widescreen:items-center gap-y-2">
                   <h1 className="mobile:w-1/2 mobile:self-start mobile:truncate flex gap-x-1">
                     {username?.data?.toLowerCase() !==
                       address?.toLowerCase() && <span>Usernme:</span>}
@@ -56,7 +56,7 @@ export default function Header() {
                   </h1>
                   <div className="flex gap-x-4">
                     <button
-                      className="bg-yellow-600 w-max px-3 relative z-1 shadow-[4px_4px_2px_#001100bb] mobile:self-start"
+                      className="bg-yellow-600 w-max px-3 relative z-1 shadow-[4px_4px_2px_#001100bb] "
                       onClick={() => modal.show(<CustomizeProfileModal />)}
                     >
                       Customize Profile
@@ -64,7 +64,7 @@ export default function Header() {
                     {username?.data?.toLowerCase() ===
                       address?.toLowerCase() && (
                       <button
-                        className="bg-[#008000] w-max px-3 relative z-1 shadow-[4px_4px_2px_#001100bb] mobile:self-start"
+                        className="bg-[#008000] w-max px-3 relative z-1 shadow-[4px_4px_2px_#001100bb] "
                         onClick={() => modal.show(<GetUsernameModal />)}
                       >
                         Get Username
@@ -73,7 +73,7 @@ export default function Header() {
                   </div>
                 </div>
               </div>
-              <div className="widescreen:absolute widescreen:right-1/4 widescreen:translate-x-full mobile:self-end">
+              <div className="widescreen:absolute widescreen:right-1/4 mobile:self-end mobile:-translate-x-full">
                 <button
                   className="bg-red-700 px-4 py-1 shadow-[4px_4px_2px_#001100bb] mobile:text-sm"
                   onClick={() => disconnect()}

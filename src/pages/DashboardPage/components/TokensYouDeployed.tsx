@@ -20,7 +20,7 @@ export default function TokensYouDeployed() {
         {!tokens.loading &&
           tokens.data &&
           tokens.data.map((token, i) => (
-            <div className="flex flex-col gap-y-8 w-[32%] bg-background h-max p-1">
+            <div className="flex flex-col gap-y-8 w-[32%] bg-background h-max p-1 mobile:w-full">
               <TokenCard token={token} key={i} />
             </div>
           ))}

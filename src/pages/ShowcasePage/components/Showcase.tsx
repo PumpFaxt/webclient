@@ -69,10 +69,10 @@ export default function Showcase(props: {
       </div>
 
       {!tokens.loading && (
-        <div className="flex justify-between group/showcase max-w-[1400px]">
+        <div className="flex justify-between group/showcase widescreen:max-w-[1400px] mobile:flex-wrap mobile:max-w-[70vw]">
           {coinsSplit &&
             coinsSplit.map((items, key) => (
-              <div key={key} className="flex flex-col gap-y-8 w-[32%]">
+              <div key={key} className="flex flex-col gap-y-8 w-[32%] mobile:w-full">
                 {items &&
                   items.map((token, key) => (
                     <TokenCard token={token} key={key} />
