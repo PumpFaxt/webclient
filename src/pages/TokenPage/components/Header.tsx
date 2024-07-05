@@ -47,7 +47,7 @@ export default function Header(props: HeaderProps) {
               <h3 className="text-pink-400 font-medium py-1 mobile:text-sm">
                 Creator: <UsernameWrapper>{token?.creator}</UsernameWrapper>
               </h3>
-              <p className="text-front/70 text-sm break-words line-clamp-[20] max-w-[60vw]">
+              <p className="text-front/70 text-sm break-words line-clamp-[20] max-w-[50vw]">
                 {token?.description}
               </p>
             </div>

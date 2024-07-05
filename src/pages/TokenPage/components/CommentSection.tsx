@@ -102,7 +102,7 @@ function ReplyCard(props: { comment: string }) {
             {new Date(comment.timestamp).toLocaleString()}
           </p>
         </div>
-        <p className="text-front/80" placeholder="Comment">
+        <p className="text-front/80 break-words pr-5" placeholder="Comment">
           {comment.content}
         </p>
       </div>
