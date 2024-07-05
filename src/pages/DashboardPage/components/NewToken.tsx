@@ -157,7 +157,7 @@ export default function NewToken() {
         if (!data.initial_supply) {
           setLoading(false);
           return toast.error({
-            title: "Missing Initial Supplu, What will people even buy?",
+            title: "Missing Initial Supply,  What will people even buy?",
           });
         }
 

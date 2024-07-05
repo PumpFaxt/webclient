@@ -6,7 +6,6 @@ const token = {
     const response = await client.get<{ total: number; tokens: Token[] }>(
       "/tokens" + (query ? `?q=${query}` : "")
     );
-    console.log(response);
     const data = response.data;
     return data;
   },
@@ -53,7 +52,7 @@ const token = {
   async trendingToken() {
     const response = await client.get("/tokens/trending/og");
     const data = response.data;
-    return data.tokens;
+    return data;
   },
 };
 

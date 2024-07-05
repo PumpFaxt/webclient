@@ -18,7 +18,7 @@ export default function DisplayPicture(props: {
       <img
         src={`/images/wojack/${profileIndex.data}.png`}
         alt="pfp"
-        className="w-full h-full object-cover border p-[0.1rem] rounded-full"
+        className="w-full h-full object-cover border p-[0.15rem] rounded-full"
       />
       <div
         className="absolute inset-0 rounded-full mix-blend-color"
