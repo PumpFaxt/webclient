@@ -195,92 +195,94 @@ export default function TokenTrader(props: TokenTraderProps) {
   return (
     <div
       className={twMerge(
-        "w-1/4 flex flex-col items-center relative gap-y-2 h-max",
+        "w-1/4 flex flex-col items-center gap-y-2 h-max",
         (reserve.isLoading || supply.isLoading) &&
           "opacity-75 animate-pulse pointer-events-none cursor-progress",
         loading && "animate-pulse"
       )}
       style={{ "--uclr": props.color } as React.CSSProperties}
     >
-      <p className="self-start animate-pulse">
-        You are {tradeState.toLowerCase()}ing {token.symbol} for {"FRAX"}
-      </p>
+      <div className="flex flex-col items-center relative gap-y-2">
+        <p className="self-start animate-pulse">
+          You are {tradeState.toLowerCase()}ing {token.symbol} for {"FRAX"}
+        </p>
 
-      <DataForm
-        className="flex gap-x-1 w-full"
-        callback={(data) => {
-          setSlippage(Number(data.slippage));
-          toast.log({ title: `New Slippage saved as ${data.slippage}%` });
-        }}
-      >
-        <input
-          placeholder={`current slippage ${slippage}%`}
-          className="text-sm px-2 py-1 bg-transparent border border-front/20 rounded-md focus-within:outline-none w-full"
-          name="slippage"
-          type="number"
-          min={1}
-          max={100}
-        />
-        <button className="text-sm self-end py-1 px-3 rounded-md bg-front/10 whitespace-nowrap">
-          Set max slippage
+        <DataForm
+          className="flex gap-x-1 w-full"
+          callback={(data) => {
+            setSlippage(Number(data.slippage));
+            toast.log({ title: `New Slippage saved as ${data.slippage}%` });
+          }}
+        >
+          <input
+            placeholder={`current slippage ${slippage}%`}
+            className="text-sm px-2 py-1 bg-transparent border border-front/20 rounded-md focus-within:outline-none w-full"
+            name="slippage"
+            type="number"
+            min={1}
+            max={100}
+          />
+          <button className="text-sm self-end py-1 px-3 rounded-md bg-front/10 whitespace-nowrap">
+            Set max slippage
+          </button>
+        </DataForm>
+
+        <div className="border border-front/20 p-3 rounded-lg min-h-[15vh]">
+          <h1>Sell</h1>
+          <TradingPairMember
+            token={tradingPair[selling]}
+            max={Number(tradingPair[selling].balance) / Number(ONE_FRAX)}
+            setSellAmount={setSellAmount}
+            label="Max"
+          />
+        </div>
+
+        <button
+          className="p-1 scale-150 border w-max border-front/20 text-xs bg-background rounded-md rotate-90 absolute left-1/2 -translate-x-1/2 top-1/2 "
+          onClick={() => {
+            setTradeState((p) => (p === "BUY" ? "SELL" : "BUY"));
+            setSellAmount(0);
+          }}
+        >
+          <Icon icon="arrow_forward" />
         </button>
-      </DataForm>
 
-      <div className="border border-front/20 p-3 rounded-lg min-h-[15vh]">
-        <h1>Sell</h1>
-        <TradingPairMember
-          token={tradingPair[selling]}
-          max={Number(tradingPair[selling].balance) / Number(ONE_FRAX)}
-          setSellAmount={setSellAmount}
-          label="Max"
-        />
-      </div>
+        <div className="border border-front/20 p-3 rounded-lg min-h-[15vh]">
+          <h1>Buy</h1>
+          <TradingPairMember
+            token={tradingPair[buying]}
+            buyAmount={Number(amount.buy) / Number(ONE_TOKEN)}
+            label="Balance"
+          />
+        </div>
 
-      <button
-        className="p-1 scale-150 border w-max border-front/20 text-xs bg-background rounded-md rotate-90 absolute left-1/2 -translate-x-1/2 top-1/2 "
-        onClick={() => {
-          setTradeState((p) => (p === "BUY" ? "SELL" : "BUY"));
-          setSellAmount(0);
-        }}
-      >
-        <Icon icon="arrow_forward" />
-      </button>
+        <button
+          className={twMerge(
+            "w-full rounded-md py-2 text-black font-semibold disabled:opacity-50",
+            tradeState == "BUY" ? "bg-green-400" : "bg-red-400"
+          )}
+          disabled={hasInsufficientFunds || loading}
+          onClick={() => {
+            setLoading(true);
+            if (tradeState == "BUY") {
+              approveFrax.write({
+                args: [token.address, amount.sell],
+              });
+            }
 
-      <div className="border border-front/20 p-3 rounded-lg min-h-[15vh]">
-        <h1>Buy</h1>
-        <TradingPairMember
-          token={tradingPair[buying]}
-          buyAmount={Number(amount.buy) / Number(ONE_TOKEN)}
-          label="Balance"
-        />
-      </div>
-
-      <button
-        className={twMerge(
-          "w-full rounded-md py-2 text-black font-semibold disabled:opacity-50",
-          tradeState == "BUY" ? "bg-green-400" : "bg-red-400"
+            if (tradeState == "SELL") {
+              approveToken.write({
+                args: [token.address, amount.sell],
+              });
+            }
+          }}
+        >
+          {tradeState}
+        </button>
+        {hasInsufficientFunds && (
+          <p className="text-red-500 text-sm self-end">* Insufficient funds</p>
         )}
-        disabled={hasInsufficientFunds || loading}
-        onClick={() => {
-          setLoading(true);
-          if (tradeState == "BUY") {
-            approveFrax.write({
-              args: [token.address, amount.sell],
-            });
-          }
-
-          if (tradeState == "SELL") {
-            approveToken.write({
-              args: [token.address, amount.sell],
-            });
-          }
-        }}
-      >
-        {tradeState}
-      </button>
-      {hasInsufficientFunds && (
-        <p className="text-red-500 text-sm self-end">* Insufficient funds</p>
-      )}
+      </div>
 
       <div className="flex flex-col w-full self-start mt-3 border-t border-front/20 pt-3">
         <p className="">Bonding Curve Progress : {bondingCurvePercent}%</p>
