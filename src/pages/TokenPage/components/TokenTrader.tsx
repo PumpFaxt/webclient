@@ -283,11 +283,11 @@ export default function TokenTrader(props: TokenTraderProps) {
         <p className="">Bonding Curve Progress : {bondingCurvePercent}%</p>
         <div className="w-full h-[2vh] bg-primary/70 mt-3 rounded-xl flex items-center relative">
           <div
-            className={`w-[${bondingCurvePercent}%] g-[var(--uclr)] h-full rounded-xl`}
+            className={`w-[${bondingCurvePercent}%] bg-[var(--uclr)] h-full rounded-xl`}
           />
           <img
             src={token.image}
-            className="w-[2vw] rounded-full -translate-x-1/2"
+            className="w-[2vw] rounded-full -translate-x-3"
           />
         </div>
       </div>
