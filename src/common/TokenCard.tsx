@@ -7,6 +7,9 @@ import {
 import { Token } from "../types";
 import { twMerge } from "tailwind-merge";
 import { Link } from "react-router-dom";
+import { useContractRead } from "wagmi";
+import contractDefinitions from "../contracts";
+import { ONE_TOKEN } from "../config";
 
 interface TokenCardProps {
   token: Token;
@@ -34,6 +37,12 @@ export default function TokenCard(props: TokenCardProps) {
   useEffect(() => {
     loadData();
   }, []);
+
+  const marketCap = useContractRead({
+    ...contractDefinitions.token,
+    address: data.address,
+    functionName: "marketCap",
+  });
 
   return (
     <Link
@@ -65,9 +74,14 @@ export default function TokenCard(props: TokenCardProps) {
           TICKER : {data.symbol}
         </h4>
 
-        <h5 className="text-pink-400 truncate max-w-[16ch] text-xs my-[1px]">
+        <h5 className="text-pink-400 truncate max-w-[25ch] text-xs my-[1px]">
           Created by {formatAddress(data.creator)}
         </h5>
+
+        <h6 className="text-xs text-front/60 max-w-[16ch] truncate">
+          MarketCap :{" "}
+          <span className="text-front">{(Number(marketCap.data) / Number(ONE_TOKEN)).toFixed(2)}</span>
+        </h6>
 
         <p className="mt-1 text-sm text-front/90 font-light line-clamp-4">
           {data.description}
