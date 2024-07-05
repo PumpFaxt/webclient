@@ -6,11 +6,11 @@ export default function Introduction() {
   const modal = useModal();
 
   return (
-    <article className="bg-background rounded-md max-w-[50vw] p-5 border border-front/40 shadow">
+    <article className="bg-background rounded-md max-w-[50vw] mobile:max-w-[90vw] p-5 border border-front/40 shadow">
       <h1 className="text-3xl font-bold mb-4 animate-gradient">
         Welcome to PumpFaxt.com BETA
       </h1>
-      <p className="mb-4">
+      <p className="mb-4 mobile:mb-2">
         You are interacting with the testnet, where tokens have{" "}
         <b>no monetary value.</b>
         <br />
@@ -18,7 +18,7 @@ export default function Introduction() {
       </p>
 
       <div className="mb-6">
-        <h2 className="text-2xl font-semibold mb-2 text-orange-500">
+        <h2 className="text-2xl font-semibold mb-2 text-orange-500 mobile:text-xl">
           1. Claim Test Tokens
         </h2>
         <ul className="list-disc list-inside ml-4">
@@ -37,7 +37,7 @@ export default function Introduction() {
       </div>
 
       <div className="mb-6">
-        <h2 className="text-2xl font-semibold mb-2 text-cyan-500">
+        <h2 className="text-2xl font-semibold mb-2 text-cyan-500 mobile:text-xl">
           2. Create and Trade Tokens
         </h2>
         <ul className="list-disc list-inside ml-4">
@@ -45,14 +45,16 @@ export default function Introduction() {
             Create tokens from your dashboard (accessible via your profile in
             the navbar).
           </li>
-          <li className="mb-2 text-red-600">Note: NSFW token will be deleted without any refund.</li>
+          <li className="mb-2 text-red-600">
+            Note: NSFW token will be deleted without any refund.
+          </li>
           <li className="mb-2">Trade tokens using FRAX.</li>
           <li>Each token follows a bonding curve.</li>
         </ul>
       </div>
 
       <div>
-        <h2 className="text-2xl font-semibold mb-2 text-green-500">
+        <h2 className="text-2xl font-semibold mb-2 text-green-500 mobile:text-xl">
           3. Token Threshold and Listing
         </h2>
         <ul className="list-disc list-inside ml-4">
@@ -70,7 +72,7 @@ export default function Introduction() {
         </ul>
       </div>
 
-      <p className="mt-6">Explore the platform and test its features.</p>
+      <p className="mt-6 mobile:mt-2">Explore the platform and test its features.</p>
 
       <div className="relative">
         <button
