@@ -14,6 +14,7 @@ import {
 } from "../../../utils";
 import DisplayPicture from "../../../common/DisplayPicture";
 import { Address } from "viem";
+import UsernameWrapper from "../../../common/UsernameWrapper";
 
 interface GridCardProps {
   peerId?: string;
@@ -70,14 +71,21 @@ export default function FellowCard(props: GridCardProps) {
 
       <div className="relative m-3 overflow-hidden rounded-full">
         {metadata?.displayName && (
-          <DisplayPicture address={metadata?.displayName as Address} className="w-[5vw]" />
+          <DisplayPicture
+            address={metadata?.displayName as Address}
+            className="w-[5vw]"
+          />
         )}
         <div className="absolute-cover bg-[var(--uclr)] -z-1 opacity-20" />
       </div>
 
       <div className="mt-1 text-center">
         <p className="font-bold font-comicNeue text-lg">
-          {metadata?.displayName && formatAddress(metadata?.displayName)}
+          {metadata?.displayName && (
+            <UsernameWrapper>
+              {metadata?.displayName as Address}
+            </UsernameWrapper>
+          )}
         </p>
         <p className="text-front/70 text-sm font-light">
           {role} {!props.peerId && " (You)"}

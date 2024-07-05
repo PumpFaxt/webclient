@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import { useContractRead } from "wagmi";
 import contractDefinitions from "../contracts";
 import { ONE_TOKEN } from "../config";
+import UsernameWrapper from "./UsernameWrapper";
 
 interface TokenCardProps {
   token: Token;
@@ -75,12 +76,15 @@ export default function TokenCard(props: TokenCardProps) {
         </h4>
 
         <h5 className="text-pink-400 truncate max-w-[25ch] text-xs my-[1px]">
-          Created by {formatAddress(data.creator)}
+          Created by: {" "}
+          <UsernameWrapper>{data.creator}</UsernameWrapper>
         </h5>
 
         <h6 className="text-xs text-front/60 max-w-[16ch] truncate">
           MarketCap :{" "}
-          <span className="text-front">{(Number(marketCap.data) / Number(ONE_TOKEN)).toFixed(2)}</span>
+          <span className="text-front">
+            {(Number(marketCap.data) / Number(ONE_TOKEN)).toFixed(2)}
+          </span>
         </h6>
 
         <p className="mt-1 text-sm text-front/90 font-light line-clamp-4">

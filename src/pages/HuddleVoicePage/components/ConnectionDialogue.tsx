@@ -68,12 +68,7 @@ export default function ConnectionDialogue(props: ConnectionDialogueProps) {
       <p className="text-start pl-4">
         Joining as
         <span className="font-light text-sm text-pink-300">
-          {" "}
-          {
-            <UsernameWrapper>
-              {formatAddress(address || "!ERROR")}
-            </UsernameWrapper>
-          }
+          {<UsernameWrapper>{address}</UsernameWrapper>}
         </span>
       </p>
       <button

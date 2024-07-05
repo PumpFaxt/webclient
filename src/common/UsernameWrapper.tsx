@@ -2,6 +2,7 @@ import React from "react";
 import { isAddress } from "viem";
 import { useContractEvent, useContractRead } from "wagmi";
 import contractDefinitions from "../contracts";
+import { formatAddress } from "../utils";
 
 export default function UsernameWrapper(props: { children: React.ReactNode }) {
   if (typeof props.children != "string" || !isAddress(props.children))
