@@ -2,6 +2,7 @@ import { useState } from "react";
 import Icon from "../../../common/Icon";
 import useModal from "../../../hooks/useModal";
 import {
+  useAccount,
   useContractRead,
   useContractWrite,
   useWaitForTransaction,
@@ -14,6 +15,8 @@ export default function GetUsernameModal() {
   const modal = useModal();
   const [username, setUsername] = useState<string>("");
   const [loading, setLoading] = useState(false);
+
+  const { address } = useAccount();
 
   const avbl = useContractRead({
     ...contractDefinitions.usernameRental,
@@ -29,6 +32,12 @@ export default function GetUsernameModal() {
   const fee = useContractRead({
     ...contractDefinitions.usernameRental,
     functionName: "fee",
+  });
+
+  const fraxAllowance = useContractRead({
+    ...contractDefinitions.frax,
+    functionName: "allowance",
+    args: [address || "0x", contractDefinitions.usernameRental.address],
   });
 
   const buyUsername = useContractWrite({
@@ -66,10 +75,17 @@ export default function GetUsernameModal() {
 
   function handleGetUsername() {
     setLoading(true);
-    if (fee.data) {
-      approveTransfer.write({
-        args: [contractDefinitions.usernameRental.address, fee.data],
-      });
+
+    if (fee.data && fraxAllowance.data !== undefined) {
+      if (fraxAllowance.data >= fee.data) {
+        buyUsername.write({
+          args: [username],
+        });
+      } else {
+        approveTransfer.write({
+          args: [contractDefinitions.usernameRental.address, fee.data],
+        });
+      }
     } else {
       setLoading(false);
     }
