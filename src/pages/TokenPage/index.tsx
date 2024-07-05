@@ -121,7 +121,13 @@ export default function TokenPage() {
               gun={gun}
             />
           )}
-          <HuddleVoicePage />
+          <HuddleVoicePage
+            tokenAddress={token.data?.address || "0x"}
+            roomId={token.data?.roomId || ""}
+            roomIdExpiration={token.data?.roomIdExpiration || 0}
+            creator={token.data?.creator || "0x"}
+            refetchTokenData={token.refetch}
+          />
         </div>
       </div>
     </>
