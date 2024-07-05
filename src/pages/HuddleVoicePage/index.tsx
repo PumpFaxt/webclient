@@ -54,6 +54,10 @@ export default function HuddleVoicePage(props: {
         </button>
       )}
 
+      {!voiceOngoing && props.creator != address && (
+        <span>You can join voice channel when creator starts it</span>
+      )}
+
       {!voiceOngoing && roomExists && (
         <ConnectionDialogue
           className="w-1/4"
