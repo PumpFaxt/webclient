@@ -10,26 +10,28 @@ export default function Hero() {
   return (
     <section className="h-[85vh] text-front flex flex-col items-center p-20 gap-y-10 relative">
       <div className="flex text-5xl items-center gap-x-3">
-        <img src="logo.png" className="h-[1.3em]" />
+        {/* <img src="logo.png" className="h-[1.3em]" /> */}
         <h1 className="font-semibold">Test (Fake) FRAX Faucet</h1>
       </div>
 
-      <div className="border-2 p-8 rounded-[1rem] flex flex-col items-center gap-y-2 min-w-[40vw]">
-        {!address && <h3>Connect you wallet </h3>}
+      <div className="border-2 p-8 rounded-[1rem] flex flex-col items-center gap-y-2 min-w-[30vw]">
+        {!address && <h3 className="text-xl">Connect you wallet </h3>}
         <p className="text-sm text-front/60">
           You can claim 100 FRAX every 6 hours
         </p>
-        <div className="mt-4">
-          <div className="text-sm">Claim Address:</div>
-          <p>{address}</p>
-        </div>
         {address && (
-          <button
-            className="mt-4 bg-primary px-5 py-1 font-semibold text-black rounded-md hover:scale-[102%] hover:-translate-y-1 hover:shadow-lg active:translate-y-1 
-        active:scale-75 duration-300 disabled:opacity-50 disabled:pointer-events-none"
-          >
-            Claim
-          </button>
+          <>
+            <div className="mt-4">
+              <div className="text-sm">Claim Address:</div>
+              <p>{address}</p>
+            </div>
+            <button
+              className="mt-4 bg-primary px-5 py-1 font-semibold text-black rounded-md hover:scale-[102%] hover:-translate-y-1 hover:shadow-lg active:translate-y-1 
+            active:scale-75 duration-300 disabled:opacity-50 disabled:pointer-events-none"
+            >
+              Claim
+            </button>
+          </>
         )}
       </div>
 
