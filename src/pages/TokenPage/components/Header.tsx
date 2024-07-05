@@ -23,7 +23,7 @@ export default function Header(props: HeaderProps) {
 
   return (
     <section
-      className="bg-foreground/5 p-4 flex gap-x-4 mobile:flex-col mobile:gap-y-2 flex-1 max-w-[70vw] overflow-hidden"
+      className="bg-foreground/5 p-4 flex gap-x-4 mobile:flex-col mobile:gap-y-2 flex-1"
       style={{ "--uclr": props.color } as React.CSSProperties}
     >
       <div className="overflow-hidden widescreen:max-w-[35%] mobile:w-full max-h-[30vh]">
@@ -37,7 +37,7 @@ export default function Header(props: HeaderProps) {
           <div className="flex justify-between pb-3 border-b border-front/70 w-full mobile:flex-col">
             <div className="flex flex-col h-max">
               <div className="flex items-center gap-x-4">
-                <h1 className="text-2xl font-bold text-[var(--uclr)] mobile:text-3xl">
+                <h1 className="text-2xl font-bold text-[var(--uclr)] mobile:text-3xl max-w-[20vw] truncate">
                   {token?.name}
                 </h1>
                 <h4 className="text-front border border-front py-1 px-3 rounded-md text-xs">
@@ -47,7 +47,7 @@ export default function Header(props: HeaderProps) {
               <h3 className="text-pink-400 font-medium py-1 mobile:text-sm">
                 Creator: <UsernameWrapper>{token?.creator}</UsernameWrapper>
               </h3>
-              <p className="text-front/70 text-sm ">{token?.description}</p>
+              <p className="text-front/70 text-sm">{token?.description}</p>
             </div>
           </div>
 
