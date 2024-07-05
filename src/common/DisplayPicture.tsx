@@ -5,7 +5,7 @@ import { twMerge } from "tailwind-merge";
 import { generateColorFromAddress } from "../utils";
 
 export default function DisplayPicture(props: {
-  address: `0x${string}`;
+  address: `0x${string}` ;
   className?: string;
 }) {
   const profileIndex = useContractRead({

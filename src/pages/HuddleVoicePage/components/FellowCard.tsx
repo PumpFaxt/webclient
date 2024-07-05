@@ -12,6 +12,8 @@ import {
   formatAddress,
   generateColorFromAddress,
 } from "../../../utils";
+import DisplayPicture from "../../../common/DisplayPicture";
+import { Address } from "viem";
 
 interface GridCardProps {
   peerId?: string;
@@ -59,22 +61,17 @@ export default function FellowCard(props: GridCardProps) {
   return (
     <div
       className={twMerge(
-        "relative flex flex-col items-center p-2 border-2 border-front/20 text-[var(--uclr)] rounded",
+        "relative flex flex-col items-center p-2 border-2 border-front/20 text-[var(--uclr)] rounded ",
         props.className
       )}
       style={{ "--uclr": color } as React.CSSProperties}
     >
       {peerId && <AudioStream peerId={peerId} />}
 
-      <div className="relative w-2/3 m-3 overflow-hidden rounded-full">
-        <img
-          src={
-            metadata?.avatarUrl ||
-            "https://wojak-studio.com/res/bases/happy_smug.png"
-          }
-          alt="default-avatar"
-          className="object-contain aspect-square w-full"
-        />
+      <div className="relative m-3 overflow-hidden rounded-full">
+        {metadata?.displayName && (
+          <DisplayPicture address={metadata?.displayName as Address} className="w-[5vw]" />
+        )}
         <div className="absolute-cover bg-[var(--uclr)] -z-1 opacity-20" />
       </div>
 

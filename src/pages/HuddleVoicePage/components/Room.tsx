@@ -49,7 +49,7 @@ export default function Room(props: RoomProps) {
   }, []);
 
   return (
-    <section className="bg-audio flex h-screen items-center justify-center w-full relative  text-slate-100">
+    <section className="bg-audio flex-col justify-between flex items-center w-full relative  text-slate-100">
       <Grid />
       <Options />
     </section>

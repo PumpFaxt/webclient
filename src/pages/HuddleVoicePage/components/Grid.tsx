@@ -30,7 +30,7 @@ export default function Grid() {
           return (
             <FellowCard
               key={`grid-${peerId}`}
-              className={twMerge("w-[20%]", peerId == localPeerId && "hidden")}
+              className={twMerge("w-full", peerId == localPeerId && "hidden")}
               peerId={peerId == localPeerId ? undefined : peerId}
             />
           );

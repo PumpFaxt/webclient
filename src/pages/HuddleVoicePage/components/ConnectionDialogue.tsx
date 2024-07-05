@@ -6,6 +6,8 @@ import { useAccount } from "wagmi";
 import { twMerge } from "tailwind-merge";
 import { formatAddress } from "../../../utils";
 import api from "../../../utils/api";
+import DisplayPicture from "../../../common/DisplayPicture";
+import UsernameWrapper from "../../../common/UsernameWrapper";
 
 interface ConnectionDialogueProps {
   className?: string;
@@ -58,28 +60,28 @@ export default function ConnectionDialogue(props: ConnectionDialogueProps) {
   return (
     <div
       className={twMerge(
-        "flex flex-col items-center justify-center gap-y-4 text-center",
+        "flex items-center justify-center gap-y-4 text-center",
         props.className
       )}
     >
-      <img
-        src={avatarUrl}
-        alt={address}
-        className="object-contain aspect-square w-1/2"
-      />
-      <p>
+      {address && <DisplayPicture address={address} className="w-[5vw]" />}
+      <p className="text-start pl-4">
         Joining as
         <span className="font-light text-sm text-pink-300">
           {" "}
-          {formatAddress(address || "!ERROR")}
+          {
+            <UsernameWrapper>
+              {formatAddress(address || "!ERROR")}
+            </UsernameWrapper>
+          }
         </span>
       </p>
       <button
-        className="bg-primary text-back font-medium px-6 py-2 rounded-md"
+        className="bg-primary text-back font-medium px-6 py-2 rounded-md whitespace-nowrap"
         onClick={handleStartSpaces}
         disabled={isJoining}
       >
-        {isJoining ? "Joining Spaces..." : "Start Spaces"}
+        {isJoining ? "Joining Voice channel..." : "Join Voice Channel"}
       </button>
     </div>
   );

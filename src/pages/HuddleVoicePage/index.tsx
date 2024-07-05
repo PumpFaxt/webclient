@@ -42,16 +42,23 @@ export default function HuddleVoicePage(props: {
   }, [signature]);
 
   return (
-    <div>
+    <div className="w-[30vw] bg-white/10 flex flex-col p-4 h-max">
       {voiceOngoing && <Room leaveCall={() => setVoiceOngoing(false)} />}
 
       {!voiceOngoing && props.creator == address && !roomExists && (
-        <button
-          className="bg-orange-500 text-black font-medium px-6 py-2 ml-10"
-          onClick={startNew}
-        >
-          Start Voice Channel
-        </button>
+        <>
+          <button
+            className="bg-orange-500 text-black font-medium px-6 py-2"
+            onClick={startNew}
+          >
+            Start Voice Channel
+          </button>
+          <span className="mt-3 text-sm text-front/60">
+            You are the creator of this Coin, So you can start a voice channel
+            and other people can join it. Note: Each session will last for 30
+            minutes
+          </span>
+        </>
       )}
 
       {!voiceOngoing && props.creator != address && (
@@ -60,7 +67,7 @@ export default function HuddleVoicePage(props: {
 
       {!voiceOngoing && roomExists && (
         <ConnectionDialogue
-          className="w-1/4"
+          className=""
           roomId={props.roomId}
           startCall={() => setVoiceOngoing(true)}
           setToken={setToken}
