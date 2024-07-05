@@ -3,8 +3,18 @@ import Navbar from "../common/Navbar";
 import Footer from "../common/Footer";
 import Modal from "../common/Modal";
 import Toasts from "../common/Toasts";
+import { useEffect } from "react";
+import useModal from "../hooks/useModal";
+import Introduction from "../common/Introduction";
 
 export default function Default() {
+  const modal = useModal();
+
+  useEffect(() => {
+    modal.hide();
+    modal.show(<Introduction />);
+  }, []);
+
   return (
     <main className="relative">
       <Modal />
