@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import { getImageDominantRgb, getLuminicanceFromRgb } from "../../../utils";
 import { Link } from "react-router-dom";
+import UsernameWrapper from "../../../common/UsernameWrapper";
 
 export default function TokensYouHold() {
   return (
@@ -84,7 +85,8 @@ function CoinCard(props: { coin: any; className?: string }) {
           </h4>
 
           <h5 className="text-pink-400 text-xs my-[1px]">
-            Created by {data.creator}
+            Created by
+            <UsernameWrapper>{data.creator}</UsernameWrapper>
           </h5>
 
           <p className="mt-1 text-sm text-front/90 font-light line-clamp-4">

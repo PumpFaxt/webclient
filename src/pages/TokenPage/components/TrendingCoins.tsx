@@ -4,6 +4,7 @@ import api from "../../../utils/api";
 import { getImageDominantRgb, getLuminicanceFromRgb } from "../../../utils";
 import Icon from "../../../common/Icon";
 import { Link, useNavigate } from "react-router-dom";
+import UsernameWrapper from "../../../common/UsernameWrapper";
 
 export default function TrendingCoins() {
   const tokens = useApiResponse(api.tokens.getAll);
@@ -24,15 +25,15 @@ export default function TrendingCoins() {
               className="relative bg-background flex group justify-between px-2 py-2 border items-center rounded-md border-primary border-opacity-20 hover:bg-primary hover:bg-opacity-5"
             >
               <div className="flex gap-x-2 items-center">
-                  <img
-                    src={token.image}
-                    alt="img"
-                    className="w-[2vw] h-[2vw] aspect-square rounded-full object-cover"
-                  />
+                <img
+                  src={token.image}
+                  alt="img"
+                  className="w-[2vw] h-[2vw] aspect-square rounded-full object-cover"
+                />
                 <div>
                   <h1 className="text-sm">{token.name}</h1>
                   <p className="text-xs w-[10vw] truncate text-front/60">
-                    Creator: {token.creator}
+                    Creator: <UsernameWrapper>{token.creator}</UsernameWrapper>
                   </p>
                 </div>
               </div>

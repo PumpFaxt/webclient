@@ -8,6 +8,7 @@ import {
 } from "wagmi";
 import contractDefinitions from "../../../contracts";
 import { twMerge } from "tailwind-merge";
+import { ONE_FRAX } from "../../../config";
 
 export default function GetUsernameModal() {
   const modal = useModal();
