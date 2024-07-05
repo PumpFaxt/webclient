@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import Icon from "../../../common/Icon";
 import { Token } from "../../../types";
@@ -113,6 +113,23 @@ export default function TokenTrader(props: TokenTraderProps) {
       });
     }
   }
+
+  const marketCap = useContractRead({
+    ...contractDefinitions.token,
+    address: token?.address,
+    functionName: "marketCap",
+  });
+
+  const reserveThreshold = useContractRead({
+    ...contractDefinitions.token,
+    address: token?.address,
+    functionName: "reserveThreshold",
+  });
+
+  const bondingCurvePercent = (
+    (Number(marketCap.data) / Number(reserveThreshold.data)) *
+    100
+  ).toFixed(2);
 
   const approveFrax = useContractWrite({
     ...contractDefinitions.frax,
@@ -263,10 +280,15 @@ export default function TokenTrader(props: TokenTraderProps) {
       )}
 
       <div className="flex flex-col w-full self-start mt-3 border-t border-front/20 pt-3">
-        <p className="">Bonding Curve Progress : 30%</p>
+        <p className="">Bonding Curve Progress : {bondingCurvePercent}%</p>
         <div className="w-full h-[2vh] bg-primary/70 mt-3 rounded-xl flex items-center relative">
-          <div className="w-[30%] bg-[var(--uclr)] h-full rounded-xl" />
-          <img src={token.image} className="w-[2vw] rounded-full -translate-x-1/2" />
+          <div
+            className={`w-[${bondingCurvePercent}%] g-[var(--uclr)] h-full rounded-xl`}
+          />
+          <img
+            src={token.image}
+            className="w-[2vw] rounded-full -translate-x-1/2"
+          />
         </div>
       </div>
     </div>
