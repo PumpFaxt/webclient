@@ -290,6 +290,11 @@ export default function TokenTrader(props: TokenTraderProps) {
             className="w-[2vw] rounded-full -translate-x-3"
           />
         </div>
+        <p className="mt-4 text-sm text-front/60">
+          When a token reaches a threshold, It will get listed on the R.A
+          exchange. On the testnet, tokens reaching the threshold will be burnt
+          instead of being listed.
+        </p>
       </div>
     </div>
   );
