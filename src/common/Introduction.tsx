@@ -45,6 +45,7 @@ export default function Introduction() {
             Create tokens from your dashboard (accessible via your profile in
             the navbar).
           </li>
+          <li className="mb-2 text-red-600">Note: NSFW token will be deleted without any refund</li>
           <li className="mb-2">Trade tokens using FRAX.</li>
           <li>Each token follows a bonding curve.</li>
         </ul>
