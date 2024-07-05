@@ -64,6 +64,7 @@ export default function CommentSection(props: CommentSectionProps) {
                 placeholder="Comment"
                 name="content"
                 ref={taRef}
+                maxLength={500}
               />
               <button className="bg-foreground w-max self-end text-back py-1 px-3 text-sm">
                 Comment
@@ -102,7 +103,7 @@ function ReplyCard(props: { comment: string }) {
             {new Date(comment.timestamp).toLocaleString()}
           </p>
         </div>
-        <p className="text-front/80" placeholder="Comment">
+        <p className="text-front/80 break-words pr-5" placeholder="Comment">
           {comment.content}
         </p>
       </div>
