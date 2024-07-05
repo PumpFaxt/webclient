@@ -6,7 +6,7 @@ const token = {
     const response = await client.get<{ total: number; tokens: Token[] }>(
       "/tokens" + (query ? `?q=${query}` : "")
     );
-    console.log(response)
+    console.log(response);
     const data = response.data;
     return data;
   },
@@ -44,11 +44,17 @@ const token = {
     return data.tokens;
   },
 
-  async randomAddress(){
-    const response = await client.get('/tokens/random/address')
+  async randomAddress() {
+    const response = await client.get("/tokens/random/address");
     const data = response.data;
     return data.token.address;
-  }
+  },
+
+  async trendingToken() {
+    const response = await client.get("/tokens/trending/og");
+    const data = response.data;
+    return data.tokens;
+  },
 };
 
 export default token;

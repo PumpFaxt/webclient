@@ -7,8 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import UsernameWrapper from "../../../common/UsernameWrapper";
 
 export default function TrendingCoins() {
-  const tokens = useApiResponse(api.tokens.getAll);
-
+  const tokens = useApiResponse(api.tokens.trendingToken);
   return (
     <div className="w-1/4 h-[15em]">
       <h1 className="text-lg flex gap-x-1 px-1 items-end">
@@ -18,7 +17,7 @@ export default function TrendingCoins() {
       <div className="flex flex-col gap-y-2 mt-1 overflow-y-scroll h-[85%] scrollbar-primary w-full">
         {!tokens.loading &&
           tokens.data &&
-          tokens.data.tokens.map((token, key) => (
+          tokens.data.tokens.map((token: { address: any; image: string | undefined; name: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; creator: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; symbol: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; }, key: React.Key | null | undefined) => (
             <a
               href={`/T/${token.address}`}
               key={key}
