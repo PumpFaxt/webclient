@@ -1,6 +1,7 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ConnectWallet from "./ConnectWallet";
 import FlexSeparator from "./FlexSeparator";
+import Icon from "./Icon";
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -13,12 +14,18 @@ export default function Navbar() {
       >
         <img src="/logo.png" className="h-[1.8em] aspect-square" />
         <h1 className="mobile:flex mobile:flex-col">
-          PumpFaxt <span className="text-xs opacity-50 mobile:self-end">(Pump It Fast)</span>
+          PumpFaxt{" "}
+          <span className="text-xs opacity-50 mobile:self-end">
+            (Pump It Fast)
+          </span>
         </h1>
       </button>
 
       <FlexSeparator />
 
+      <Link to="/faucet" className="mr-4 underline hover:no-underline text-sm">
+        How to get Frax?
+      </Link>
       <ConnectWallet />
     </nav>
   );

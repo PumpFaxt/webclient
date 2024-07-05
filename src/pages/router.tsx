@@ -13,6 +13,7 @@ import ProtectedRoute, { ProtectedTypes } from "../common/ProtectedRoute";
 import StreamingTestPage from "./StreamingTestPage/StreamingTestPage";
 import HuddleVoicePage from "./HuddleVoicePage";
 import TokenPage from "./TokenPage";
+import FaucetPage from "./FaucetPage";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -21,6 +22,7 @@ const router = createBrowserRouter(
         <Route index element={<HomePage />} />
         <Route path="showcase" element={<ShowcasePage />} />
         <Route path="/T/:address" element={<TokenPage />} />
+        <Route path="faucet" element={<FaucetPage />} />
 
         <Route element={<ProtectedRoute type={ProtectedTypes.USABLEONLY} />}>
           <Route path="dashboard" element={<DashboardPage />} />
