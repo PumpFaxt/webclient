@@ -20,11 +20,11 @@ export default function Header() {
     enabled: !!address,
   });
 
-  console.log(
-    username?.data,
-    address,
-    username?.data?.toString() == address?.toString()
-  );
+  const profileIndex = useContractRead({
+    ...contractDefinitions.pumpItFaxtInterface,
+    functionName: "displayPictureIndex",
+    args,
+  });
 
   return (
     <section className="p-page">
@@ -35,11 +35,19 @@ export default function Header() {
               {username?.data?.toLowerCase() === address?.toLowerCase() && (
                 <>
                   <div className="flex items-center gap-x-4">
-                    <img
-                      src="/images/profile-pepe.png"
-                      alt="pfp"
-                      className="h-[10vh]"
-                    />
+                    {profileIndex.data ? (
+                      <img
+                        src={`/images/wojack/${profileIndex.data}.png`}
+                        alt="pfp"
+                        className="h-[10vh] rounded-full border-2 bg-background p-1 aspect-square object-cover"
+                      />
+                    ) : (
+                      <img
+                        src="/images/profile-pepe.png"
+                        alt="pfp"
+                        className="h-[10vh]"
+                      />
+                    )}
                     <div className="flex flex-col items-center gap-y-2">
                       <h1 className="mobile:w-1/2 mobile:self-start mobile:truncate">
                         <UsernameWrapper>{address}</UsernameWrapper>

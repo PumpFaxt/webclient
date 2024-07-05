@@ -1,7 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import useModal from "../../../hooks/useModal";
 import Icon from "../../../common/Icon";
 import { twMerge } from "tailwind-merge";
+import {
+  useContractRead,
+  useContractWrite,
+  useWaitForTransaction,
+} from "wagmi";
+import contractDefinitions from "../../../contracts";
 
 export default function CustomizeProfileModal() {
   const modal = useModal();
@@ -12,6 +18,35 @@ export default function CustomizeProfileModal() {
   const handleClick = (i: number) => {
     setSelectedImage(i);
   };
+
+  const [loading, setLoading] = useState(false);
+
+  const updateProfile = useContractWrite({
+    ...contractDefinitions.pumpItFaxtInterface,
+    functionName: "setDisplayPictureIndex",
+  });
+
+  function handleUpdateProfile() {
+    setLoading(true);
+    if (selectedImage !== null) {
+      updateProfile.write({
+        args: [selectedImage],
+      });
+    } else {
+      setLoading(false);
+    }
+  }
+
+  useWaitForTransaction({
+    hash: updateProfile.data?.hash,
+    onSuccess: async () => {
+      setLoading(false);
+      modal.hide();
+    },
+    onError: () => {
+      setLoading(false);
+    },
+  });
 
   return (
     <div className="bg-background max-w-[60vw] p-2 relative">
@@ -50,11 +85,13 @@ export default function CustomizeProfileModal() {
             </div>
 
             <button
-              disabled={!selectedImage}
+              disabled={!selectedImage || loading}
               className={twMerge(
                 "mt-8 px-4 bg-primary py-2 text-back font-bold",
-                !selectedImage && "opacity-40"
+                (!selectedImage || loading) && "opacity-40",
+                loading && "animate-pulse"
               )}
+              onClick={() => handleUpdateProfile()}
             >
               Update profile
             </button>
