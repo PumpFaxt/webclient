@@ -14,6 +14,7 @@ import { ONE_FRAX, ONE_TOKEN } from "../../../config";
 import DataForm from "../../../common/DataForm";
 import useToast from "../../../hooks/useToast";
 import useWeb3 from "../../../contexts/web3context";
+import { MaxFeePerGasTooLowError } from "viem";
 
 interface TokenTraderProps {
   token: Token;
@@ -178,6 +179,8 @@ export default function TokenTrader(props: TokenTraderProps) {
       tokenBalance.refetch();
       fraxAllowance.refetch();
       tokenAllowance.refetch();
+      marketCap.refetch();
+      reserveThreshold.refetch();
     },
   });
 
