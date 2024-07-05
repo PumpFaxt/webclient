@@ -5,9 +5,12 @@ import { twMerge } from "tailwind-merge";
 import { Link, useNavigate } from "react-router-dom";
 import { useAccount } from "wagmi";
 import useToast from "../../../hooks/useToast";
+import useModal from "../../../hooks/useModal";
+import Introduction from "../../../common/Introduction";
 
 export default function Hero() {
   const navigate = useNavigate();
+  const modal = useModal();
 
   return (
     <section className="p-page relative flex h-screen items-center mobile:flex-col">
@@ -32,15 +35,22 @@ export default function Hero() {
           </Link>
           Network
         </p>
-
-        <button
-          className="px-6 py-2 bg-foreground text-back mt-5 w-max"
-          onClick={() => {
-            navigate("/showcase");
-          }}
-        >
-          START PUMPING
-        </button>
+        <div className="mt-5 flex gap-x-5">
+          <button
+            className="px-6 py-2 bg-foreground text-back  w-max"
+            onClick={() => {
+              navigate("/showcase");
+            }}
+          >
+            START PUMPING
+          </button>
+          <button
+            className="px-6 py-2 border-2 text-front w-max"
+            onClick={() => modal.show(<Introduction />)}
+          >
+            HOW IT WORKS?
+          </button>
+        </div>
       </div>
 
       <div className="flex flex-col items-center">
