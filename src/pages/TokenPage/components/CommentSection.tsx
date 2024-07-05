@@ -91,7 +91,7 @@ function ReplyCard(props: { comment: string }) {
   return (
     <div className="flex items-start gap-x-4 bg-front/5 p-4 border-b border-front/30">
       <DisplayPicture address={comment.author} className="w-[3.5vw]" />
-      <div className="w-full flex flex-col text-sm">
+      <div className="w-[90%] flex flex-col text-sm">
         <div className="flex justify-between items-start">
           <h1
             style={{ color: generateColorFromAddress(comment.author) }}
