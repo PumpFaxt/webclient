@@ -65,7 +65,7 @@ export default function ConnectionDialogue(props: ConnectionDialogueProps) {
       )}
     >
       {address && <DisplayPicture address={address} className="w-[5vw]" />}
-      <p className="text-start pl-4">
+      <p className="text-start pl-4 hidden">
         Joining as
         <span className="font-light text-sm text-pink-300">
           {<UsernameWrapper>{address}</UsernameWrapper>}
