@@ -12,7 +12,13 @@ export default function Default() {
 
   useEffect(() => {
     modal.hide();
-    modal.show(<Introduction />);
+    const nextIntro = localStorage.getItem("pumpfaxt-intro");
+    if (
+      !nextIntro ||
+      (nextIntro && Number(nextIntro) && Number(nextIntro) < Date.now())
+    ) {
+      modal.show(<Introduction />);
+    }
   }, []);
 
   return (

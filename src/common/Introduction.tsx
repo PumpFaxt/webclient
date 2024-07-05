@@ -73,7 +73,13 @@ export default function Introduction() {
 
       <div className="relative">
         <button
-          onClick={modal.hide}
+          onClick={() => {
+            localStorage.setItem(
+              "pumpfaxt-intro",
+              `${Date.now() + 1000 * 60 * 60 * 6}`
+            );
+            modal.hide();
+          }}
           className="text-center bg-yellow-300 text-red-500 px-6 py-2 rounded-sm font-semibold mt-4"
         >
           LFG 🚀🚀🚀
