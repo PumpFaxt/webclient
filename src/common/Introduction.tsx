@@ -6,17 +6,42 @@ export default function Introduction() {
   const modal = useModal();
 
   return (
-    <article className="bg-background rounded-md max-w-[50vw] mobile:max-w-[90vw] p-5 border border-front/40 shadow">
-      <h1 className="text-3xl font-bold mb-4 animate-gradient">
-        Welcome to PumpFaxt.com BETA
+    <article className="bg-background rounded-md widescreen:max-w-[50vw] mobile:translate-x-4 mobile:w-full p-10 border border-front/40 shadow text-center mobile:p-4">
+      <h1 className="text-3xl font-bold mb-4 animate-gradient text-center ">
+        Launching Soon on Fraxtal L2!
       </h1>
-      <p className="mb-4 mobile:mb-2">
-        You are interacting with the testnet, where tokens have{" "}
-        <b>no monetary value.</b>
+      <p className="mb-1 mobile:mb-2">
+        Please stay tuned and we are glad to know that you are interested in
+        our project!
         <br />
-        Here's how to get started:
+        Meanwhile you can stay in touch with us on our{" "}
       </p>
 
+      <div className="flex items-center mt-8 justify-center gap-x-4">
+        <a
+          target="_blank"
+          className="border px-4 py-1 rounded-sm"
+          href="https://x.com/pumpfaxt"
+        >
+          Twitter (X)
+        </a>{" "}
+        and{" "}
+        <a
+          target="_blank"
+          className="bg-blue-400 px-4 py-1 rounded-sm"
+          href="https://t.me/pumpfaxt"
+        >
+          Telegram
+        </a>
+      </div>
+
+      <p className="mt-8 text-red-500 text-xs">
+        We are trying to launch as soon as possible, let us know if you have
+        any questions.
+        <br />
+        We will keep updating our progress and our features on X
+      </p>
+      {/* 
       <div className="mb-6">
         <h2 className="text-2xl font-semibold mb-2 text-orange-500 mobile:text-xl">
           1. Claim Test Tokens
@@ -34,9 +59,9 @@ export default function Introduction() {
             </Link>
           </li>
         </ul>
-      </div>
+      </div> */}
 
-      <div className="mb-6">
+      {/* <div className="mb-6">
         <h2 className="text-2xl font-semibold mb-2 text-cyan-500 mobile:text-xl">
           2. Create and Trade Tokens
         </h2>
@@ -51,9 +76,9 @@ export default function Introduction() {
           <li className="mb-2">Trade tokens using FRAX.</li>
           <li>Each token follows a bonding curve.</li>
         </ul>
-      </div>
+      </div> */}
 
-      <div>
+      {/* <div>
         <h2 className="text-2xl font-semibold mb-2 text-green-500 mobile:text-xl">
           3. Token Threshold and Listing
         </h2>
@@ -70,11 +95,11 @@ export default function Introduction() {
             On the mainnet, tokens will be listed upon reaching the threshold.
           </li>
         </ul>
-      </div>
+      </div> */}
 
-      <p className="mt-6 mobile:mt-2">Explore the platform and test its features.</p>
-
-      <div className="relative">
+      {/* <p className="mt-6 mobile:mt-2">Explore the platform and test its features.</p> */}
+{/* 
+      <div className="relative mt-8">
         <button
           onClick={() => {
             localStorage.setItem(
@@ -90,9 +115,9 @@ export default function Introduction() {
 
         <span className="text-xs text-front/80 mx-2">
           <span className="text-lg text-front animate-pulse">👈</span>
-          click to get started
+          click here to close
         </span>
-      </div>
+      </div> */}
     </article>
   );
 }

@@ -6,7 +6,7 @@ export default function HomePage() {
     <>
       <Hero />
 
-      <div className="p-8">
+      {/* <div className="p-8">
         <h1>🚀 Guys, we will be launching soon!</h1>
         <p>
           Please stay tuned and we are glad to know that you are interested in
@@ -37,7 +37,7 @@ export default function HomePage() {
           <br />
           We will keep updating our progress and our features on X
         </p>
-      </div>
+      </div> */}
     </>
   );
 }

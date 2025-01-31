@@ -13,9 +13,7 @@ export default function Default() {
   useEffect(() => {
     modal.hide();
     const nextIntro = localStorage.getItem("pumpfaxt-intro");
-    if (
-      !nextIntro ||
-      (nextIntro && Number(nextIntro) && Number(nextIntro) < Date.now())
+    if ( true
     ) {
       modal.show(<Introduction />);
     }

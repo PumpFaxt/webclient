@@ -13,7 +13,7 @@ export default function Hero() {
   const modal = useModal();
 
   return (
-    <section className="p-page relative flex h-screen items-center mobile:flex-col">
+    <section className="p-page relative flex h-screen items-center mobile:flex-col opacity-30">
       <div className="absolute-cover pointer-events-none -z-20">
         <Mandelbrot className="opacity-[3%]" />
       </div>
