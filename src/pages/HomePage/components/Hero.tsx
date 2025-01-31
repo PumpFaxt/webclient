@@ -36,14 +36,14 @@ export default function Hero() {
           Network
         </p>
         <div className="mt-5 flex gap-x-5">
-          <button
+          {/* <button
             className="px-6 py-2 bg-foreground text-back  w-max"
             onClick={() => {
               navigate("/showcase");
             }}
           >
             START PUMPING
-          </button>
+          </button> */}
           <button
             className="px-6 py-2 border-2 text-front w-max"
             onClick={() => modal.show(<Introduction />)}

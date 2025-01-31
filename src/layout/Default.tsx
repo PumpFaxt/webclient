@@ -27,7 +27,7 @@ export default function Default() {
 
       <Toasts />
 
-      <Navbar />
+      {/* <Navbar /> */}
       <Outlet />
       <Footer />
     </main>
